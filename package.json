@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next build && next export && next-image-export-optimizer"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -15,10 +16,7 @@
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-globe.gl": "^2.25.0",
-    "react-map-gl": "^7.1.6",
     "reactstrap": "^9.2.0",
-    "three": "^0.157.0"
   },
   "devDependencies": {
     "@types/bootstrap": "^5.2.7",
