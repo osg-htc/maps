@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "export": "next build && next export && next-image-export-optimizer"
+    "lint": "next lint"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
