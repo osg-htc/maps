@@ -12,6 +12,8 @@ import '../app/globals.css';
 import { ThemeProvider, createTheme} from '@mui/material/styles';
 import * as mapboxgl from 'mapbox-gl';
 
+type MapboxMap = mapboxgl.Map;
+
 interface Institution {
     name: string;
     coordinates: [number, number];
@@ -33,7 +35,7 @@ interface Institution {
 export const GlobeComponent = () => {
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
     const [popoverContent, setPopoverContent] = useState<string>('');
-    const mapRef = useRef<mapboxgl.Map | null>(null as any);
+    const mapRef = useRef<MapboxMap | null>(null);
     const [institutionData, setInstitutionData] = useState<Institution[]>([]);
 
     const theme = createTheme({
@@ -130,7 +132,7 @@ export const GlobeComponent = () => {
         if (mapRef.current) {
             mapRef.current.flyTo({
                 center: [-89.4081, 43.0733],
-                zoom: 1,
+                zoom: 2,
                 essential: true  // this animation is considered essential with respect to prefers-reduced-motion
             });
         }
