@@ -1,0 +1,5997 @@
+{
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Institute of Plasma Physics, Chinese Academy of Sciences"
+      },
+      "geometry": {
+        "coordinates": [
+          116.33546,
+          39.910575
+        ],
+        "type": "Point"
+      },
+      "id": "00ce3987551f9ee57b0e65ca8406c79d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Bay Area Environmental Research Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.058846,
+          37.413084
+        ],
+        "type": "Point"
+      },
+      "id": "00e242d45362350f3d45b42051bb0926"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Illinois"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.229114,
+          40.104718
+        ],
+        "type": "Point"
+      },
+      "id": "0136144b417ec5f473d70eda7b4ed0ba"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Illinois Chicago"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.650503,
+          41.871837
+        ],
+        "type": "Point"
+      },
+      "id": "01ac4debc1e0c10af98152bdf13eeb21"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universite catholique de Louvain"
+      },
+      "geometry": {
+        "coordinates": [
+          4.61596,
+          50.66969
+        ],
+        "type": "Point"
+      },
+      "id": "027cacdb49d2b0ca2e223bad8fc7b89d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Southern Illinois University"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.217273,
+          37.714193
+        ],
+        "type": "Point"
+      },
+      "id": "02e63945163d9970cd7f50b853ff63d2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Northern Illinois University"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.766428,
+          41.933869
+        ],
+        "type": "Point"
+      },
+      "id": "03669e775a9e4619b9f512f128e09857"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Space Telescope Science Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.630234,
+          39.336219
+        ],
+        "type": "Point"
+      },
+      "id": "03999ac7baa42a8d5fc30178bfbddcb4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Hobart and William Smith Colleges"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.985516,
+          42.858131
+        ],
+        "type": "Point"
+      },
+      "id": "039feaf683c205ce68bc0e3231c62479"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Kansas University"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.247567,
+          38.958549
+        ],
+        "type": "Point"
+      },
+      "id": "0410712e93a1799328a799dbf83336e2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Louisiana State University Health Sciences Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -90.083145,
+          29.957272
+        ],
+        "type": "Point"
+      },
+      "id": "04286b434f8e27ba6ed727d95c921610"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Carnegie-Mellon University"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.941993,
+          40.44357
+        ],
+        "type": "Point"
+      },
+      "id": "04a38ec7c217044ad241bfa96fc29842"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad Autonoma del Caribe"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.823501,
+          11.004348
+        ],
+        "type": "Point"
+      },
+      "id": "05a3385b7179dfeb3240b147cfb6992f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Tennessee, Knoxville"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.925852,
+          35.952082
+        ],
+        "type": "Point"
+      },
+      "id": "05b036891cf997ac03883b6ffaa4a8a6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Massachusetts Institute of Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.093226,
+          42.359243
+        ],
+        "type": "Point"
+      },
+      "id": "06dda1d544558e46c8f26f858290213d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Colorado State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -105.080732,
+          40.574805
+        ],
+        "type": "Point"
+      },
+      "id": "07332afe0c7e12ed64b517b265b813c4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California San Diego"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.235866,
+          32.877749
+        ],
+        "type": "Point"
+      },
+      "id": "078f0a9d7c8e6b9c38f8ba3d4c1a6a34"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, Santa Barbara"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.846426,
+          34.416297
+        ],
+        "type": "Point"
+      },
+      "id": "097a5d17b3dc0cfe03b6dc611e825416"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Roswell Park Cancer Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -78.864525,
+          42.898775
+        ],
+        "type": "Point"
+      },
+      "id": "0a541fcdcf75bc8e950b1a9dee9e40c0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Amsterdam"
+      },
+      "geometry": {
+        "coordinates": [
+          4.955822,
+          52.355785
+        ],
+        "type": "Point"
+      },
+      "id": "0b6d631c4e401d7857e9cb5927a9131a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "SUNY Upstate Medical University"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.140009,
+          43.041819
+        ],
+        "type": "Point"
+      },
+      "id": "0b7fb1189ddfc85c07bf6275fbecc5da"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Wisconsin Milwaukee"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.880488,
+          43.076848
+        ],
+        "type": "Point"
+      },
+      "id": "0c0756cb6233a9a1e5c63445560dbf9e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "NIAID/NIH"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.112093,
+          39.061987
+        ],
+        "type": "Point"
+      },
+      "id": "0c3bd703c7feb295442fd2f8da8b9c91"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "LHCONE"
+      },
+      "geometry": {
+        "coordinates": [
+          6.056192,
+          46.232856
+        ],
+        "type": "Point"
+      },
+      "id": "0d09e236a116b394abf3885ef47629a9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Institute of Standards and Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.218358,
+          39.140104
+        ],
+        "type": "Point"
+      },
+      "id": "0d5b0239c6bbe974fa7bbd81060ede8b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Macau"
+      },
+      "geometry": {
+        "coordinates": [
+          113.557917,
+          22.164295
+        ],
+        "type": "Point"
+      },
+      "id": "0d6bdee54827712ae08690454fcd018f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, Davis"
+      },
+      "geometry": {
+        "coordinates": [
+          -121.749567,
+          38.539667
+        ],
+        "type": "Point"
+      },
+      "id": "0d6e1d2bb60db6c93430523da905ea2e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Yale University"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.926688,
+          41.311158
+        ],
+        "type": "Point"
+      },
+      "id": "0e0f9cea25c22777ae43ddfb2c0ba53a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Arkansas at Little Rock"
+      },
+      "geometry": {
+        "coordinates": [
+          -92.339778,
+          34.723254
+        ],
+        "type": "Point"
+      },
+      "id": "0f91a0de1c329ed0d15ce806e52eb834"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Buffalo"
+      },
+      "geometry": {
+        "coordinates": [
+          -78.882125,
+          42.933832
+        ],
+        "type": "Point"
+      },
+      "id": "102af4a9c8d8e439fb3203e33ab59e56"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Illinois Institute of Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.627321,
+          41.8313
+        ],
+        "type": "Point"
+      },
+      "id": "1132cfc7c6ded4c67884fb6487a09a22"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad Pontificia Bolivariana"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.06664,
+          4.620652
+        ],
+        "type": "Point"
+      },
+      "id": "117aa0204753f2b0f3a2f71d1ba9837b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Oklahoma State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.069743,
+          36.123085
+        ],
+        "type": "Point"
+      },
+      "id": "129a545f941d775a2e31ad042f969c27"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Maryland"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.944721,
+          38.988178
+        ],
+        "type": "Point"
+      },
+      "id": "13616ad4311ce1308a694d97deb32f6f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Texas at Austin"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.738273,
+          30.282825
+        ],
+        "type": "Point"
+      },
+      "id": "147b0efb40686a14663f6076f6455228"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of New Haven"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.961472,
+          41.291314
+        ],
+        "type": "Point"
+      },
+      "id": "14b1388b9e1684f0e1a6fadcb50f0635"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Massachusetts Green High Performance Computing Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.607352,
+          42.202502
+        ],
+        "type": "Point"
+      },
+      "id": "14b64153cd4ac869a3e15113e373f56d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Rowan University"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.119119,
+          39.709108
+        ],
+        "type": "Point"
+      },
+      "id": "14dda6931a0f86a3deb5b5c60ef0bf5e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of South Dakota"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.925283,
+          42.786019
+        ],
+        "type": "Point"
+      },
+      "id": "154aaa100b35adf6140f549ce8e47394"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Connecticut"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.249948,
+          41.809098
+        ],
+        "type": "Point"
+      },
+      "id": "1570637696ed181826fdc9d9fb367a28"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad Tecnologica de Bolivar"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.465473,
+          10.370263
+        ],
+        "type": "Point"
+      },
+      "id": "162de9e81f74f37bc16316818836435d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Wisconsin-Milwaukee"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.880488,
+          43.076848
+        ],
+        "type": "Point"
+      },
+      "id": "1648dcc0a629a3a9bff965f149cb123e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Drexel University"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.190051,
+          39.955217
+        ],
+        "type": "Point"
+      },
+      "id": "1656befaab7cc13586ef066844a6ff0b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Kentucky"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.504747,
+          38.038911
+        ],
+        "type": "Point"
+      },
+      "id": "16a1da4b9d87860b0b437040ae9474a1"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Steadman Philippon Research Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -106.381631,
+          39.643005
+        ],
+        "type": "Point"
+      },
+      "id": "173e65006cf018a827b8d0d6accc78b6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad de Puerto Rico, Rio Piedras Campus (UPRRP)"
+      },
+      "geometry": {
+        "coordinates": [
+          -66.050009,
+          18.402826
+        ],
+        "type": "Point"
+      },
+      "id": "174d5834402f5ba1b254ffd778de3ada"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Emory University"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.325512,
+          33.790183
+        ],
+        "type": "Point"
+      },
+      "id": "1880ebb6f333595805ab574deb42a8d0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "New York University"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.997264,
+          40.729452
+        ],
+        "type": "Point"
+      },
+      "id": "191a7e9276977dd1366caeb2ce5c79a9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Old Dominion University"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.30666,
+          36.886418
+        ],
+        "type": "Point"
+      },
+      "id": "1a1ef06f0abc097e417c13eab8aa3e34"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Montana"
+      },
+      "geometry": {
+        "coordinates": [
+          -113.982912,
+          46.859312
+        ],
+        "type": "Point"
+      },
+      "id": "1b0a0b2aaed43006f9061724cbd65a76"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Argonne National Lab"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.977798,
+          41.717702
+        ],
+        "type": "Point"
+      },
+      "id": "1e02d7129d65a49696751171a5ee14ec"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Niagara University"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.036689,
+          43.137279
+        ],
+        "type": "Point"
+      },
+      "id": "1eb0b56694fe3d7696e65008b384d70e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Villanova University"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.340502,
+          40.036463
+        ],
+        "type": "Point"
+      },
+      "id": "1f07d9543323d668273247369243cb46"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Michigan State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.476111,
+          42.73212
+        ],
+        "type": "Point"
+      },
+      "id": "1f3678093008abc0a904f32985ef16e4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CUNY Graduate Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.948542,
+          40.819846
+        ],
+        "type": "Point"
+      },
+      "id": "1f78c31768ea2ffbd7646dc4f4157df2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Southern Illinois University Edwardsville"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.997779,
+          38.793949
+        ],
+        "type": "Point"
+      },
+      "id": "1fcf0dcd711c8b72af069d453ce6a4b8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Oklahoma University"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.444211,
+          35.209407
+        ],
+        "type": "Point"
+      },
+      "id": "1fd0844e771be52f165155a4741ee923"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "The University of Alabama at Birmingham"
+      },
+      "geometry": {
+        "coordinates": [
+          -86.799345,
+          33.505696
+        ],
+        "type": "Point"
+      },
+      "id": "1fe741adc760312c7b35932e07b160d1"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "ETH Zurich"
+      },
+      "geometry": {
+        "coordinates": [
+          8.546083,
+          47.37681
+        ],
+        "type": "Point"
+      },
+      "id": "20016f8c6f1b5660f14f9ff7c25d5db5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Central Florida"
+      },
+      "geometry": {
+        "coordinates": [
+          -81.200889,
+          28.602159
+        ],
+        "type": "Point"
+      },
+      "id": "224e63a78b167ec62096af13e237deba"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Edinburgh"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.189305,
+          55.944461
+        ],
+        "type": "Point"
+      },
+      "id": "22b7d4b66bb0c7308118950e68b8e6e4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "INFN-T1"
+      },
+      "geometry": {
+        "coordinates": [
+          11.34,
+          44.5
+        ],
+        "type": "Point"
+      },
+      "id": "23d9e6aad0ceeab465506f1a030e21f0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Arizona State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -111.934383,
+          33.417721
+        ],
+        "type": "Point"
+      },
+      "id": "240574a571464cdaf42a2ea73e5835d5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "State University of New York at Binghamton"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.966889,
+          42.087868
+        ],
+        "type": "Point"
+      },
+      "id": "242018d5b6bb67b8009f862c1a4cc437"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Creighton University"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.947811,
+          41.265361
+        ],
+        "type": "Point"
+      },
+      "id": "247943a07d8934d8386c0e7aa18bfc1b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Georgia State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.38667,
+          33.7527
+        ],
+        "type": "Point"
+      },
+      "id": "25820e20133c4afaf1bc120fb8eaa95a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CDMS"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.202995,
+          37.4198
+        ],
+        "type": "Point"
+      },
+      "id": "25b8e38056c16e3ab6566b544eefab5e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "West Chester University of Pennsylvania"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.59812,
+          39.953398
+        ],
+        "type": "Point"
+      },
+      "id": "263b7ee5b8d94a4dfbc103eaf7fe7740"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Niels Bohr Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          12.571493,
+          55.696943
+        ],
+        "type": "Point"
+      },
+      "id": "264de3bed4d89983ab98911c0a69fdce"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "SingAREN"
+      },
+      "geometry": {
+        "coordinates": [
+          103.86948,
+          1.354146
+        ],
+        "type": "Point"
+      },
+      "id": "26a85604c04de8d3d22eac9933ba92f9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "UCSB"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.846426,
+          34.416297
+        ],
+        "type": "Point"
+      },
+      "id": "2729a7e367c66dad2110c730c7679ba1"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Indiana University of Pennsylvania"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.159332,
+          40.617531
+        ],
+        "type": "Point"
+      },
+      "id": "2790a7873012b852a6b9ef36593dd000"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Chicago State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.609384,
+          41.718446
+        ],
+        "type": "Point"
+      },
+      "id": "28559ff94c4e3b4fc7bbe1b04164fdca"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "North Dakota State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.800838,
+          46.893127
+        ],
+        "type": "Point"
+      },
+      "id": "287fc9bdc1e233f9443b8de72a11bb04"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "McGill University"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.577076,
+          45.504754
+        ],
+        "type": "Point"
+      },
+      "id": "29124d640e3ea4f7e86b3a872d0840ad"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Worcester Polytechnic Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.808339,
+          42.274853
+        ],
+        "type": "Point"
+      },
+      "id": "293a33cd5a3fb72c2cf8f5eaa7e3ffb2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Doane University"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.950932,
+          40.622952
+        ],
+        "type": "Point"
+      },
+      "id": "2971aec87dd76cb736e9a170e8bd138e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Alabama at Birmingham"
+      },
+      "geometry": {
+        "coordinates": [
+          -86.799345,
+          33.505696
+        ],
+        "type": "Point"
+      },
+      "id": "297eb48e6284d491aca254a6b02bda48"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Dutch National e-Infrastructure"
+      },
+      "geometry": {
+        "coordinates": [
+          4.951195,
+          52.356183
+        ],
+        "type": "Point"
+      },
+      "id": "29dbb8614b82f559dffc320afe044283"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Johns Hopkins University Applied Physics Lab"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.621595,
+          39.328977
+        ],
+        "type": "Point"
+      },
+      "id": "2a200133d7486217bf99a22bb99ef93d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Cardiff University"
+      },
+      "geometry": {
+        "coordinates": [
+          -3.178992,
+          51.48658
+        ],
+        "type": "Point"
+      },
+      "id": "2ab8ba1ad18f0d18c51457cf90cca61f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Bucknell University"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.882616,
+          40.954317
+        ],
+        "type": "Point"
+      },
+      "id": "2abb9b4288759b20453006937f4692fb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Boise State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -116.203301,
+          43.604284
+        ],
+        "type": "Point"
+      },
+      "id": "2c09ab4ee471f01495d6f143a616dd8e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Virginia Tech University"
+      },
+      "geometry": {
+        "coordinates": [
+          -80.423675,
+          37.229012
+        ],
+        "type": "Point"
+      },
+      "id": "2dd7048ad86d95c4a333c24f7a9b120c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Great Plains Network"
+      },
+      "geometry": {
+        "coordinates": [
+          -92.375014,
+          38.960207
+        ],
+        "type": "Point"
+      },
+      "id": "2efddb5bfcaac97f08a27c705f5d1ee2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Massachusetts"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.526728,
+          42.385999
+        ],
+        "type": "Point"
+      },
+      "id": "2f271f0fe58d030cef23ea00aec176b7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Virginia Tech"
+      },
+      "geometry": {
+        "coordinates": [
+          -80.423675,
+          37.229012
+        ],
+        "type": "Point"
+      },
+      "id": "2ffeb15ff54bb022ff0f2f1bd2ab8f70"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Gridplexus"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.85721,
+          41.080196
+        ],
+        "type": "Point"
+      },
+      "id": "31f6ea11a71e75540be113740d6b3c89"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Texas A&M University"
+      },
+      "geometry": {
+        "coordinates": [
+          -99.436043,
+          27.571172
+        ],
+        "type": "Point"
+      },
+      "id": "32dab79dc384283b78ae9112c5be1103"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "State University of New York at Albany"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.824662,
+          42.685489
+        ],
+        "type": "Point"
+      },
+      "id": "332074fdb295b5d520297ae582f5a6a4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Cincinnati"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.51428,
+          39.131159
+        ],
+        "type": "Point"
+      },
+      "id": "337d4a34a9bbba02d45518dfda7e763c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "IUPUI"
+      },
+      "geometry": {
+        "coordinates": [
+          -86.172217,
+          39.772948
+        ],
+        "type": "Point"
+      },
+      "id": "357f11c019ef4a2fcf12d82c55a92b20"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lamar University"
+      },
+      "geometry": {
+        "coordinates": [
+          -94.072244,
+          30.042738
+        ],
+        "type": "Point"
+      },
+      "id": "39729a1091875dcb33499b5d601bcab8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Michigan"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.742769,
+          42.275921
+        ],
+        "type": "Point"
+      },
+      "id": "399b27c8e76ee4dbaddeacb39649c2ec"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Duke_University"
+      },
+      "geometry": {
+        "coordinates": [
+          -78.937624,
+          36.001135
+        ],
+        "type": "Point"
+      },
+      "id": "399bd3e4cf8e37d5119ad2d8b2f17373"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Brigham Young University Idaho"
+      },
+      "geometry": {
+        "coordinates": [
+          -111.649281,
+          40.250851
+        ],
+        "type": "Point"
+      },
+      "id": "39a53df9fc7370c5f887f588f92e5a61"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Kent State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.855402,
+          38.201427
+        ],
+        "type": "Point"
+      },
+      "id": "3a483733a383474b0e0f650d3f123058"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Minnesota"
+      },
+      "geometry": {
+        "coordinates": [
+          -93.235464,
+          44.972851
+        ],
+        "type": "Point"
+      },
+      "id": "3a73043a3caf25d187a6e2688ab69b6e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Missouri"
+      },
+      "geometry": {
+        "coordinates": [
+          -92.328843,
+          38.94531
+        ],
+        "type": "Point"
+      },
+      "id": "3bc104780192f96697d654d3b7e643c2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Rensselaer Polytechnic Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.676646,
+          42.729978
+        ],
+        "type": "Point"
+      },
+      "id": "3ceba1b1de9e777aebf5d91af1bddfc8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "International Center for Theoretical Physics"
+      },
+      "geometry": {
+        "coordinates": [
+          2.296248,
+          48.870726
+        ],
+        "type": "Point"
+      },
+      "id": "3d24ffd6eaa058ec8e6c73ece35b2e2e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Connecticut Health Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.790289,
+          41.730798
+        ],
+        "type": "Point"
+      },
+      "id": "3ef0fc989ca99f7e4dbe3c7e60bc1dd0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Toyota Technological Institute at Chicago"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.592682,
+          41.784721
+        ],
+        "type": "Point"
+      },
+      "id": "3fa487ed3433dd9985d314e6f6575058"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Loyola University Chicago"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.656872,
+          42.000765
+        ],
+        "type": "Point"
+      },
+      "id": "4064a8df17b53620cba3914d69bd4183"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Computer Network Information Center (CNIC)"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.427774,
+          42.42384
+        ],
+        "type": "Point"
+      },
+      "id": "4082915a3761e19cfadff7bcfa669579"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Purdue University Calumet"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.474236,
+          41.584324
+        ],
+        "type": "Point"
+      },
+      "id": "40c7aad62eccbde46b67387a1177ec81"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Delaware"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.752822,
+          39.679577
+        ],
+        "type": "Point"
+      },
+      "id": "416cdc969e829e7394cde7fde5c4d7b4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Georgia Institute of Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.394832,
+          33.77242
+        ],
+        "type": "Point"
+      },
+      "id": "426898ba89c5675285cc22cb4face834"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "OSG"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.400754,
+          43.072278
+        ],
+        "type": "Point"
+      },
+      "id": "43823e878a6f5462d431e437842696cb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Louisville"
+      },
+      "geometry": {
+        "coordinates": [
+          -85.760412,
+          38.216862
+        ],
+        "type": "Point"
+      },
+      "id": "43a0258754394adf6aad7d17c8b766cb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Maine System"
+      },
+      "geometry": {
+        "coordinates": [
+          -68.669332,
+          44.899257
+        ],
+        "type": "Point"
+      },
+      "id": "43a0c43f7f3a76dbd36a888c0f400d60"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of South Florida"
+      },
+      "geometry": {
+        "coordinates": [
+          -82.413232,
+          28.061458
+        ],
+        "type": "Point"
+      },
+      "id": "46448ec6a579f4ac7628f6c2a7351485"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, Merced"
+      },
+      "geometry": {
+        "coordinates": [
+          -120.424944,
+          37.366237
+        ],
+        "type": "Point"
+      },
+      "id": "4769bb0507ce83f6ea20587e00f680fd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CancerComputer"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.711487,
+          45.400692
+        ],
+        "type": "Point"
+      },
+      "id": "47787e85fe5025218b3a5a9a59cfca1d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Institute of Physics ASCR"
+      },
+      "geometry": {
+        "coordinates": [
+          14.432946,
+          50.082921
+        ],
+        "type": "Point"
+      },
+      "id": "47ae1704926bdfc3ca9bb4b2f837e156"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Eureka Scientific, Inc."
+      },
+      "geometry": {
+        "coordinates": [
+          -122.208554,
+          37.803613
+        ],
+        "type": "Point"
+      },
+      "id": "4886dd012285aacb42c50e7b40a385ef"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "South Dakota State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.782139,
+          44.317485
+        ],
+        "type": "Point"
+      },
+      "id": "49a9d623c29acef4fbb42d7d933c75a9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Albert Einstein College of Medicine"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.846327,
+          40.852847
+        ],
+        "type": "Point"
+      },
+      "id": "4a48b9be3c4668f7c4ae1c8ec700906c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Ohio State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.014853,
+          39.999324
+        ],
+        "type": "Point"
+      },
+      "id": "4a4ad3a2c8862e0a338489d171afba78"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of South Carolina"
+      },
+      "geometry": {
+        "coordinates": [
+          -81.026935,
+          33.996788
+        ],
+        "type": "Point"
+      },
+      "id": "4a6acbc268229f277cea25077fa997cd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Fermilab"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.261822,
+          41.838425
+        ],
+        "type": "Point"
+      },
+      "id": "4afde773249ae89e150e18c4be9632c0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Florida State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.291921,
+          30.440756
+        ],
+        "type": "Point"
+      },
+      "id": "4b353bec329953abdaed9bec6e89d15f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, Berkeley"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.260463,
+          37.871918
+        ],
+        "type": "Point"
+      },
+      "id": "4b4ade630b7010bf5dd7564e1a45d560"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Portland State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.686289,
+          45.511601
+        ],
+        "type": "Point"
+      },
+      "id": "4b90c0cf57ad27c03299ab10a82b5b0e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lawrence Berkeley National Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.293374,
+          37.850902
+        ],
+        "type": "Point"
+      },
+      "id": "4c50a98459c99583e896e24d6cbaeb5b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CBPF"
+      },
+      "geometry": {
+        "coordinates": [
+          -43.173814,
+          -22.954288
+        ],
+        "type": "Point"
+      },
+      "id": "4c9e325fcb43dfd3479aef6e9d7e599a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad del Valle"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.532945,
+          3.375594
+        ],
+        "type": "Point"
+      },
+      "id": "4cacacaf7ce01600ccb4c9de5eaa8276"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Hampton University PPCF"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.339161,
+          37.019944
+        ],
+        "type": "Point"
+      },
+      "id": "4dd097d7999847f4c94f7485e13d4186"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Washington State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.158168,
+          46.730448
+        ],
+        "type": "Point"
+      },
+      "id": "4def665e21731c375ce1dd698ee2e15d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Pacific Rim Application and Grid Middleware Assembly (PRAGMA)"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.070718,
+          38.801459
+        ],
+        "type": "Point"
+      },
+      "id": "4e19733f98a4e5d4bc82c3a5b11f541f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Utah"
+      },
+      "geometry": {
+        "coordinates": [
+          -111.846044,
+          40.762484
+        ],
+        "type": "Point"
+      },
+      "id": "4e369bf15cf0ae482af5853ae4d615ec"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lafayette College"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.209786,
+          40.69956
+        ],
+        "type": "Point"
+      },
+      "id": "500edb04a998d69baa0066c68a07b913"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Clemson University"
+      },
+      "geometry": {
+        "coordinates": [
+          -82.835114,
+          34.679381
+        ],
+        "type": "Point"
+      },
+      "id": "5010f7594d1b1edf678529621c78417a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Campinas"
+      },
+      "geometry": {
+        "coordinates": [
+          -47.064763,
+          -22.818478
+        ],
+        "type": "Point"
+      },
+      "id": "5050face821d472be3fee3435ae05c09"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Cybera"
+      },
+      "geometry": {
+        "coordinates": [
+          -114.128849,
+          51.079689
+        ],
+        "type": "Point"
+      },
+      "id": "50cd15616ecf3d6709169f4094eaf0bc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of North Carolina at Chapel Hill"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.050969,
+          35.911769
+        ],
+        "type": "Point"
+      },
+      "id": "51027a7666688041d5b94c15973ccf27"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidade de SÃ£o Paulo - LaboratÃ³rio de ComputaÃ§Ã£o CientÃ­fica AvanÃ§ada"
+      },
+      "geometry": {
+        "coordinates": [
+          -46.731448,
+          -23.558809
+        ],
+        "type": "Point"
+      },
+      "id": "5103c1a115edb8d606db0b0126ef50bc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "United States Department of Agriculture"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.03914,
+          38.904614
+        ],
+        "type": "Point"
+      },
+      "id": "52d14dda2490667a33b467ea417f961a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "California Institute of Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.125878,
+          34.137349
+        ],
+        "type": "Point"
+      },
+      "id": "52d5df94781c730403c5ee582626dd8e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Montgomery College"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.15929,
+          39.098656
+        ],
+        "type": "Point"
+      },
+      "id": "531b53f94c24bf875dde082b16fe2c2a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Harvard Medical School"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.118313,
+          42.374471
+        ],
+        "type": "Point"
+      },
+      "id": "5333b609bd82e6781f93a4903d858211"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Columbia University_Nevis Labs"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.961885,
+          40.808286
+        ],
+        "type": "Point"
+      },
+      "id": "54bf155bedfefcaff9365de96d6f6344"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "San Diego State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.071228,
+          32.77525
+        ],
+        "type": "Point"
+      },
+      "id": "551604175aeec11c0f2d20e19812e718"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Wyoming"
+      },
+      "geometry": {
+        "coordinates": [
+          -105.57931,
+          41.311773
+        ],
+        "type": "Point"
+      },
+      "id": "55d0dfe4bb6adcefb51fa7f9358e0c08"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Maryland Center for Environmental Science"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.944721,
+          38.988178
+        ],
+        "type": "Point"
+      },
+      "id": "560b4d3a984bb4d6ba852dfa9d7f45d9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Chicago"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.599539,
+          41.787994
+        ],
+        "type": "Point"
+      },
+      "id": "5612753566954862cd10cb01ef38024c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "DOSAR"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.655162,
+          40.343061
+        ],
+        "type": "Point"
+      },
+      "id": "5902d48374cbca54db4d5115cd85feb6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Northwestern University"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.679858,
+          42.050356
+        ],
+        "type": "Point"
+      },
+      "id": "595a5ae3ff1cb0bcf687936b5d1809b6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Louisiana Tech University"
+      },
+      "geometry": {
+        "coordinates": [
+          -92.649963,
+          32.528297
+        ],
+        "type": "Point"
+      },
+      "id": "599ddcb643c3ce2b014b35cc77db2836"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Massachusetts - Amherst"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.526728,
+          42.385999
+        ],
+        "type": "Point"
+      },
+      "id": "5a0d1504eda5b49c6b1f9e8686d09cab"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "State University of New York at Buffalo"
+      },
+      "geometry": {
+        "coordinates": [
+          -78.882125,
+          42.933832
+        ],
+        "type": "Point"
+      },
+      "id": "5abc720b3b9d9c0ca04e0b0ce3846d2a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Wichita State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.292361,
+          37.718882
+        ],
+        "type": "Point"
+      },
+      "id": "5c6ae0d38a3153e91517fea956ed000d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Rice University"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.402035,
+          29.717897
+        ],
+        "type": "Point"
+      },
+      "id": "5e2e3b5651b08e9e592b16fcd6da6a43"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of New Mexico"
+      },
+      "geometry": {
+        "coordinates": [
+          -106.620155,
+          35.083868
+        ],
+        "type": "Point"
+      },
+      "id": "60a5554c6a1d1aaae49a37d54241da91"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Hawaii at Manoa"
+      },
+      "geometry": {
+        "coordinates": [
+          -157.818979,
+          21.298598
+        ],
+        "type": "Point"
+      },
+      "id": "60e3c366ec1ef7b9ef21433a31301d65"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "US ATLAS"
+      },
+      "geometry": {
+        "coordinates": [
+          6.056192,
+          46.232856
+        ],
+        "type": "Point"
+      },
+      "id": "611e85d1669cd4e299335eb884b47232"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Wayne State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.068998,
+          42.358994
+        ],
+        "type": "Point"
+      },
+      "id": "612032ca57cf1ceaa1d33ebbbdde5695"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, San Diego"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.235866,
+          32.877749
+        ],
+        "type": "Point"
+      },
+      "id": "61b1d1d94bae20fe125e536da7a42077"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Iolani School"
+      },
+      "geometry": {
+        "coordinates": [
+          -157.825153,
+          21.285415
+        ],
+        "type": "Point"
+      },
+      "id": "61c28210f967953cd5d41f3dc4cac954"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "ATLAS"
+      },
+      "geometry": {
+        "coordinates": [
+          6.056192,
+          46.232856
+        ],
+        "type": "Point"
+      },
+      "id": "645a4a3114a22a9c017a9e91326883e7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidade do Estado do Rio de Janeiro"
+      },
+      "geometry": {
+        "coordinates": [
+          -43.222925,
+          -22.902798
+        ],
+        "type": "Point"
+      },
+      "id": "64c66d80738e837aa410e01d3b342a07"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Fermi National Accelerator Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.261822,
+          41.838425
+        ],
+        "type": "Point"
+      },
+      "id": "683f6162cbdf57ca86ded5d5b23049e4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Donald Danforth Plant Science Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -90.39692,
+          38.674205
+        ],
+        "type": "Point"
+      },
+      "id": "68e2f43a99bdb95346b8f8692e838b51"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CyVerse"
+      },
+      "geometry": {
+        "coordinates": [
+          116.335599,
+          39.91055
+        ],
+        "type": "Point"
+      },
+      "id": "6951ffeb0a8c92028ab81e1a8b6a51ae"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Michigan State University High Energy Physics"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.476111,
+          42.73212
+        ],
+        "type": "Point"
+      },
+      "id": "6970f499db24a2b5f6f7701bff4cf9c9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Texas at Arlington"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.11296,
+          32.729718
+        ],
+        "type": "Point"
+      },
+      "id": "6a7b67f9e89eec894bcc309131169a76"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, Riverside"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.32741,
+          33.97246
+        ],
+        "type": "Point"
+      },
+      "id": "6a992841ce98cba11e5fac755585405b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Wright State Research Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.108903,
+          39.717826
+        ],
+        "type": "Point"
+      },
+      "id": "6bca668457175454fadee01374ad4f11"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Arizona"
+      },
+      "geometry": {
+        "coordinates": [
+          -110.950815,
+          32.232672
+        ],
+        "type": "Point"
+      },
+      "id": "6bcac4246356069e0f59fa63e4bc9615"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Nevada, Reno"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.815377,
+          39.543642
+        ],
+        "type": "Point"
+      },
+      "id": "6c52b84f0c73f21c18ec510f79c67591"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Open Science Grid"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.400754,
+          43.072278
+        ],
+        "type": "Point"
+      },
+      "id": "6e88e81acb10025aa8b3522d5422a75c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "UC Irvine"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.841248,
+          33.648434
+        ],
+        "type": "Point"
+      },
+      "id": "6ede328a2c1417f0095a8192e46b604b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, Irvine"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.841248,
+          33.648434
+        ],
+        "type": "Point"
+      },
+      "id": "6fc206aaaa4125a6571f8f45c97beb1f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Colorado Boulder"
+      },
+      "geometry": {
+        "coordinates": [
+          -105.270823,
+          40.008781
+        ],
+        "type": "Point"
+      },
+      "id": "71831ccddfb97765d494cbe91e05e2ab"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Arkansas"
+      },
+      "geometry": {
+        "coordinates": [
+          -94.176981,
+          36.070009
+        ],
+        "type": "Point"
+      },
+      "id": "7200f9730b1467d7712a3d714b8ad408"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Duquesne University"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.993123,
+          40.43589
+        ],
+        "type": "Point"
+      },
+      "id": "72ce0603fc8c9b62e8e60aa369094aee"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Brandeis University"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.260155,
+          42.365727
+        ],
+        "type": "Point"
+      },
+      "id": "7503795613dccd070609ae78d11be02e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad de los Andes"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.065719,
+          4.602406
+        ],
+        "type": "Point"
+      },
+      "id": "7559859a072b8723b2311aaca2153fc8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "ISI"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.284169,
+          34.021281
+        ],
+        "type": "Point"
+      },
+      "id": "76022c4c22c602c5336a0a1a260fcce1"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "JINR"
+      },
+      "geometry": {
+        "coordinates": [
+          37.137704,
+          56.709531
+        ],
+        "type": "Point"
+      },
+      "id": "769bca5eda55ec68b5286fc0e96e7f9e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Vanderbilt University"
+      },
+      "geometry": {
+        "coordinates": [
+          -86.803369,
+          36.14659
+        ],
+        "type": "Point"
+      },
+      "id": "7738ecc41c224473a7a7486e305c3589"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lancium"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.455638,
+          30.160295
+        ],
+        "type": "Point"
+      },
+      "id": "778fe6794e2379837fd344d1adac5fcd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California Riverside"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.32741,
+          33.97246
+        ],
+        "type": "Point"
+      },
+      "id": "77ca7aefd320e8f9d958bd33ebe572dd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Texas at Dallas"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.749702,
+          32.984673
+        ],
+        "type": "Point"
+      },
+      "id": "78c99021e716c0107ece42b7420b5e3d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Bryn Mawr College"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.313223,
+          40.02736
+        ],
+        "type": "Point"
+      },
+      "id": "793d86318bdf066f220a18f4bf2155f7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Syracuse University"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.136975,
+          43.040176
+        ],
+        "type": "Point"
+      },
+      "id": "79aae4d84fd783f0194c5ec8b6b4d1ec"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Caltech"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.125878,
+          34.137349
+        ],
+        "type": "Point"
+      },
+      "id": "79f098669a7a6e20f23921abaf6ca468"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Jefferson Lab"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.062639,
+          42.428097
+        ],
+        "type": "Point"
+      },
+      "id": "7ab446b6390a1685dde99b57362defa1"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Compute Canada"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.385095,
+          43.648594
+        ],
+        "type": "Point"
+      },
+      "id": "7b463a27f741441336cac35af35b0e2f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Nebraska - Lincoln"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.700508,
+          40.817598
+        ],
+        "type": "Point"
+      },
+      "id": "7ca4b7809a8d26f1d40e5baffc9a8b4e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Illinois Urbana-Champaign"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.229114,
+          40.104718
+        ],
+        "type": "Point"
+      },
+      "id": "7d0ce1c443c4e1b9d659c7e6d931bf54"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Pacific Research Platform"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.070718,
+          38.801459
+        ],
+        "type": "Point"
+      },
+      "id": "7d6b583244b8ee11f4b47737e46a99ea"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CENF_NeutrinoPlatform"
+      },
+      "geometry": {
+        "coordinates": [
+          6.056192,
+          46.232856
+        ],
+        "type": "Point"
+      },
+      "id": "7daada3c1cc7e89b308b3ce10a5f9757"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Oregon"
+      },
+      "geometry": {
+        "coordinates": [
+          -123.075792,
+          44.045146
+        ],
+        "type": "Point"
+      },
+      "id": "7dc9fec98a4ae32514b715b69fd622fa"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Tennessee at Chattanooga"
+      },
+      "geometry": {
+        "coordinates": [
+          -85.300247,
+          35.047519
+        ],
+        "type": "Point"
+      },
+      "id": "7e15cdb75d62b473b03d1716dc24ce84"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Brigham and Women's Hospital"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.107289,
+          42.335795
+        ],
+        "type": "Point"
+      },
+      "id": "7ece616f562c75ee19d9fc0b5b25258e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Toledo"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.614714,
+          41.660572
+        ],
+        "type": "Point"
+      },
+      "id": "7f2ce86876b3b5a06fbbddb6eb92c997"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Bern"
+      },
+      "geometry": {
+        "coordinates": [
+          7.438215,
+          46.950474
+        ],
+        "type": "Point"
+      },
+      "id": "7f6d1d7d091babe964edce28e0f7a300"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Repertoire Immune Medicines"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.0905,
+          42.367334
+        ],
+        "type": "Point"
+      },
+      "id": "7f7daba123054dd299f0aafaae042c88"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Nicholls State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -90.801571,
+          29.794486
+        ],
+        "type": "Point"
+      },
+      "id": "7f84a49a0ca42d19177dad23e24520ab"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Center for Supercomputing Applications (NCSA)"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.229114,
+          40.104718
+        ],
+        "type": "Point"
+      },
+      "id": "8045d65fbc4ba25ab7698b6f04ab08a3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "State University of New York at Stony Brook"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.12046,
+          40.91476
+        ],
+        "type": "Point"
+      },
+      "id": "81192cf927ba973afc2b7e1f3d38b896"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Utah State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -111.81391,
+          41.740748
+        ],
+        "type": "Point"
+      },
+      "id": "84d01a1795dcfe098ae2c5d33189d384"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Nebraska-Lincoln"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.700508,
+          40.817598
+        ],
+        "type": "Point"
+      },
+      "id": "870c1259de1da2c7596274132448277d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "American Museum of Natural History"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.974074,
+          40.781267
+        ],
+        "type": "Point"
+      },
+      "id": "870cae73db302f3a395f10c20ad7446d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Texas at El Paso"
+      },
+      "geometry": {
+        "coordinates": [
+          -106.504098,
+          31.77015
+        ],
+        "type": "Point"
+      },
+      "id": "87282ba8403a254c1733480dff185aec"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "NOIR Lab"
+      },
+      "geometry": {
+        "coordinates": [
+          -110.94789,
+          32.233354
+        ],
+        "type": "Point"
+      },
+      "id": "879908d62dec703819dca1f101a24b15"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Boston University"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.107942,
+          42.351118
+        ],
+        "type": "Point"
+      },
+      "id": "87c9bf1be067f64480d85f37120a718e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Iowa State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -93.648504,
+          42.026212
+        ],
+        "type": "Point"
+      },
+      "id": "889912c892fe4e01c7eeba64cb41ff48"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Argonne National Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.977798,
+          41.717702
+        ],
+        "type": "Point"
+      },
+      "id": "89245a44ca7efd24a1f4e71f685e23d7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Oregon State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -123.274723,
+          44.56395
+        ],
+        "type": "Point"
+      },
+      "id": "8a56bebd66c8d78df01a8e69228e25cd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Brookhaven National Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.879375,
+          40.862723
+        ],
+        "type": "Point"
+      },
+      "id": "8deb23b3cbe8a2af77c08f15ef2f13d8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Northeastern University"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.088782,
+          42.339992
+        ],
+        "type": "Point"
+      },
+      "id": "8e7f7cde05b0083e567a14b61645753b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Renaissance Computing Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.018672,
+          35.939336
+        ],
+        "type": "Point"
+      },
+      "id": "8ebe8e9e2208a6e10d99e569bca0349b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Rhodes College"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.990803,
+          35.154405
+        ],
+        "type": "Point"
+      },
+      "id": "8efaf66a72ebe763cb18bdb120f6698f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Nevada System of Higher Education"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.812456,
+          39.551194
+        ],
+        "type": "Point"
+      },
+      "id": "8ff005f80d3f4683ca04552bc06f3c93"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Oxford"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.254377,
+          51.754769
+        ],
+        "type": "Point"
+      },
+      "id": "900192b1a432791a9f524e7b7a2c7fdc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Mississipi"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.537434,
+          34.365529
+        ],
+        "type": "Point"
+      },
+      "id": "90a91894ffaee28500923d36881f5716"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "California State University, Northridge"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.529319,
+          34.240126
+        ],
+        "type": "Point"
+      },
+      "id": "90b03d22bec8df1c8f9018b97940428e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Texas Advanced Computing Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.725526,
+          30.38995
+        ],
+        "type": "Point"
+      },
+      "id": "90ddf0ddae6f611fe90328f71f5b66f9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Tennessee Chattanooga"
+      },
+      "geometry": {
+        "coordinates": [
+          -85.300247,
+          35.047519
+        ],
+        "type": "Point"
+      },
+      "id": "91b38038d270b6dd7e7e555c20440007"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Research Council of Canada"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.619253,
+          45.443925
+        ],
+        "type": "Point"
+      },
+      "id": "9248d4515f188e456b134ccaddab78b6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "LSU School of Public Health"
+      },
+      "geometry": {
+        "coordinates": [
+          -90.083145,
+          29.957272
+        ],
+        "type": "Point"
+      },
+      "id": "939402c13d2181160965dcf206173d9b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Johns Hopkins University"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.621595,
+          39.328977
+        ],
+        "type": "Point"
+      },
+      "id": "93d830f115226f97e7d834e6ce81e221"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Maryland Baltimore"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.623983,
+          39.286864
+        ],
+        "type": "Point"
+      },
+      "id": "94096babdd53c710f843c740d39f29a7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Rochester"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.631202,
+          43.126397
+        ],
+        "type": "Point"
+      },
+      "id": "947d705bd48c5f581717f387c11021b9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Internet2"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.691162,
+          42.300567
+        ],
+        "type": "Point"
+      },
+      "id": "94d6288e9d5ea02c74403fbf9f663d61"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "UT Southwestern"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.841156,
+          32.812306
+        ],
+        "type": "Point"
+      },
+      "id": "94eb535177710b38950581d3412ed17f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CILogon_org"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.225257,
+          40.114831
+        ],
+        "type": "Point"
+      },
+      "id": "94fa1df43e1e47e59e517554d77ced28"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, San Francisco"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.458489,
+          37.763737
+        ],
+        "type": "Point"
+      },
+      "id": "9674fec0c0d7774bec466b86837e5bf0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Missouri University of Science and Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -91.775583,
+          37.953426
+        ],
+        "type": "Point"
+      },
+      "id": "973559898b13879955daf9501f809f6f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Wisconsin-Madison"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.404098,
+          43.075409
+        ],
+        "type": "Point"
+      },
+      "id": "978dfb598a91fc4c95d88388a11067d0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "The Pennsylvania State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.862848,
+          40.7965
+        ],
+        "type": "Point"
+      },
+      "id": "97e3fdceac97b3f3cc8a8d1cb02b24f8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Florida"
+      },
+      "geometry": {
+        "coordinates": [
+          -82.347911,
+          29.64629
+        ],
+        "type": "Point"
+      },
+      "id": "983702da172bd21739577565bd7ebabf"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Nebraska Medical Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.973966,
+          41.256312
+        ],
+        "type": "Point"
+      },
+      "id": "98f6cd164bd40de7a616f3021e628fb2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidade de Sao Paulo"
+      },
+      "geometry": {
+        "coordinates": [
+          -46.722643,
+          -23.562783
+        ],
+        "type": "Point"
+      },
+      "id": "99ac01b072a752a1d667aac3b0b587ce"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Susquehanna University"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.875329,
+          40.797502
+        ],
+        "type": "Point"
+      },
+      "id": "9a8332eeac3c95781fdda5c124173ecc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "ANL"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.977798,
+          41.717702
+        ],
+        "type": "Point"
+      },
+      "id": "9aeceef3e951dc8511d8d926ae2352b3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "The College of New Jersey"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.778791,
+          40.268651
+        ],
+        "type": "Point"
+      },
+      "id": "9b18cff43c88672a5ed31bd5d1b1fc58"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad de Caldas"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.492828,
+          5.055926
+        ],
+        "type": "Point"
+      },
+      "id": "9b62370b8d50246a54e926dc630727fe"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Purdue University"
+      },
+      "geometry": {
+        "coordinates": [
+          -86.172217,
+          39.772948
+        ],
+        "type": "Point"
+      },
+      "id": "9b7e8fc3f4b4c90043910100ad3de9b2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Stanford University"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.167359,
+          37.429434
+        ],
+        "type": "Point"
+      },
+      "id": "9b9393aedef343b29468d749a1b3845a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Pittsburgh Supercomputing Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.949053,
+          40.445555
+        ],
+        "type": "Point"
+      },
+      "id": "9befc1d2a53bdf479e7ecf1d9b7eec92"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Cinvestav"
+      },
+      "geometry": {
+        "coordinates": [
+          -99.129661,
+          19.509603
+        ],
+        "type": "Point"
+      },
+      "id": "9c4a6d24942239a3d4735e134e13027f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Massachusetts Boston"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.036865,
+          42.312881
+        ],
+        "type": "Point"
+      },
+      "id": "9d182f04be4daccca6007bd9015c673a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Columbia University"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.961885,
+          40.808286
+        ],
+        "type": "Point"
+      },
+      "id": "9ec1b7a84b30874577480a5c80457461"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "INFN-PADOVA"
+      },
+      "geometry": {
+        "coordinates": [
+          11.885952,
+          45.409357
+        ],
+        "type": "Point"
+      },
+      "id": "9f30a2609487109fc3ed5ee7210aae35"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Salem State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -70.890234,
+          42.503575
+        ],
+        "type": "Point"
+      },
+      "id": "9f70d03504322a323522652fa75fecbd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "California State University, San Bernadino"
+      },
+      "geometry": {
+        "coordinates": [
+          -117.323801,
+          34.182622
+        ],
+        "type": "Point"
+      },
+      "id": "9f955728cc83af43bc56a766a3be5a8c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Southern California"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.284169,
+          34.021281
+        ],
+        "type": "Point"
+      },
+      "id": "9fa7aa9d513d1f423519d010ad75a7d7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "South Dakota School of Mines and Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -103.205753,
+          44.075439
+        ],
+        "type": "Point"
+      },
+      "id": "a0e14ae8e0e6322a8d6d49c3cc9a9afe"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Massachusetts Lowell"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.326809,
+          42.652864
+        ],
+        "type": "Point"
+      },
+      "id": "a16d0d9ca0d55c2c3edcd7cc0a62bea5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Kansas State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.581077,
+          39.188648
+        ],
+        "type": "Point"
+      },
+      "id": "a1bfe452e7d6edded554efda022961bc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Missouri-Columbia"
+      },
+      "geometry": {
+        "coordinates": [
+          -92.328843,
+          38.94531
+        ],
+        "type": "Point"
+      },
+      "id": "a1dcdb0ce2ed9ac42d0c3da4c3954569"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Northwest Missouri State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -94.883339,
+          40.351692
+        ],
+        "type": "Point"
+      },
+      "id": "a202831690ce09ca082dd34cd99be92a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Allen Independent School District"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.670095,
+          33.102275
+        ],
+        "type": "Point"
+      },
+      "id": "a22ba51705a121398a2c541fd878ac77"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Rutgers University"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.446251,
+          40.498769
+        ],
+        "type": "Point"
+      },
+      "id": "a24ca5e93f7042e7244b59ddc9d4ce5a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Guam"
+      },
+      "geometry": {
+        "coordinates": [
+          144.803978,
+          13.433047
+        ],
+        "type": "Point"
+      },
+      "id": "a50c6a01b6f67266d4efe960837d64d2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CERN"
+      },
+      "geometry": {
+        "coordinates": [
+          6.056192,
+          46.232856
+        ],
+        "type": "Point"
+      },
+      "id": "a5cab1a2cb2cb148eb63e22fdfc979fb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "USDA Agricultural Research Service"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.416242,
+          43.066667
+        ],
+        "type": "Point"
+      },
+      "id": "a6a2b3557ef8014f601f6a173ab72a03"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Darkside"
+      },
+      "geometry": {
+        "coordinates": [
+          13.513903,
+          42.420069
+        ],
+        "type": "Point"
+      },
+      "id": "a6a632ba1b096b2e29765e2e649b9d18"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Albany"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.824662,
+          42.685489
+        ],
+        "type": "Point"
+      },
+      "id": "a7bf967027517d490e8c3461ca279f3d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Fairfield"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.255903,
+          41.157673
+        ],
+        "type": "Point"
+      },
+      "id": "a93d163dee39d147df32cfdfe6e7321a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad Catolica de Colombia"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.066657,
+          4.633976
+        ],
+        "type": "Point"
+      },
+      "id": "a93d4391c4500cbd22a390152632a402"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad Autonoma de Manizales"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.503231,
+          5.06744
+        ],
+        "type": "Point"
+      },
+      "id": "a9edad1cdb90f09e01ac82e81dedb3c9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Planetary Science Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -110.946465,
+          32.264109
+        ],
+        "type": "Point"
+      },
+      "id": "aa1051171932cfebc630041131b7bce0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "SUNY Geneseo"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.821894,
+          42.796645
+        ],
+        "type": "Point"
+      },
+      "id": "aa199d2db9c7ce722e34a703924c29ea"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "West Texas A&M University"
+      },
+      "geometry": {
+        "coordinates": [
+          -101.914736,
+          34.982789
+        ],
+        "type": "Point"
+      },
+      "id": "ab45f1c1d102af3186f94251d6519d64"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lonestar Education and Research Network"
+      },
+      "geometry": {
+        "coordinates": [
+          -101.939675,
+          33.577042
+        ],
+        "type": "Point"
+      },
+      "id": "ab637a322d1ded3e584ebac219ae4277"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Canisius College"
+      },
+      "geometry": {
+        "coordinates": [
+          -78.852577,
+          42.925206
+        ],
+        "type": "Point"
+      },
+      "id": "ab7cd51b2c9756de6bb45505654c72b2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Texas Tech University"
+      },
+      "geometry": {
+        "coordinates": [
+          -101.874783,
+          33.583448
+        ],
+        "type": "Point"
+      },
+      "id": "ac17e7924c6e6572c3aa258132246a8e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Colorado School of Mines"
+      },
+      "geometry": {
+        "coordinates": [
+          -105.223364,
+          39.751443
+        ],
+        "type": "Point"
+      },
+      "id": "ac9a4bbe00816e2dca1901d35313dc67"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Rockefeller University"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.955198,
+          40.762489
+        ],
+        "type": "Point"
+      },
+      "id": "acc00e1b2389dd5ead9aacb8a1c5ecd4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Siena College"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.7526,
+          42.717602
+        ],
+        "type": "Point"
+      },
+      "id": "acd777127a3faff89c265bd8575a0eaa"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "UMSNH"
+      },
+      "geometry": {
+        "coordinates": [
+          -101.203204,
+          19.687603
+        ],
+        "type": "Point"
+      },
+      "id": "af3e8329918ec3254e170a735d395e6d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Pennsylvania"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.19391,
+          39.950929
+        ],
+        "type": "Point"
+      },
+      "id": "b355a655c02337c743fe06be5a42176e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "International Gravitational-Wave Observatory Network (IGWN)"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.125204,
+          34.137657
+        ],
+        "type": "Point"
+      },
+      "id": "b389623ef9aa82893d5b352172c19580"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Arcadia University"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.163876,
+          40.092606
+        ],
+        "type": "Point"
+      },
+      "id": "b51dd9f056c03449da8d45800fb7a3f3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lawrence Berkley National Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.293374,
+          37.850902
+        ],
+        "type": "Point"
+      },
+      "id": "b5b865d07fa4a96bb9a4eff059004025"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "UC Santa Barbara"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.846426,
+          34.416297
+        ],
+        "type": "Point"
+      },
+      "id": "b5e3edeeeb1c5f2e4c78c5446d222571"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Institute of Allergy and Infectious Diseases"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.111285,
+          39.061802
+        ],
+        "type": "Point"
+      },
+      "id": "b663b6e8aa7678d6428e16a8b505cd8a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Korea Institute of Science and Technology Information"
+      },
+      "geometry": {
+        "coordinates": [
+          127.359689,
+          36.365645
+        ],
+        "type": "Point"
+      },
+      "id": "b6d99cf80bfd6e94a2be8e27a19b728e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Johannesburg"
+      },
+      "geometry": {
+        "coordinates": [
+          27.998789,
+          -26.185703
+        ],
+        "type": "Point"
+      },
+      "id": "b74eb84874fb2dc85bdead5eb16755a4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Thomas Jefferson National Accelerator Facility"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.481622,
+          37.094403
+        ],
+        "type": "Point"
+      },
+      "id": "b77f5c44cfd14a49d7fc833a638c6b31"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Penn State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.862848,
+          40.7965
+        ],
+        "type": "Point"
+      },
+      "id": "b7e1496bbd55f9e6ffa565c5c2032b64"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Colorado Denver"
+      },
+      "geometry": {
+        "coordinates": [
+          -104.837722,
+          39.745149
+        ],
+        "type": "Point"
+      },
+      "id": "b7f4503dadf5bc0a9857aee6d5b089aa"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Notre Dame"
+      },
+      "geometry": {
+        "coordinates": [
+          -86.238959,
+          41.703058
+        ],
+        "type": "Point"
+      },
+      "id": "b875c240e78cabfe25ec24c47033fc12"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Fond du Lac Tribal & Community College"
+      },
+      "geometry": {
+        "coordinates": [
+          -92.451326,
+          46.690069
+        ],
+        "type": "Point"
+      },
+      "id": "b8882fd58972774443ec79843867e64f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Boston College"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.169242,
+          42.336213
+        ],
+        "type": "Point"
+      },
+      "id": "b89d998422704e912ed82109a289bd6d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "SLAC National Accelerator Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.202737,
+          37.419817
+        ],
+        "type": "Point"
+      },
+      "id": "b96aeb861eff8a2faaff99845e578b0e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Harvard University"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.118313,
+          42.374471
+        ],
+        "type": "Point"
+      },
+      "id": "b97842bcaa84cd289e9e94b8952e5181"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Cornell University"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.483084,
+          42.4472
+        ],
+        "type": "Point"
+      },
+      "id": "ba16368a09ac9f885958158d5cfc348e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Princeton University"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.659365,
+          40.348732
+        ],
+        "type": "Point"
+      },
+      "id": "ba42ef8db0a72e6c24fc39aba391619a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Wesleyan University"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.657146,
+          41.554665
+        ],
+        "type": "Point"
+      },
+      "id": "bbe5f51faa5bb82786609b6c41ed2f85"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Western Washington University"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.485734,
+          48.737812
+        ],
+        "type": "Point"
+      },
+      "id": "bbe66016d2fe5f1b139811d529f751dd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Pacific Northwest National Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.279142,
+          46.345012
+        ],
+        "type": "Point"
+      },
+      "id": "bca1ac1e08713d9e326807a1c7ddadab"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "New Mexico State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -106.752069,
+          32.281568
+        ],
+        "type": "Point"
+      },
+      "id": "bcbcfaf6ef34172660c9f4ab950a8f2d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of North Carolina, Chapel Hill"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.050969,
+          35.911769
+        ],
+        "type": "Point"
+      },
+      "id": "bdd08693886fda860b67f461eaa132de"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Hawaii"
+      },
+      "geometry": {
+        "coordinates": [
+          -157.818979,
+          21.298598
+        ],
+        "type": "Point"
+      },
+      "id": "bec3d19a08b3c399eee82a4dc65089b4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Centre College"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.779392,
+          37.645709
+        ],
+        "type": "Point"
+      },
+      "id": "bf591871516ab151a88d8dff0a8ee2bc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Georgia"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.374039,
+          33.956262
+        ],
+        "type": "Point"
+      },
+      "id": "c0c7d1e796b94d813cf380475ea839a6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Illinois at Urbana Champaign"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.229114,
+          40.104718
+        ],
+        "type": "Point"
+      },
+      "id": "c12e43698a5df4c4e9b993a08d7139c6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Northern Iowa"
+      },
+      "geometry": {
+        "coordinates": [
+          -92.459703,
+          42.514923
+        ],
+        "type": "Point"
+      },
+      "id": "c148d852addd8f14a8fbba0022d34511"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Ohio Supercomputer Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.040134,
+          39.999911
+        ],
+        "type": "Point"
+      },
+      "id": "c15e7839dd86c27b407f96b13002cef9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Tulsa"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.945941,
+          36.152324
+        ],
+        "type": "Point"
+      },
+      "id": "c19be9a08ae9532ba081632aea2b5dab"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, Los Angeles"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.442179,
+          34.07178
+        ],
+        "type": "Point"
+      },
+      "id": "c1b2f722b5b3a0f4539da1901d49cf45"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Southern Methodist University"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.783365,
+          32.843612
+        ],
+        "type": "Point"
+      },
+      "id": "c1c0ada6a83f5fc35cbff95388d08950"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Tennessee Tech University"
+      },
+      "geometry": {
+        "coordinates": [
+          -85.504039,
+          36.174754
+        ],
+        "type": "Point"
+      },
+      "id": "c337213fde9ca6bdd37e7a83cb24ce0f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "High Performance Computing Facility - University of Puerto Rico"
+      },
+      "geometry": {
+        "coordinates": [
+          -66.050009,
+          18.402826
+        ],
+        "type": "Point"
+      },
+      "id": "c4275fdb929d503d900476d8d117e1f9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidade Estadual Paulista"
+      },
+      "geometry": {
+        "coordinates": [
+          -48.437721,
+          -22.860044
+        ],
+        "type": "Point"
+      },
+      "id": "c4b0e7d83a148f57cdf29ab4bda796bb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Energy Research Scientific Computing Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.252881,
+          37.87576
+        ],
+        "type": "Point"
+      },
+      "id": "c5ae2376ffe9baeb92f651a7d771201c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Pittsburgh"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.953254,
+          40.444388
+        ],
+        "type": "Point"
+      },
+      "id": "c5eadac09d83849f38f2a32fdab28f8a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Birmingham"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.930336,
+          52.450727
+        ],
+        "type": "Point"
+      },
+      "id": "c5f8ff7e1d3f72dc1f2d7e38289b744e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "SUNY Albany"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.824662,
+          42.685489
+        ],
+        "type": "Point"
+      },
+      "id": "c61ebf16029f777342b2e4229f514c01"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Dearborn Center for Math, Science, and Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.261002,
+          42.34047
+        ],
+        "type": "Point"
+      },
+      "id": "c63ceb597ff2f98097b0c3e721a2a817"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Utrecht University"
+      },
+      "geometry": {
+        "coordinates": [
+          5.175684,
+          52.085169
+        ],
+        "type": "Point"
+      },
+      "id": "c68a204d71e9f69e9b3e7c536ffde591"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of New England"
+      },
+      "geometry": {
+        "coordinates": [
+          -70.38535,
+          43.458591
+        ],
+        "type": "Point"
+      },
+      "id": "c6a8a2e626a4c1e120695970ea3408e9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Los Alamos National Lab"
+      },
+      "geometry": {
+        "coordinates": [
+          -104.205035,
+          32.381649
+        ],
+        "type": "Point"
+      },
+      "id": "c79888fe7f4c3e235dac8b27c13a546d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Center for High-performance Computing"
+      },
+      "geometry": {
+        "coordinates": [
+          120.994523,
+          24.781131
+        ],
+        "type": "Point"
+      },
+      "id": "c7dd68e711adcdb9b2f876c7c33600c8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Southwest Oklahoma State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -98.707768,
+          35.535281
+        ],
+        "type": "Point"
+      },
+      "id": "c856347fa47663facb4cd452242c2493"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Academia Sinica"
+      },
+      "geometry": {
+        "coordinates": [
+          121.615723,
+          25.04253
+        ],
+        "type": "Point"
+      },
+      "id": "c8ec76ac7ca4a869f77f56bd261e3aa6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Baylor College of Medicine"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.395743,
+          29.7106
+        ],
+        "type": "Point"
+      },
+      "id": "cabce9a24a4d6279c18d3a65061ae85c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Boston Children's Hospital"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.104057,
+          42.338243
+        ],
+        "type": "Point"
+      },
+      "id": "cada5a9eb4c281f3d48a3f4e01bdd58c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Indiana University"
+      },
+      "geometry": {
+        "coordinates": [
+          -86.526559,
+          39.16609
+        ],
+        "type": "Point"
+      },
+      "id": "ccde60d92943b28edb032cbd8121c45e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Facility for Rare Isotopes Beams (FRIB)"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.474459,
+          42.724827
+        ],
+        "type": "Point"
+      },
+      "id": "cd3335a138064d8612aa5d4d944b80cc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of North Dakota"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.071738,
+          47.921654
+        ],
+        "type": "Point"
+      },
+      "id": "cd89a6b654031d5bd4a018ed6de74e2c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Puerto Rico"
+      },
+      "geometry": {
+        "coordinates": [
+          -66.050009,
+          18.402826
+        ],
+        "type": "Point"
+      },
+      "id": "cdbc5a5f70159c03677abaa0ddeb87e5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Langston University"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.260317,
+          35.943982
+        ],
+        "type": "Point"
+      },
+      "id": "cdd45a6f490f450d3db7ca49b4d8ca60"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "SeaQuest"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.229114,
+          40.104718
+        ],
+        "type": "Point"
+      },
+      "id": "cddf16db71451fdc22be986bfbd7814a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lawrence Livermore National Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -121.706876,
+          37.686216
+        ],
+        "type": "Point"
+      },
+      "id": "ced6780be08369e6fe33fbc218b3eee3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California Santa Cruz"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.058801,
+          36.995584
+        ],
+        "type": "Point"
+      },
+      "id": "cf1cb71caab64a24021e8d7c5a07cf83"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Dartmouth College"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.289949,
+          43.704115
+        ],
+        "type": "Point"
+      },
+      "id": "cf34eef29232f19cbd65ac7f2f0c9423"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Austin Peay State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.354081,
+          36.533319
+        ],
+        "type": "Point"
+      },
+      "id": "d0648ff94bf810db5e56eb45d4e80443"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "PNNL"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.279142,
+          46.345012
+        ],
+        "type": "Point"
+      },
+      "id": "d17167e50beaa5113f524eaee6d59388"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Louisiana State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -91.178921,
+          30.414986
+        ],
+        "type": "Point"
+      },
+      "id": "d1793fe712334073bb00aab006f9da9d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Montana State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -111.048812,
+          45.666726
+        ],
+        "type": "Point"
+      },
+      "id": "d1b8e533750d428bcedc578b45dc512f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "California State University, Fresno"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.744569,
+          36.811154
+        ],
+        "type": "Point"
+      },
+      "id": "d22fb414e6276760896feb4641d90634"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Swinburne University of Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          145.038858,
+          -37.822252
+        ],
+        "type": "Point"
+      },
+      "id": "d25cd4054db34949b19186bc51199b71"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Clarkson University"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.999359,
+          44.662716
+        ],
+        "type": "Point"
+      },
+      "id": "d2696d5875c6e4335dc59671f05ce06d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Tufts University"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.118293,
+          42.40855
+        ],
+        "type": "Point"
+      },
+      "id": "d3314732e77d50d04e8c3bcead7ff235"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Institute for Computational Sciences"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.925852,
+          35.952082
+        ],
+        "type": "Point"
+      },
+      "id": "d33979cc8525e9cf51e9f627e7c8e332"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Colorado Anschutz Medical Campus"
+      },
+      "geometry": {
+        "coordinates": [
+          -104.837722,
+          39.745149
+        ],
+        "type": "Point"
+      },
+      "id": "d45042d04e0e9a8249945fcdf73d33ed"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Virginia"
+      },
+      "geometry": {
+        "coordinates": [
+          -78.503428,
+          38.035665
+        ],
+        "type": "Point"
+      },
+      "id": "d4bc37406bac507cc7fe60d1ef59cf26"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Icahn School of Medicine at Mount Sinai"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.952414,
+          40.790359
+        ],
+        "type": "Point"
+      },
+      "id": "d55a4281dfcfd9c0f68280fb8e38a69d"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Mississippi"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.537434,
+          34.365529
+        ],
+        "type": "Point"
+      },
+      "id": "d5bc937cc16451e697bc19358fd074c3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Nebraska Omaha"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.008516,
+          41.258769
+        ],
+        "type": "Point"
+      },
+      "id": "d608d862a7c3e778f5281a9fd7eaa2cd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Oak Ridge National Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.310373,
+          35.931081
+        ],
+        "type": "Point"
+      },
+      "id": "d61c002a8e7f9aa3d65d55e416a59cab"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Nebraska"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.700508,
+          40.817598
+        ],
+        "type": "Point"
+      },
+      "id": "d769319cdc50ff84133d95378a466acf"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Sheffield"
+      },
+      "geometry": {
+        "coordinates": [
+          -1.488347,
+          53.381292
+        ],
+        "type": "Point"
+      },
+      "id": "d817eb1c1d53ab777c6626066061c23e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Alabama"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.545978,
+          33.211875
+        ],
+        "type": "Point"
+      },
+      "id": "d873900fa68c9530f8f000d5a88c7e2f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad de Medellin"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.610167,
+          6.231534
+        ],
+        "type": "Point"
+      },
+      "id": "d8c0872eb7e47a1ab6b5311d2a08e128"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Energy Sciences Network"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.251228,
+          37.876206
+        ],
+        "type": "Point"
+      },
+      "id": "d98dcdd2313f3d6f5351a8bd5b57ec37"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Stony Brook University"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.12046,
+          40.91476
+        ],
+        "type": "Point"
+      },
+      "id": "da85a4fbb4d4dc8994ab423d5780c7f8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Sandia National Laboratories"
+      },
+      "geometry": {
+        "coordinates": [
+          -106.534337,
+          35.054916
+        ],
+        "type": "Point"
+      },
+      "id": "db299b89b241b97446b8c3ecdac35224"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Spelman College"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.411527,
+          33.745279
+        ],
+        "type": "Point"
+      },
+      "id": "db7354dd44b230b01e176e811a1b5117"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Massachusetts Amherst"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.526728,
+          42.385999
+        ],
+        "type": "Point"
+      },
+      "id": "dc9a51c0f71dbcb8df4a9fcb4a2e4341"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Louisiana School for Math, Science, and the Arts"
+      },
+      "geometry": {
+        "coordinates": [
+          -93.096255,
+          31.752249
+        ],
+        "type": "Point"
+      },
+      "id": "dcd44ab14458cdd7b16f1d7045c8061f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Alaska Fairbanks"
+      },
+      "geometry": {
+        "coordinates": [
+          -147.823146,
+          64.85756
+        ],
+        "type": "Point"
+      },
+      "id": "dd08c064fd0361879a193291c6dcee68"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Pennsylvania State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.862848,
+          40.7965
+        ],
+        "type": "Point"
+      },
+      "id": "de07e2bd01d7978156316f3f657cbd93"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Universidad Industrial de Santander"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.032994,
+          4.696967
+        ],
+        "type": "Point"
+      },
+      "id": "de413f74ece48033668b81c5bb1634c8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Maine"
+      },
+      "geometry": {
+        "coordinates": [
+          -68.669332,
+          44.899257
+        ],
+        "type": "Point"
+      },
+      "id": "de846696940a7cfb990d7b8691c95bf7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "The Ohio State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.014853,
+          39.999324
+        ],
+        "type": "Point"
+      },
+      "id": "def217b5dab68841b2ef5161e539fcf9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Michigan Technological University"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.548092,
+          47.11866
+        ],
+        "type": "Point"
+      },
+      "id": "defe7db89470777d8df574551eba8245"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Venda"
+      },
+      "geometry": {
+        "coordinates": [
+          30.446501,
+          -22.976105
+        ],
+        "type": "Point"
+      },
+      "id": "df20940d856dd0560990d2d0420485af"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Pontificia Universidad Javeriana"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.064675,
+          4.628444
+        ],
+        "type": "Point"
+      },
+      "id": "df39661e2ff00a1d08abf16d696b158e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "IFAE"
+      },
+      "geometry": {
+        "coordinates": [
+          2.109343,
+          41.501528
+        ],
+        "type": "Point"
+      },
+      "id": "dfafb5f8bf59e7df02b9bd9facb596c0"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Swarthmore College"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.354278,
+          39.905159
+        ],
+        "type": "Point"
+      },
+      "id": "dfd126045c09b93b2774d846919f56b2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Indian Institute of Chemical Biology"
+      },
+      "geometry": {
+        "coordinates": [
+          88.370142,
+          22.497346
+        ],
+        "type": "Point"
+      },
+      "id": "e06586155f53ad5b9d0299de1d15d610"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "George Washington University"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.048363,
+          38.89923
+        ],
+        "type": "Point"
+      },
+      "id": "e0a9c930bb88b6372fc74d897168cf8a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "College of Charleston"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.939794,
+          32.784225
+        ],
+        "type": "Point"
+      },
+      "id": "e0f86746ece3dcab1ab5b52a6eae419b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Washington University in St. Louis"
+      },
+      "geometry": {
+        "coordinates": [
+          -90.310604,
+          38.647929
+        ],
+        "type": "Point"
+      },
+      "id": "e1f9d1c8dcdb4e94477386e8f3bb1b98"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Oregon Health & Science University"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.686096,
+          45.498772
+        ],
+        "type": "Point"
+      },
+      "id": "e22cea13ef684bf62ffb0bb56f7270dd"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "New Jersey Institute of Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.177113,
+          40.741997
+        ],
+        "type": "Point"
+      },
+      "id": "e35982fe0fa51e70aa2b5f135773be3a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Texas Southwestern Medical Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -96.841156,
+          32.812306
+        ],
+        "type": "Point"
+      },
+      "id": "e35a36a683aadf18918992493a8442b9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Jackson Laboratory for Genomic Medicine"
+      },
+      "geometry": {
+        "coordinates": [
+          -72.793264,
+          41.732635
+        ],
+        "type": "Point"
+      },
+      "id": "e363f07b934587484bf38754522aca3a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Puerto Rico - Mayaguez"
+      },
+      "geometry": {
+        "coordinates": [
+          -67.139172,
+          18.211142
+        ],
+        "type": "Point"
+      },
+      "id": "e3b9fd4c71f1e6dcf112ebcf222ab1bb"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "CUNY Brooklyn College"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.949898,
+          40.631517
+        ],
+        "type": "Point"
+      },
+      "id": "e3e3c07cd49f4c4b15af14b32a907109"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Inter-University Centre for Astronomy and Astrophysics"
+      },
+      "geometry": {
+        "coordinates": [
+          73.825279,
+          18.559099
+        ],
+        "type": "Point"
+      },
+      "id": "e4b3971bc807ae2ea970b63f99bd075f"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Coe College"
+      },
+      "geometry": {
+        "coordinates": [
+          -91.658192,
+          41.988263
+        ],
+        "type": "Point"
+      },
+      "id": "e524bbfecac92bd09efead22fa9e6cf8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Tennessee"
+      },
+      "geometry": {
+        "coordinates": [
+          -83.925852,
+          35.952082
+        ],
+        "type": "Point"
+      },
+      "id": "e659d627d48dfd9000a7da23ffa4456e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Memorial Sloan Kettering Cancer Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.635846,
+          40.68697
+        ],
+        "type": "Point"
+      },
+      "id": "e6de5369ffdbf09def83ffafdabec3c8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lehigh University"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.380236,
+          40.606822
+        ],
+        "type": "Point"
+      },
+      "id": "e75fda04af7363dd7d6a578dc0e298aa"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Brown University"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.40385,
+          41.82617
+        ],
+        "type": "Point"
+      },
+      "id": "e78d5c3217b763e72b48beb4dcfe0c45"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Duke University"
+      },
+      "geometry": {
+        "coordinates": [
+          -78.937624,
+          36.001135
+        ],
+        "type": "Point"
+      },
+      "id": "e89e910f4a9464c56ecc8c5687f101e5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Oklahoma"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.444211,
+          35.209407
+        ],
+        "type": "Point"
+      },
+      "id": "e8a8741e03ddc24d2671a3cefdae5864"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Minnesota Duluth"
+      },
+      "geometry": {
+        "coordinates": [
+          -92.084385,
+          46.817126
+        ],
+        "type": "Point"
+      },
+      "id": "e8b1ecef3848fd62087472e8cdee8f70"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "NSF DC"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.070718,
+          38.801459
+        ],
+        "type": "Point"
+      },
+      "id": "eabc0b8a04cd326f161a67a4dbd7e9db"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Broad Institute"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.089118,
+          42.363293
+        ],
+        "type": "Point"
+      },
+      "id": "eaee44f99a7179944cc2a6d7e5ac303b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "The University of Chicago"
+      },
+      "geometry": {
+        "coordinates": [
+          -87.599539,
+          41.787994
+        ],
+        "type": "Point"
+      },
+      "id": "eb303edfec03f7cde8451a7d7e380eba"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Renewable Energy Laboratory"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.024739,
+          38.885082
+        ],
+        "type": "Point"
+      },
+      "id": "ebab3854bd2a4de7eaa3520f323754cc"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Cedars-Sinai Medical Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.380595,
+          34.074828
+        ],
+        "type": "Point"
+      },
+      "id": "ed258901662be8d1650e72b459c9c33b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Tata Institute of Fundamental Research"
+      },
+      "geometry": {
+        "coordinates": [
+          72.819288,
+          18.909991
+        ],
+        "type": "Point"
+      },
+      "id": "eda044f270bae0cb0c199bf789b3b2f4"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Baylor University"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.121041,
+          31.546872
+        ],
+        "type": "Point"
+      },
+      "id": "edf1a01522c928cde6c241c41060a389"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Meharry Medical College"
+      },
+      "geometry": {
+        "coordinates": [
+          -86.807371,
+          36.165458
+        ],
+        "type": "Point"
+      },
+      "id": "effd45376977e5b1576ae21f8d26fc09"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Rochester Institute of Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.67386,
+          43.084188
+        ],
+        "type": "Point"
+      },
+      "id": "f055a704d0b7fd30ec5d51443f7b8ef5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "UNC Chapel Hill"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.050969,
+          35.911769
+        ],
+        "type": "Point"
+      },
+      "id": "f0b2da920742a16bb545c66865d2c1e9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "The Citadel"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.958775,
+          32.797182
+        ],
+        "type": "Point"
+      },
+      "id": "f0e0b9134d9674b58162c920fb0762d7"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Webster University"
+      },
+      "geometry": {
+        "coordinates": [
+          -90.345151,
+          38.588875
+        ],
+        "type": "Point"
+      },
+      "id": "f1471e0b05268ee00ce379a038e15302"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Rutgers, The State University of New Jersey"
+      },
+      "geometry": {
+        "coordinates": [
+          -74.446251,
+          40.498769
+        ],
+        "type": "Point"
+      },
+      "id": "f1817b915b73877d9a3bc004b3866b30"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "North Carolina State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -78.674517,
+          35.785111
+        ],
+        "type": "Point"
+      },
+      "id": "f2305e6f4691c6a0a8211789ba6d32e6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Hampton University"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.339161,
+          37.019944
+        ],
+        "type": "Point"
+      },
+      "id": "f27bceadd17865c5ccb5e63ea582b998"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Lancaster University"
+      },
+      "geometry": {
+        "coordinates": [
+          -2.787836,
+          54.01035
+        ],
+        "type": "Point"
+      },
+      "id": "f344e726f6d7b33e5298fd881b0ff183"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Fresno State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -119.744569,
+          36.811154
+        ],
+        "type": "Point"
+      },
+      "id": "f3728ebff46bcf28eaeae94e97665d72"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California Los Angeles"
+      },
+      "geometry": {
+        "coordinates": [
+          -118.442179,
+          34.07178
+        ],
+        "type": "Point"
+      },
+      "id": "f376dbd520f2d31e2b28b7f18d491efe"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "The University of Kansas"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.247567,
+          38.958549
+        ],
+        "type": "Point"
+      },
+      "id": "f4166833705fc7fc7a3247cdb8db63ca"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Oral Roberts University"
+      },
+      "geometry": {
+        "coordinates": [
+          -95.952547,
+          36.049129
+        ],
+        "type": "Point"
+      },
+      "id": "f44a75417eb2f24a8b0cb9f7f3c83619"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California, Santa Cruz"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.058801,
+          36.995584
+        ],
+        "type": "Point"
+      },
+      "id": "f496764d2775e3084aa6aa5a2d8d8f97"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Santa Clara University"
+      },
+      "geometry": {
+        "coordinates": [
+          -121.93784,
+          37.348362
+        ],
+        "type": "Point"
+      },
+      "id": "f4a8f0e5c295751d606cf65e91233b5c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Folding@Home Consortium (FAHC)"
+      },
+      "geometry": {
+        "coordinates": [
+          -75.19391,
+          39.950929
+        ],
+        "type": "Point"
+      },
+      "id": "f52a10545ca7a288984a48ee7b886f13"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Washington"
+      },
+      "geometry": {
+        "coordinates": [
+          -122.30514,
+          47.65538
+        ],
+        "type": "Point"
+      },
+      "id": "f57dd89a012b59615fa4a8ab2ef906f8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Texas Arlington"
+      },
+      "geometry": {
+        "coordinates": [
+          -97.11296,
+          32.729718
+        ],
+        "type": "Point"
+      },
+      "id": "f60240d3d85d1a41de248d9e786111e5"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Colorado"
+      },
+      "geometry": {
+        "coordinates": [
+          -105.270823,
+          40.008781
+        ],
+        "type": "Point"
+      },
+      "id": "f63a46bc37b00ddfa05db3ef903103fa"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "International Centre for Theoretical Sciences"
+      },
+      "geometry": {
+        "coordinates": [
+          77.509764,
+          13.144003
+        ],
+        "type": "Point"
+      },
+      "id": "f6c0d2213a136a365f86833665544fe2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of California Davis"
+      },
+      "geometry": {
+        "coordinates": [
+          -121.749567,
+          38.539667
+        ],
+        "type": "Point"
+      },
+      "id": "f818f2d8ee2d2d5f29473965d1ae2ba9"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Franklin and Marshall College"
+      },
+      "geometry": {
+        "coordinates": [
+          -76.319037,
+          40.048045
+        ],
+        "type": "Point"
+      },
+      "id": "f88179f437ff09ec7f0a4230c7cefde3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Florida Institute of Technology"
+      },
+      "geometry": {
+        "coordinates": [
+          -80.622893,
+          28.065815
+        ],
+        "type": "Point"
+      },
+      "id": "f9e65e6ad2d8beb5e5dc2f7fa21dfa5b"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Vermont"
+      },
+      "geometry": {
+        "coordinates": [
+          -73.196646,
+          44.477325
+        ],
+        "type": "Point"
+      },
+      "id": "fa57d8dd84374381b984337b468650a8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Kennesaw State University"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.583052,
+          34.038807
+        ],
+        "type": "Point"
+      },
+      "id": "fab4cfeb75580f35e9a24b8b1b7eeea2"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Case Western Reserve University"
+      },
+      "geometry": {
+        "coordinates": [
+          -81.609596,
+          41.507419
+        ],
+        "type": "Point"
+      },
+      "id": "fb2f3b8cee13e1e38cbc9acdeb4bf360"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Bellarmine University"
+      },
+      "geometry": {
+        "coordinates": [
+          -85.704997,
+          38.219279
+        ],
+        "type": "Point"
+      },
+      "id": "fba22ee5c536f7705fe5ea90459a6cd8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of North Carolina"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.050969,
+          35.911769
+        ],
+        "type": "Point"
+      },
+      "id": "fc2b38fe22f56b682f764d5e230eb70a"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Florida A&M University"
+      },
+      "geometry": {
+        "coordinates": [
+          -84.290226,
+          30.428504
+        ],
+        "type": "Point"
+      },
+      "id": "fce45b3559037ccbf3247920871bb70e"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "National Oceanic and Atmospheric Administration"
+      },
+      "geometry": {
+        "coordinates": [
+          -77.032704,
+          38.892957
+        ],
+        "type": "Point"
+      },
+      "id": "fcf5fd7fce6ba15fed36c2d408ca58cf"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Institute for Protein Innovation"
+      },
+      "geometry": {
+        "coordinates": [
+          -71.103289,
+          42.338387
+        ],
+        "type": "Point"
+      },
+      "id": "fdb6592339879e05a673e0e96742645c"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "DUNE"
+      },
+      "geometry": {
+        "coordinates": [
+          -88.261822,
+          41.838425
+        ],
+        "type": "Point"
+      },
+      "id": "fdbe9b5ebf64c99aab351878ae6cfed6"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Iowa"
+      },
+      "geometry": {
+        "coordinates": [
+          -91.536425,
+          41.661935
+        ],
+        "type": "Point"
+      },
+      "id": "fe1d418ced22e8c4d5778ebe24a82c50"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "University of Wisconsin"
+      },
+      "geometry": {
+        "coordinates": [
+          -89.404098,
+          43.075409
+        ],
+        "type": "Point"
+      },
+      "id": "fee7a7dcfd15e61255faa1fe1c119be1"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "Institution Name": "Florida International University"
+      },
+      "geometry": {
+        "coordinates": [
+          -80.373928,
+          25.75732
+        ],
+        "type": "Point"
+      },
+      "id": "ffa938d547297698b843aadaac854053"
+    }
+  ],
+  "type": "FeatureCollection"
+}

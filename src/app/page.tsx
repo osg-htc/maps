@@ -1,8 +1,6 @@
 "use client"
 import { GlobeComponent } from '@/components/mapbox';
 import Head from "next/head";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, PopoverBody, UncontrolledPopover } from "reactstrap";
 import { Box, Autocomplete, TextField, Container  } from '@mui/material';
 
 
@@ -17,7 +15,6 @@ function HomePage() {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
     <Container>
-    <h1>OSG Global Institutions Map</h1>
     <Box>
         <GlobeComponent/>
     </Box>  
