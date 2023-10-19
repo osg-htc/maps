@@ -1,57 +1,61 @@
 import Head from "next/head";
-import { useRef, useEffect, useState } from "react";
-import { MapMouseEvent } from 'mapbox-gl';
-import { Button, PopoverBody, UncontrolledPopover } from "reactstrap";
+import { useEffect, useState } from "react";
+import mapboxgl from 'mapbox-gl';  // Importing mapbox-gl directly
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
 import '../app/globals.css';
 
 export const GlobeComponent = () => {
-    const [popoverOpen, setPopoverOpen] = useState(false);
-    const [popoverContent, setPopoverContent] = useState('');
+    const [anchorEl, setAnchorEl] = useState<Element | null>(null);
+    const [popoverContent, setPopoverContent] = useState<string>('');
 
     useEffect(() => {
-        // Only import mapbox-gl in useEffect to avoid server-side issues
-        const mapboxgl = require('mapbox-gl/dist/mapbox-gl.js');
-
-        mapboxgl.accessToken = 'pk.eyJ1IjoiYWJha2lyY2kiLCJhIjoiY2xub3NtbHp0MDR2bDJ6bnc4bWt2ZjlzcCJ9.wGS87zkq2AG2TQgB3OwoHw';
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style:  'mapbox://styles/abakirci/clnoygvzg009b01qugzla69w9',
-            center: [-89.4081, 43.0733],
-            zoom: 1
-        });
-
-        // Click event handler
-        const handleMapClick = (event: any) => {
-            const features = event.target.queryRenderedFeatures(event.point, {
-                layers: ['institutions'] // replace with your layer name
+        // Ensure mapbox-gl is used in client-side only
+        if (typeof window !== 'undefined') {
+            mapboxgl.accessToken = 'pk.eyJ1IjoiYWJha2lyY2kiLCJhIjoiY2xub3NtbHp0MDR2bDJ6bnc4bWt2ZjlzcCJ9.wGS87zkq2AG2TQgB3OwoHw';
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/abakirci/clnoygvzg009b01qugzla69w9',
+                center: [-89.4081, 43.0733],
+                zoom: 1
             });
 
-            if (!features.length) {
-                return;
+            // Click event handler
+            const handleMapClick = (event: mapboxgl.MapMouseEvent & mapboxgl.EventData) => {
+                const features = event.target.queryRenderedFeatures(event.point, {
+                    layers: ['institutions']  // replace with your layer name
+                });
+
+                if (!features.length) {
+                    return;
+                }
+
+                const feature = features[0];
+
+                if (feature.geometry.type === 'Point' && feature.properties) {
+                    const coordinates: [number, number] = feature.geometry.coordinates as [number, number];
+                    const content = `
+                        <h3>${feature.properties["Institution Name"]}</h3>
+                        <p>Coordinates: ${coordinates.join(', ')}</p>
+                    `;
+
+                    setPopoverContent(content);
+                    setAnchorEl(event.originalEvent.currentTarget);
+                }
             }
 
-            const feature = features[0];
+            map.on('click', handleMapClick);
 
-            if (feature.geometry.type === 'Point' && feature.properties) {
-                const coordinates: [number, number] = feature.geometry.coordinates as [number, number];
-                const content = `
-                    <h3>${feature.properties["Institution Name"]}</h3>
-                    <p>Coordinates: ${coordinates.join(', ')}</p>
-                `;
-
-                setPopoverContent(content);
-                setPopoverOpen(true);
+            // Cleanup on component unmount
+            return () => {
+                map.off('click', handleMapClick);  // Remove click listener
+                map.remove();  // Remove the map instance
             }
-        }
-
-        map.on('click', handleMapClick);
-
-        // Cleanup on component unmount
-        return () => {
-            map.off('click', handleMapClick); // Remove click listener
-            map.remove(); // Remove the map instance
         }
     }, []);
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     return (
         <div>
@@ -63,12 +67,24 @@ export const GlobeComponent = () => {
                 />
             </Head>
 
-            <Button id="mapPopoverTarget" type="button" style={{ display: 'none' }}></Button>
-            <UncontrolledPopover isOpen={popoverOpen} toggle={() => setPopoverOpen(false)} target="mapPopoverTarget" placement="top">
-                <PopoverBody dangerouslySetInnerHTML={{ __html: popoverContent }}></PopoverBody>
-            </UncontrolledPopover>
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={() => setAnchorEl(null)}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            >
+                <Typography sx={{ padding: 2 }} dangerouslySetInnerHTML={{ __html: popoverContent }} />
+            </Popover>
 
             <div id={'map'}></div>
         </div>
-    )
+    );
 }
