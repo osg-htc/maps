@@ -21,7 +21,7 @@ export const GlobeComponent = () => {
         });
 
         // Click event handler
-        const handleMapClick = (event: MapMouseEvent) => {
+        const handleMapClick = (event: any) => {
             const features = event.target.queryRenderedFeatures(event.point, {
                 layers: ['institutions'] // replace with your layer name
             });
