@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { useEffect, useState, useRef } from "react";
-import mapboxgl from 'mapbox-gl';
 import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -11,6 +10,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import '../app/globals.css';
 import { ThemeProvider, createTheme} from '@mui/material/styles';
+import * as mapboxgl from 'mapbox-gl';
 
 interface Institution {
     name: string;
@@ -33,7 +33,7 @@ interface Institution {
 export const GlobeComponent = () => {
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
     const [popoverContent, setPopoverContent] = useState<string>('');
-    const mapRef = useRef<mapboxgl.Map | null>(null);
+    const mapRef = useRef<mapboxgl.Map | null>(null as any);
     const [institutionData, setInstitutionData] = useState<Institution[]>([]);
 
     const theme = createTheme({
