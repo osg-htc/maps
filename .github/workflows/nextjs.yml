@@ -74,6 +74,8 @@ jobs:
       - name: Install dependencies
         working-directory: ./
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Install Type Definitions
+        run: npm install --save-dev @types/mapbox-gl
       - name: Build with Next.js
         working-directory: ./
         run: ${{ steps.detect-package-manager.outputs.runner }} npm run export
