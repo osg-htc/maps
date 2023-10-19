@@ -8,11 +8,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 import '../app/globals.css';
 import { ThemeProvider, createTheme} from '@mui/material/styles';
-import * as mapboxgl from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 
-type MapboxMap = mapboxgl.Map;
+
 
 interface Institution {
     name: string;
@@ -35,7 +36,7 @@ interface Institution {
 export const GlobeComponent = () => {
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
     const [popoverContent, setPopoverContent] = useState<string>('');
-    const mapRef = useRef<MapboxMap | null>(null);
+    const mapRef = useRef<mapboxgl.Map | null>(null);
     const [institutionData, setInstitutionData] = useState<Institution[]>([]);
 
     const theme = createTheme({
@@ -196,7 +197,7 @@ export const GlobeComponent = () => {
                 <Typography sx={{ padding: 2 }} dangerouslySetInnerHTML={{ __html: popoverContent }} />
             </Popover>
             
-            <div id={'map'}></div>
+            <Box id={'map'} />
         </Container>
         </ThemeProvider>
     );
