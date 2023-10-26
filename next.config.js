@@ -1,8 +1,14 @@
-/**
- * @type {import('next').NextConfig}
- */
+// next.config.js
 const nextConfig = {
-    output: 'export',
-  }
-   
-  module.exports = nextConfig
+  webpack: (config, { isServer }) => {
+    // Load geojson files
+    config.module.rules.push({
+      test: /\.geojson$/,
+      use: ['json-loader'],
+    });
+
+    return config;
+  },
+};
+
+module.exports = nextConfig;
