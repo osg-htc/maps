@@ -1,17 +1,14 @@
-import React, { useMemo, useState } from "react";
-import { Marker, Popup } from "react-map-gl";
-import Features from "../../../public/features.json";
+import React, { useMemo } from "react";
+import { Marker } from "react-map-gl";
 import { School } from "@mui/icons-material";
 import { Feature } from "../../../types/mapTypes";
+import Features from "../../../public/features.json";
 
+type MarkersProps = {
+  onMarkerClick: (feature: Feature) => void;
+};
 
-const MarkersComponent: React.FC = () => {
-  const [selectedMarker, setSelectedMarker] = useState<Feature | null>(null);
-
-  const handleMarkerClick = (feature: Feature) => {
-    setSelectedMarker(feature);
-  };
-
+const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
   const markers = useMemo(() => {
     return Features.features.map((feature) => {
       const typedFeature: Feature = {
@@ -35,29 +32,13 @@ const MarkersComponent: React.FC = () => {
           longitude={typedFeature.geometry.coordinates[0]}
           latitude={typedFeature.geometry.coordinates[1]}
         >
-          <School fontSize="small" onClick={() => handleMarkerClick(typedFeature)} />
+          <School fontSize="small" onClick={() => onMarkerClick(typedFeature)} />
         </Marker>
       );
     });
-  }, [Features]);
+  }, [onMarkerClick]);
 
-  return (
-    <>
-      {markers}
-      {selectedMarker && (
-        <Popup
-          longitude={selectedMarker.geometry.coordinates[0]}
-          latitude={selectedMarker.geometry.coordinates[1]}
-          closeButton={true}
-          closeOnClick={false}
-          onClose={() => setSelectedMarker(null)}
-          anchor="top"
-        >
-          <div>{selectedMarker.properties["Institution Name"]}</div>
-        </Popup>
-      )}
-    </>
-  );
+  return <>{markers}</>;
 };
 
-export default MarkersComponent;
+export default Markers;

@@ -1,4 +1,4 @@
-import MarkersComponent from "./Markers";
+import MarkersComponent from "./MarkersComponent";
 import { Map } from "react-map-gl";
 import { useRef } from "react";
 import MapControls from "./MapControllers";
