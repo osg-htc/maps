@@ -1,20 +1,43 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Marker } from "react-map-gl";
 import { School } from "@mui/icons-material";
 import { Feature } from "../../../types/mapTypes";
 import Features from "../../../public/features.json";
+import { getFacilityEsData } from "@/app/institutions/elasticQuery.js";
 
 type MarkersProps = {
   onMarkerClick: (feature: Feature) => void;
 };
 
 const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
+
+  const [esData, setEsData] = useState<any>({}); // Store the ElasticSearch data in the state
+
+  useEffect(() => {
+    // Fetch the ElasticSearch data when the component mounts
+    const fetchData = async () => {
+      const data = await getFacilityEsData();
+      setEsData(data);
+    };
+
+    fetchData();
+  }, []); // The empty array dependency ensures this useEffect runs once when the component mounts
+
   const markers = useMemo(() => {
     return Features.features.map((feature) => {
+      const institutionName = feature.properties["Institution Name"];
+      const esInfo = esData[institutionName];
+
+      if (!esInfo) {
+        // Handle cases where there's no matching institution in the ElasticSearch data.
+        return null;
+      }
+
       const typedFeature: Feature = {
         type: feature.type,
         properties: {
-          "Institution Name": feature.properties["Institution Name"]
+          "Institution Name": institutionName,
+          // You can add more properties from esInfo if needed.
         },
         geometry: {
           type: feature.geometry.type,
@@ -36,7 +59,7 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
         </Marker>
       );
     });
-  }, [onMarkerClick]);
+  }, [onMarkerClick, esData]); // Include esData in the dependencies list to recompute markers when esData changes
 
   return <>{markers}</>;
 };

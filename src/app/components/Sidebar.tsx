@@ -1,17 +1,56 @@
-// Sidebar.js
 import React from 'react';
-import { Box, Typography, Divider, List, ListItem, ListItemText, useMediaQuery, useTheme } from '@mui/material';
-import { Feature } from '../../../types/mapTypes';
+import { Box, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
+import useTheme from '@mui/material/styles/useTheme';
 
 type SidebarProps = {
-    feature: Feature;
-    onClose: () => void;
-  }
-  
-const Sidebar: React.FC<SidebarProps> = ({ feature, onClose }) => {
+  onClose: () => void;
+  header: string;
+  facultyName: string;
+}
+type HTMLContentProps = {
+  html: string;
+}
+
+const HTMLContent: React.FC<HTMLContentProps> = ({ html }) => {
+  return (
+    <div dangerouslySetInnerHTML={{ __html: html }} />
+  );
+};
+
+type GrafanaPanelProps = {
+  panelId: number;
+  panelUrl: string;
+  start: number;
+  end: number;
+  orgId: number;
+  facultyName: string;
+}
+
+
+const GrafanaPanel: React.FC<GrafanaPanelProps> = ({ panelId, panelUrl, start, end, orgId, facultyName }) => {
+  const url = `${panelUrl}?to=${end}&from=${start}&orgId=${orgId}&panelId=${panelId}&var-facility=${facultyName}`;
+  return (
+    <iframe
+      src={url}
+      width="100%"
+      height="250px"
+      title="Faculty Panel" 
+    />
+  );
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const data = {
+    panelId:[12, 16, 8, 6, 2],
+    panelUrl: `https://gracc.opensciencegrid.org/d-solo/hfZQzo2Vk/ospool-facility`,
+    start: 1667402917814,
+    end: 1698938917814,
+    orgId: 1
+  }
   return (
     <Box
       component="aside"
@@ -27,59 +66,57 @@ const Sidebar: React.FC<SidebarProps> = ({ feature, onClose }) => {
         padding: 2,
       }}
     >
-      <Box display="flex" justifyContent="space-between">
-        <Typography variant="h5">
-          {feature.properties["Institution Name"] || "Placeholder Name"}
-        </Typography>
-        <Typography variant="button" onClick={onClose}>
-          Close
-        </Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h6">{header}</Typography>
+        <IconButton onClick={onClose} edge="end" aria-label="close sidebar">
+          <CloseIcon />
+        </IconButton>
       </Box>
-
-      <Divider />
-
-      {/* List for Projects */}
-      <Typography variant="subtitle1" gutterBottom>
-          Projects supported by {feature.properties["Institution Name"] || "Placeholder Name"}
-        </Typography>
-        <List dense>
-          {/* Sample List Items */}
-          <ListItem>
-            <ListItemText primary="Placeholder Project" secondary="Provided Core Hours: 12345" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Placeholder Project 2" secondary="Provided Core Hours: 67890" />
-          </ListItem>
-        </List>
-
-        <Divider />
-
-        {/* List for Fields of Sciences */}
-        <Typography variant="subtitle1" gutterBottom>
-          Fields of Sciences Supported by {feature.properties["Institution Name"] || "Placeholder Name"}
-        </Typography>
-        <List dense>
-          {/* Sample List Items */}
-          <ListItem>
-            <ListItemText primary="Placeholder Field" secondary="Provided Core Hours: 12345" />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Placeholder Field 2" secondary="Provided Core Hours: 67890" />
-          </ListItem>
-        </List>
-
-        <Divider />
-
-        {/* Total Jobs & CPU Hours */}
-        <Box display="flex" justifyContent="space-between" mt={2}>
-          <Box textAlign="center">
-            <Typography variant="h4">12,711</Typography>
-            <Typography variant="body2">Total Jobs Run</Typography>
-          </Box>
-          <Box textAlign="center">
-            <Typography variant="h4">54,826</Typography>
-            <Typography variant="body2">CPU Hours Provided</Typography>
-          </Box>
+      <Box className="flex gap-2 ">
+            <GrafanaPanel
+                panelId={12}
+                panelUrl={data.panelUrl}
+                start={data.start}
+                end={data.end}
+                orgId={data.orgId}
+                facultyName={facultyName}
+            />
+            <GrafanaPanel
+                panelId={16}
+                panelUrl={data.panelUrl}
+                start={data.start}
+                end={data.end}
+                orgId={data.orgId}
+                facultyName={facultyName}
+            />
+        </Box>
+        <Box className="flex gap-2 ">
+            <GrafanaPanel
+                panelId={6}
+                panelUrl={data.panelUrl}
+                start={data.start}
+                end={data.end}
+                orgId={data.orgId}
+                facultyName={facultyName}
+            />
+            <GrafanaPanel
+                panelId={2}
+                panelUrl={data.panelUrl}
+                start={data.start}
+                end={data.end}
+                orgId={data.orgId}
+                facultyName={facultyName}
+            />
+        </Box>
+        <Box className="flex gap-2 ">
+            <GrafanaPanel
+                panelId={8}
+                panelUrl={data.panelUrl}
+                start={data.start}
+                end={data.end}
+                orgId={data.orgId}
+                facultyName={facultyName}
+            />
         </Box>
     </Box>
   );
