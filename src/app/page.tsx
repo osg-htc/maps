@@ -1,10 +1,11 @@
 "use client"
-import { GlobeComponent } from '@/components/mapbox';
 import Head from "next/head";
-import { Box, Autocomplete, TextField, Container  } from '@mui/material';
-
+import  Box from '@mui/material/Box';
+import MapComponent from '../app/components/MapComponent'
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 function HomePage() {
+
   return (
     <>
       <Head>
@@ -14,11 +15,9 @@ function HomePage() {
         />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-    <Container>
-    <Box>
-        <GlobeComponent/>
-    </Box>  
-    </Container>
+      <Box height={"100vh"} width={"100vw"}>
+        <MapComponent/>
+      </Box>
     </>
   );
 }
