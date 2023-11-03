@@ -3,7 +3,6 @@ import { Box, IconButton, Typography, useMediaQuery, Slide } from '@mui/material
 import { Close as CloseIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import { sub } from 'date-fns';
-import { motion } from 'framer-motion';
 
 type SidebarProps = {
   onClose: () => void;
