@@ -3,12 +3,15 @@ import IconButton from '@mui/material/IconButton';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
 import NorthIcon from '@mui/icons-material/Explore';
+import MapIcon from '@mui/icons-material/Map';
+
 
 interface MapControlsProps {
-    mapRef: React.RefObject<any>; // specify the type of mapRef
+    mapRef: React.RefObject<any>;
+    handleProjection: () => void;
   }
 
-const MapControls: React.FC<MapControlsProps> = ({ mapRef }) => {
+const MapControls: React.FC<MapControlsProps> = ({ mapRef, handleProjection }) => {
   const handleZoomIn = () => {
     const map = mapRef.current.getMap();
     map.zoomIn();
@@ -50,6 +53,9 @@ const MapControls: React.FC<MapControlsProps> = ({ mapRef }) => {
       </IconButton>
       <IconButton onClick={handleResetNorth}>
         <NorthIcon />
+      </IconButton>
+      <IconButton onClick={handleProjection}>
+        <MapIcon />
       </IconButton>
     </div>
   );

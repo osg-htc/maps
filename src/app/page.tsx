@@ -3,11 +3,13 @@ import Head from "next/head";
 import  Box from '@mui/material/Box';
 import MapComponent from '../app/components/MapComponent'
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { BrowserRouter } from "react-router-dom";
 
 function HomePage() {
 
   return (
     <>
+    <BrowserRouter>
       <Head>
         <link
           rel="stylesheet"
@@ -18,6 +20,7 @@ function HomePage() {
       <Box height={"100vh"} width={"100vw"}>
         <MapComponent/>
       </Box>
+      </BrowserRouter>
     </>
   );
 }

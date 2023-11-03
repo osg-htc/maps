@@ -6,7 +6,6 @@ import Features from "../../../public/features.json";
 import { getFacilityEsData } from "@/app/institutions/elasticQuery.js";
 import { Tooltip } from "@mui/material";
 
-
 type MarkersProps = {
   onMarkerClick: (feature: Feature) => void;
 };
@@ -39,7 +38,6 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
         type: feature.type,
         properties: {
           "Institution Name": institutionName,
-          // You can add more properties from esInfo if needed.
         },
         geometry: {
           type: feature.geometry.type,
@@ -60,8 +58,9 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
         >
           <Tooltip title={filteredFeature.properties["Institution Name"]} placement="top">
           <LocationOnIcon 
+            color="primary"
             className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
-            fontSize="small" onClick={() => onMarkerClick(filteredFeature)} />
+            fontSize="large" onClick={() => onMarkerClick(filteredFeature)} />
           </Tooltip>
         </Marker>
       );
