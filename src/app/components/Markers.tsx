@@ -32,8 +32,6 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
       if (!esInfo) {
         // Handle cases where there's no matching institution in the ElasticSearch data.
         return null;
-      } if(esInfo.gpuProvided > 0) {
-        console.log({esInfo});
       }
 
       const filteredFeature: TypedFeatures = {
