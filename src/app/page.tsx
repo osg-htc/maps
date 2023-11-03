@@ -1,15 +1,20 @@
 "use client"
 import Head from "next/head";
 import  Box from '@mui/material/Box';
-import MapComponent from '../app/components/MapComponent'
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { BrowserRouter } from "react-router-dom";
+import dynamic from 'next/dynamic';
+import React from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+
+const DynamicLoadedMapComponent = dynamic(() => import('./components/DynamicMapComponent'), {
+  ssr: false, 
+  loading: () => <CircularProgress />
+});
 
 function HomePage() {
 
   return (
     <>
-    <BrowserRouter>
       <Head>
         <link
           rel="stylesheet"
@@ -18,9 +23,8 @@ function HomePage() {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Box height={"100vh"} width={"100vw"}>
-        <MapComponent/>
+        <DynamicLoadedMapComponent />
       </Box>
-      </BrowserRouter>
     </>
   );
 }
