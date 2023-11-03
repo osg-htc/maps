@@ -126,7 +126,6 @@ async function getFacilityEsData(ospoolOnly = false){
         }
         return p
     }, {})
-    console.log(facilityData)
     return facilityData
 }
 
