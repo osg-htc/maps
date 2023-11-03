@@ -23,7 +23,7 @@ const MapControls: React.FC<MapControlsProps> = ({ mapRef }) => {
     const map = mapRef.current.getMap();
     map.flyTo({
       center: [-98.5795, 39.8283],
-      zoom: 2,
+      zoom: 4.5,
       bearing: 0,
       pitch: 0,
       duration: 2000,

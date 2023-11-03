@@ -9,7 +9,7 @@ const MapComponent = () => {
     const viewState =({
         latitude: 39.8283,
         longitude: -98.5795,
-        zoom: 3,
+        zoom: 4.5,
         width: '100%',
         height: '100vh',
     });

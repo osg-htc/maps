@@ -1,10 +1,11 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Marker } from "react-map-gl";
-import { School } from "@mui/icons-material";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Feature, TypedFeatures } from "../../../types/mapTypes";
 import Features from "../../../public/features.json";
 import { getFacilityEsData } from "@/app/institutions/elasticQuery.js";
 import { Tooltip } from "@mui/material";
+
 
 type MarkersProps = {
   onMarkerClick: (feature: Feature) => void;
@@ -58,7 +59,7 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
           latitude={filteredFeature.geometry.coordinates[1]}
         >
           <Tooltip title={filteredFeature.properties["Institution Name"]} placement="top">
-          <School 
+          <LocationOnIcon 
             className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
             fontSize="small" onClick={() => onMarkerClick(filteredFeature)} />
           </Tooltip>
