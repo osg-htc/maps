@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, IconButton, Typography, useMediaQuery } from '@mui/material';
+import { Box, IconButton, Typography, useMediaQuery, Slide } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import { sub } from 'date-fns';
+import { motion } from 'framer-motion';
 
 type SidebarProps = {
   onClose: () => void;
@@ -54,6 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataSta
     orgId: 1
   }
   return (
+    <Slide direction="right" in={true} mountOnEnter unmountOnExit>
     <Box
       component="aside"
       sx={{
@@ -74,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataSta
           <CloseIcon />
         </IconButton>
       </Box>
-      <Box className="flex gap-2 ">
+      <Box className="flex gap-2 flex-col sm:flex-row my-2">
               <GrafanaPanel
                 panelId={12}
                 panelUrl={data.panelUrl}
@@ -92,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataSta
                 facultyName={facultyName}
             />
         </Box>
-        <Box className="flex gap-2 ">
+        <Box className="flex gap-2 flex-col sm:flex-row my-2">
             <GrafanaPanel
                 panelId={6}
                 panelUrl={data.panelUrl}
@@ -110,7 +112,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataSta
                 facultyName={facultyName}
             />
         </Box>
-        <Box className="flex gap-2 ">
+        <Box className="flex flex-col sm:flex-row my-2 ">
           { dataState ?
             <GrafanaPanel
                 panelId={8}
@@ -123,6 +125,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataSta
           }
         </Box>
     </Box>
+    </Slide>
   );
 };
 
