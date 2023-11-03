@@ -11,20 +11,20 @@ const MarkersComponent: React.FC = () => {
 
   const handleMarkerClick = (feature: Feature) => {
     setSelectedMarker(feature);
-    convertName(feature);
-    navigate(`?faculty=${facultyName}`);
-  };
+    const convertedName = convertName(feature); 
+    navigate(`?faculty=${convertedName}`);
+};
 
-  const convertName = (feature: Feature) => {
+const convertName = (feature: Feature) => {
     const originalName = feature.properties["Institution Name"];
     const convertedName = encodeURIComponent(originalName);
     setFacultyName(convertedName);
+    return convertedName;
 };
 
-
   const closeSidebar = () => {
-    setSelectedMarker(null);
     navigate(``);
+    setSelectedMarker(null);
   };
 
   return (
