@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { Marker } from "react-map-gl";
 import { School } from "@mui/icons-material";
-import { Feature } from "../../../types/mapTypes";
+import { Feature, TypedFeatures } from "../../../types/mapTypes";
 import Features from "../../../public/features.json";
 import { getFacilityEsData } from "@/app/institutions/elasticQuery.js";
 
@@ -33,7 +33,7 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
         return null;
       }
 
-      const typedFeature: Feature = {
+      const typedFeature: TypedFeatures = {
         type: feature.type,
         properties: {
           "Institution Name": institutionName,
@@ -46,7 +46,8 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
             feature.geometry.coordinates[1]
           ] as [number, number]
         },
-        id: feature.id
+        id: feature.id,
+        dataState: esInfo.gpuProvided > 0 ? true : false
       };
 
       return (

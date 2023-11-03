@@ -19,3 +19,6 @@ export type Geometry = {
     features: Feature[];
   };
   
+  export type TypedFeatures = Feature & {
+    dataState?: boolean;
+  }

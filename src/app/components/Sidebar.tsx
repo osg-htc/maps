@@ -1,12 +1,14 @@
 import React from 'react';
-import { Box, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
+import { Box, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
+import { sub } from 'date-fns';
 
 type SidebarProps = {
   onClose: () => void;
   header: string;
   facultyName: string;
+  dataState?: boolean;
 }
 type HTMLContentProps = {
   html: string;
@@ -40,15 +42,15 @@ const GrafanaPanel: React.FC<GrafanaPanelProps> = ({ panelId, panelUrl, start, e
   );
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataState}) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
   const data = {
     panelId:[12, 16, 8, 6, 2],
-    panelUrl: `https://gracc.opensciencegrid.org/d-solo/hfZQzo2Vk/ospool-facility`,
-    start: 1667402917814,
-    end: 1698938917814,
+    panelUrl: `https://gracc.opensciencegrid.org/d-solo/axV4YtN4k/facility`,
+    start: sub(new Date(), { years: 1 }).getTime(),
+    end: new Date().getTime(),
     orgId: 1
   }
   return (
@@ -73,7 +75,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName }) => {
         </IconButton>
       </Box>
       <Box className="flex gap-2 ">
-            <GrafanaPanel
+              <GrafanaPanel
                 panelId={12}
                 panelUrl={data.panelUrl}
                 start={data.start}
@@ -109,6 +111,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName }) => {
             />
         </Box>
         <Box className="flex gap-2 ">
+          { dataState ?
             <GrafanaPanel
                 panelId={8}
                 panelUrl={data.panelUrl}
@@ -116,7 +119,8 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName }) => {
                 end={data.end}
                 orgId={data.orgId}
                 facultyName={facultyName}
-            />
+            /> : undefined
+          }
         </Box>
     </Box>
   );
