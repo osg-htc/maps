@@ -4,6 +4,7 @@ import { School } from "@mui/icons-material";
 import { Feature, TypedFeatures } from "../../../types/mapTypes";
 import Features from "../../../public/features.json";
 import { getFacilityEsData } from "@/app/institutions/elasticQuery.js";
+import { Tooltip } from "@mui/material";
 
 type MarkersProps = {
   onMarkerClick: (feature: Feature) => void;
@@ -31,9 +32,11 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
       if (!esInfo) {
         // Handle cases where there's no matching institution in the ElasticSearch data.
         return null;
+      } if(esInfo.gpuProvided > 0) {
+        console.log({esInfo});
       }
 
-      const typedFeature: TypedFeatures = {
+      const filteredFeature: TypedFeatures = {
         type: feature.type,
         properties: {
           "Institution Name": institutionName,
@@ -52,11 +55,15 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
 
       return (
         <Marker
-          key={typedFeature.id}
-          longitude={typedFeature.geometry.coordinates[0]}
-          latitude={typedFeature.geometry.coordinates[1]}
+          key={filteredFeature.id}
+          longitude={filteredFeature.geometry.coordinates[0]}
+          latitude={filteredFeature.geometry.coordinates[1]}
         >
-          <School fontSize="small" onClick={() => onMarkerClick(typedFeature)} />
+          <Tooltip title={filteredFeature.properties["Institution Name"]} placement="top">
+          <School 
+            className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
+            fontSize="small" onClick={() => onMarkerClick(filteredFeature)} />
+          </Tooltip>
         </Marker>
       );
     });
