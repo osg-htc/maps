@@ -26,7 +26,7 @@ const MapControls: React.FC<MapControlsProps> = ({ mapRef, handleProjection }) =
     const map = mapRef.current.getMap();
     map.flyTo({
       center: [-98.5795, 39.8283],
-      zoom: 4.5,
+      zoom: 1,
       bearing: 0,
       pitch: 0,
       duration: 2000,
@@ -39,10 +39,10 @@ const MapControls: React.FC<MapControlsProps> = ({ mapRef, handleProjection }) =
     right: 10,
     display: 'flex',
     flexDirection: 'column',
-    gap: '10px',
+    gap: '5px',
     backgroundColor: 'rgba(255, 255, 255, 0.95)', // 50% white background
     borderRadius: '8px', // Rounded corners
-    padding: '10px', // Some padding around the buttons
+    padding: '3px', // Some padding around the buttons
     boxShadow: '0 2px 4px rgba(0,0,0,0.2)', // Optional: a subtle shadow for depth
   };
   

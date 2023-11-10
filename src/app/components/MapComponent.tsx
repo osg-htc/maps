@@ -14,7 +14,7 @@ const MapComponent: React.FC = () => {
   const viewState = {
     latitude: 39.8283,
     longitude: -98.5795,
-    zoom: 4.5,
+    zoom: 1,
     width: '100%',
     height: '100vh',
     transitionDuration: 300 

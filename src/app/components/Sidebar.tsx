@@ -44,7 +44,7 @@ const GrafanaPanel: React.FC<GrafanaPanelProps> = ({ panelId, panelUrl, start, e
 
 const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataState}) => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const data = {
     panelId:[12, 16, 8, 6, 2],
