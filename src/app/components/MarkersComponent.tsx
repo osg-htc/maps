@@ -26,7 +26,7 @@ const MarkersComponent: React.FC<MarkersComponentProps> = ({mapRef}) => {
     setSelectedMarker(feature);
     const convertedName = convertName(feature); 
     centerToMarker(feature);
-    navigate(`?faculty=${convertedName}`);
+    navigate(`/maps?faculty=${convertedName}`);
 };
 
 const handleResetNorth = () => {
@@ -45,7 +45,7 @@ const convertName = (feature: Feature) => {
 };
 
   const closeSidebar = () => {
-    navigate(``);
+    navigate(`/maps`);
     setSelectedMarker(null);
     handleResetNorth();
   };
