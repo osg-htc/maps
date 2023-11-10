@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataSta
     <Box
       component="aside"
       sx={{
-        width: isSmallScreen ? '100%' : '50%',
+        width: isSmallScreen ? '100%' : '40%',
         position: 'absolute',
         top: 0,
         left: 0,
