@@ -18,17 +18,23 @@ const MarkersComponent: React.FC<MarkersComponentProps> = ({mapRef}) => {
     map.flyTo({
       center: feature.geometry.coordinates,
       zoom: 8,
-      bearing: 0,
-      pitch: 0,
       duration: 2000,
     });
-  }
+  };
 
   const handleMarkerClick = (feature: Feature) => {
     setSelectedMarker(feature);
     const convertedName = convertName(feature); 
     centerToMarker(feature);
     navigate(`?faculty=${convertedName}`);
+};
+
+const handleResetNorth = () => {
+  const map = mapRef.current.getMap();
+  map.flyTo({
+    zoom: 4.5,
+    duration: 2000,
+  });
 };
 
 const convertName = (feature: Feature) => {
@@ -41,6 +47,7 @@ const convertName = (feature: Feature) => {
   const closeSidebar = () => {
     navigate(``);
     setSelectedMarker(null);
+    handleResetNorth();
   };
 
   return (
