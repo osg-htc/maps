@@ -5,14 +5,14 @@ import MapControls from "./MapControllers";
 const MapComponent = () => {
     const mapRef = useRef(null);
     const [projection, setProjection] = useState(true);
-    const handleProjection = () => { {projection ? setProjection(false) : setProjection(true)};
+    const handleProjection = () => { projection ? setProjection(false) : setProjection(true);
     console.log(projection) };
     const viewState =({
-        latitude: 39.8283,
-        longitude: -98.5795,
-        zoom: 4.5,
-        width: '100%',
-        height: '100vh',
+      latitude: 39.8283,
+      longitude: -98.5795,
+      zoom: 4.5,
+      width: '100%',
+      height: '100vh',
     });
 
     if (projection) {

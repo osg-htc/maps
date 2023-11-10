@@ -40,6 +40,10 @@ const MapControls: React.FC<MapControlsProps> = ({ mapRef, handleProjection }) =
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)', // 50% white background
+    borderRadius: '8px', // Rounded corners
+    padding: '10px', // Some padding around the buttons
+    boxShadow: '0 2px 4px rgba(0,0,0,0.2)', // Optional: a subtle shadow for depth
   };
   
 
