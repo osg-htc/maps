@@ -93,7 +93,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataSta
                 facultyName={facultyName}
             />
         </Box>
-        <Box className="flex gap-2 flex-col sm:flex-row my-2">
+        <Box className={`flex gap-2 flex-col ${dataState ? 'sm:flex-row' : 'sm:flex-col'} my-2`}>
             <GrafanaPanel
                 panelId={6}
                 panelUrl={data.panelUrl}
