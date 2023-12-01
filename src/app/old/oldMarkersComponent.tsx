@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Feature, TypedFeatures } from "../../../types/mapTypes";
-import Sidebar from "./Sidebar";
+import Sidebar from "../components/Sidebar";
 import Markers from "./oldMarkers";
 import { useNavigate } from "react-router-dom";
 

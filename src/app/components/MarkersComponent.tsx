@@ -8,12 +8,12 @@ import { getFacilityEsData } from "@/app/institutions/elasticQuery.js";
 import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
 
-type UnifiedMarkersProps = {
+type MarkersProps = {
   mapRef: React.RefObject<any>;
   zoom: number;
 };
 
-const UnifiedMarkersComponent: React.FC<UnifiedMarkersProps> = ({ mapRef, zoom }) => {
+const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   const [esData, setEsData] = useState<any>({});
   const [markerSize, setMarkerSize] = useState<any>("small");
   const [selectedMarker, setSelectedMarker] = useState<TypedFeatures | null>(null);
@@ -75,19 +75,19 @@ const closeSidebar = () => {
           duration: 2000,
         });
       };
+
     const esDataInstitutions = Object.keys(esData);
     const featuresInstitutions = Features.features.map(feature => feature.properties["Institution Name"]);
-    const unmatchedInstitutions = esDataInstitutions.filter(institution => !featuresInstitutions.includes(institution));
+    const unmatchedInstitutions = esDataInstitutions.filter(institution => !featuresInstitutions.includes(institution)); //Do console.log when needed
+    
     return Features.features.map((feature) => {
       const institutionName = feature.properties["Institution Name"];
       const esInfo = esData[institutionName];
-
-      if (!esInfo) {
-        // Handle cases where there's no matching institution in the ElasticSearch data.
-
+      
+      // Handle cases where there's no matching institution in the ElasticSearch data.
+      if (!esInfo) {  
         return null;
       }
-
 
       const filteredFeature: TypedFeatures = {
         type: feature.type,
@@ -104,6 +104,7 @@ const closeSidebar = () => {
         id: feature.id,
         dataState: esInfo.gpuProvided > 0
       };
+      
       return (
         <Marker
           key={filteredFeature.id}
@@ -129,4 +130,4 @@ const closeSidebar = () => {
   );
 };
 
-export default UnifiedMarkersComponent;
+export default MarkersComponent;

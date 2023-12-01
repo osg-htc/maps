@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Map, { MapRef } from 'react-map-gl';
 import MarkersComponent from './MarkersComponent';
-import MapControls from '../components/MapControllers';
+import MapControls from './MapControllers';
 
 interface ViewState {
   longitude: number;
