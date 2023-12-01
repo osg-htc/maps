@@ -1,7 +1,8 @@
+'use client'
 import React, { useRef, useState } from 'react';
 import Map, { MapRef } from 'react-map-gl';
-import MarkersComponent from './MarkersComponent';
-import MapControls from './MapControllers';
+import UnifiedMarkersComponent from '../components/MarkersComponent';
+import MapControls from '../components/MapControllers';
 
 interface ViewState {
   longitude: number;
@@ -15,7 +16,7 @@ interface MapMoveEvent {
   viewState: ViewState;
 }
 
-const MapComponent: React.FC = () => {
+const NewMarkers: React.FC = () => {
   const [zoom, setZoom] = useState(1);
   const mapRef = useRef<MapRef>(null);
   const [projection, setProjection] = useState('globe');
@@ -48,9 +49,9 @@ const MapComponent: React.FC = () => {
       projection={projection}
     >
       <MapControls mapRef={mapRef} handleProjection={handleProjection} />
-      <MarkersComponent mapRef={mapRef} zoom={zoom}/>
+      <UnifiedMarkersComponent mapRef={mapRef} zoom={zoom}/>
     </Map>
   );
 };
 
-export default MapComponent;
+export default NewMarkers;

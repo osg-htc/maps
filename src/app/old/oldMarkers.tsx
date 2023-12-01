@@ -8,13 +8,25 @@ import { Tooltip } from "@mui/material";
 
 type MarkersProps = {
   onMarkerClick: (feature: Feature) => void;
+  zoom: number;
 };
 
-const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
+const Markers: React.FC<MarkersProps> = ({ onMarkerClick }, zoom) => {
 
   const [esData, setEsData] = useState<any>({}); // Store the ElasticSearch data in the state
+  const [markerSize, setMarkerSize] = useState<any>("small");
 
+  
   useEffect(() => {
+    const zoomRate = (zoom:number) => { 
+      if (zoom < 5) {
+        setMarkerSize("small");
+      } else if (zoom < 7) {
+        setMarkerSize("medium");
+      } else {
+        setMarkerSize("large");
+      }
+    }
     // Fetch the ElasticSearch data when the component mounts
     const fetchData = async () => {
       const data = await getFacilityEsData();
@@ -22,7 +34,8 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
     };
 
     fetchData();
-  }, []); // The empty array dependency ensures this useEffect runs once when the component mounts
+    zoomRate(zoom);
+  }, [zoom]); // The empty array dependency ensures this useEffect runs once when the component mounts
 
   const markers = useMemo(() => {
     const esDataInstitutions = Object.keys(esData);
@@ -67,12 +80,12 @@ const Markers: React.FC<MarkersProps> = ({ onMarkerClick }) => {
           <LocationOnIcon 
             color="primary"
             className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
-            fontSize="large" onClick={() => onMarkerClick(filteredFeature)} />
+            fontSize={markerSize} onClick={() => onMarkerClick(filteredFeature)} />
           </Tooltip>
         </Marker>
       );
     });
-  }, [onMarkerClick, esData]); // Include esData in the dependencies list to recompute markers when esData changes
+  }, [onMarkerClick, esData, markerSize]); // Include esData in the dependencies list to recompute markers when esData changes
 
   return (
     <>
