@@ -75,54 +75,54 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataSta
           <CloseIcon />
         </IconButton>
       </Box>
-      <Box className="flex gap-2 flex-col sm:flex-row my-2">
-              <GrafanaPanel
-                panelId={12}
-                panelUrl={data.panelUrl}
-                start={data.start}
-                end={data.end}
-                orgId={data.orgId}
-                facultyName={facultyName}
-            />
-            <GrafanaPanel
-                panelId={16}
-                panelUrl={data.panelUrl}
-                start={data.start}
-                end={data.end}
-                orgId={data.orgId}
-                facultyName={facultyName}
-            />
-        </Box>
-        <Box className="flex gap-2 flex-col 'sm:flex-row' my-2">
-            <GrafanaPanel
-                panelId={6}
-                panelUrl={data.panelUrl}
-                start={data.start}
-                end={data.end}
-                orgId={data.orgId}
-                facultyName={facultyName}
-            />
-        </Box>
-        <Box className="flex gap-2 flex-col sm:flex-row my-2 ">
+      <Box className="flex gap-2 flex-col lg-custom:flex-row my-2">
+        <GrafanaPanel
+          panelId={12}
+          panelUrl={data.panelUrl}
+          start={data.start}
+          end={data.end}
+          orgId={data.orgId}
+          facultyName={facultyName}
+        />
+        <GrafanaPanel
+          panelId={16}
+          panelUrl={data.panelUrl}
+          start={data.start}
+          end={data.end}
+          orgId={data.orgId}
+          facultyName={facultyName}
+        />
+      </Box>
+      <Box className="flex gap-2 flex-col lg-custom:flex-row my-2">
           <GrafanaPanel
-                  panelId={2}
-                  panelUrl={data.panelUrl}
-                  start={data.start}
-                  end={data.end}
-                  orgId={data.orgId}
-                  facultyName={facultyName}
+              panelId={6}
+              panelUrl={data.panelUrl}
+              start={data.start}
+              end={data.end}
+              orgId={data.orgId}
+              facultyName={facultyName}
           />
-          { dataState ?
-            <GrafanaPanel
-                panelId={8}
+      </Box>
+      <Box className="flex gap-2 flex-col lg-custom:flex-row my-2 ">
+        <GrafanaPanel
+                panelId={2}
                 panelUrl={data.panelUrl}
                 start={data.start}
                 end={data.end}
                 orgId={data.orgId}
                 facultyName={facultyName}
-            /> : undefined
-          }
-        </Box>
+        />
+        { dataState ?
+          <GrafanaPanel
+              panelId={8}
+              panelUrl={data.panelUrl}
+              start={data.start}
+              end={data.end}
+              orgId={data.orgId}
+              facultyName={facultyName}
+          /> : undefined
+        }
+      </Box>
     </Box>
     </Slide>
   );
