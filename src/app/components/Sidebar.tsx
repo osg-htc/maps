@@ -1,129 +1,93 @@
-import React from 'react';
-import { Box, IconButton, Typography, useMediaQuery, Slide } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, IconButton, Typography, useMediaQuery, Slide, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
+import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
-import { sub } from 'date-fns';
+import GrafanaPanels from './GrafanaPanels';
+
 
 type SidebarProps = {
   onClose: () => void;
   header: string;
   facultyName: string;
+  projects: any[];  // Define the type more precisely if possible
   dataState?: boolean;
 }
-type HTMLContentProps = {
-  html: string;
-}
 
-const HTMLContent: React.FC<HTMLContentProps> = ({ html }) => {
-  return (
-    <div dangerouslySetInnerHTML={{ __html: html }} />
-  );
-};
-
-type GrafanaPanelProps = {
-  panelId: number;
-  panelUrl: string;
-  start: number;
-  end: number;
-  orgId: number;
-  facultyName: string;
-}
-
-
-const GrafanaPanel: React.FC<GrafanaPanelProps> = ({ panelId, panelUrl, start, end, orgId, facultyName }) => {
-  const url = `${panelUrl}?to=${end}&from=${start}&orgId=${orgId}&panelId=${panelId}&var-facility=${facultyName}`;
-  return (
-    <iframe
-      src={url}
-      width="100%"
-      height="250px"
-      title="Faculty Panel" 
-    />
-  );
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ onClose, header, facultyName, dataState}) => {
+const Sidebar: React.FC<SidebarProps> = ({ onClose, header, projects}) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
-  const data = {
-    panelId:[12, 16, 8, 6, 2],
-    panelUrl: `https://gracc.opensciencegrid.org/d-solo/axV4YtN4k/facility`,
-    start: sub(new Date(), { years: 1 }).getTime(),
-    end: new Date().getTime(),
-    orgId: 1
-  }
+  const handleProjectClick = (projectName: string) => {
+    setSelectedProject(projectName);
+  };
+  const handleBackClick = () => {
+    setSelectedProject(null); // This will show the projects table again
+  };
+
   return (
     <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-    <Box
-      component="aside"
-      sx={{
-        width: isSmallScreen ? '100%' : '40%',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        height: '100vh',
-        overflowY: 'auto',
-        backgroundColor: '#ffffff',
-        zIndex: 10,
-        padding: 2,
-      }}
-    >
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h6">{header}</Typography>
-        <IconButton onClick={onClose} edge="end" aria-label="close sidebar">
-          <CloseIcon />
-        </IconButton>
+      <Box
+        sx={{
+          width: '100%', // Adjust the width as needed
+          height: '100vh',
+          overflowY: 'auto',
+          backgroundColor: '#ffffff',
+          zIndex: 10,
+          padding: 2,
+        }}
+      >
+        {selectedProject ? (
+          <>
+            <IconButton onClick={handleBackClick} aria-label="back">
+              <ArrowBackIcon />
+            </IconButton>
+            <GrafanaPanels project={selectedProject} />
+          </>
+        ) : (
+          <>
+            <IconButton onClick={onClose} edge="end" aria-label="close">
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6">{header}</Typography>
+            {/* Render the projects table */}
+            <TableContainer component={Paper}>
+          <Typography variant='h5' sx={{margin:"1rem"}}>Projects</Typography>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell align="right">Department</TableCell>
+                <TableCell align="right">Field Of Science</TableCell>
+                <TableCell align="right">PI Name</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {projects.map((project, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    <Typography
+                      sx={{ cursor: 'pointer', color: 'blue' }}
+                      onClick={() => handleProjectClick(project.Name)}
+                    >
+                      {project.Name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">{project.Department}</TableCell>
+                  <TableCell align="right">{project.FieldOfScience}</TableCell>
+                  <TableCell align="right">{project.PIName}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          </TableContainer>
+          </>
+        )}
       </Box>
-      <Box className="flex gap-2 flex-col lg-custom:flex-row my-2">
-        <GrafanaPanel
-          panelId={12}
-          panelUrl={data.panelUrl}
-          start={data.start}
-          end={data.end}
-          orgId={data.orgId}
-          facultyName={facultyName}
-        />
-        <GrafanaPanel
-          panelId={16}
-          panelUrl={data.panelUrl}
-          start={data.start}
-          end={data.end}
-          orgId={data.orgId}
-          facultyName={facultyName}
-        />
-      </Box>
-      <Box className="flex gap-2 flex-col lg-custom:flex-row my-2">
-          <GrafanaPanel
-              panelId={6}
-              panelUrl={data.panelUrl}
-              start={data.start}
-              end={data.end}
-              orgId={data.orgId}
-              facultyName={facultyName}
-          />
-      </Box>
-      <Box className="flex gap-2 flex-col lg-custom:flex-row my-2 ">
-        <GrafanaPanel
-                panelId={2}
-                panelUrl={data.panelUrl}
-                start={data.start}
-                end={data.end}
-                orgId={data.orgId}
-                facultyName={facultyName}
-        />
-        { dataState ?
-          <GrafanaPanel
-              panelId={8}
-              panelUrl={data.panelUrl}
-              start={data.start}
-              end={data.end}
-              orgId={data.orgId}
-              facultyName={facultyName}
-          /> : undefined
-        }
-      </Box>
-    </Box>
     </Slide>
   );
 };
