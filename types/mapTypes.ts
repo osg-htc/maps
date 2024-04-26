@@ -22,3 +22,27 @@ export type Geometry = {
   export type TypedFeatures = Feature & {
     dataState?: boolean;
   }
+
+  export type MarkersProps = {
+    mapRef: React.RefObject<any>;
+    zoom: number;
+  };
+
+  export type Project = {
+    Department: string;
+    Description: string;
+    FieldOfScience: string;
+    FieldOfScienceID: string;
+    ID: string;
+    InstitutionID: string;
+    Name: string;
+    Organization: string;
+    PIName: string;
+    ResourceAllocations: null | any; 
+    Sponsor: {
+      CampusGrid: {
+        ID: number;
+        Name: string;
+      };
+    };
+  };

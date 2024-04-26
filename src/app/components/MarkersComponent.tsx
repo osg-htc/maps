@@ -2,39 +2,13 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Marker } from "react-map-gl";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from "@mui/material";
-import { Feature, TypedFeatures } from "../../../types/mapTypes";
+import { Feature, TypedFeatures, MarkersProps } from "../../../types/mapTypes";
 import Features from "../../../public/features.json";
 import Projects from "../../../public/projects.json";
+import esProjects from "../projects/esProjects";
 import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-type MarkersProps = {
-  mapRef: React.RefObject<any>;
-  zoom: number;
-};
-type Project = {
-  Department: string;
-  Description: string;
-  FieldOfScience: string;
-  FieldOfScienceID: string;
-  ID: string;
-  InstitutionID: string;
-  Name: string;
-  Organization: string;
-  PIName: string;
-  ResourceAllocations: null | any; // Use 'any' or define a more specific type if you know the structure
-  Sponsor: {
-    CampusGrid: {
-      ID: number;
-      Name: string;
-    };
-  };
-};
-
-type InstitutionsWithProjects = {
-  [organizationName: string]: Project[];
-};
 
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   const [markerSize, setMarkerSize] = useState<any>("small");
@@ -42,11 +16,10 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   const [facultyName, setFacultyName] = useState<string>("");
   const navigate = useNavigate();
   const [institutions, setInstitutions] = useState<any[]>([]);
-  const [institutionsWithProjects, setInstitutionsWithProjects] = useState<InstitutionsWithProjects>({});
-
+  const [elasticsearchProjects, setElasticsearchProjects] = useState([]);
   useEffect(() => {
     const zoomRate = (zoom:number) => { 
-        if (zoom < 1) {
+        if (zoom < 3) {
           setMarkerSize("small");
         } else {
           setMarkerSize("large");
@@ -55,55 +28,64 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       zoomRate(zoom);
     }, [zoom]);
 
-  useEffect(() => {
-    const fetchInstitutions = async () => {
-      try {
-        const response = await axios.get('/api/institution_ids');
-        const data = response.data;
-        setInstitutions(data);  // This updates the institutions state
-      } catch (error) {
-        console.error('Failed to fetch institutions:', error);
-      }
-    };
-    
-    fetchInstitutions();
-  }, []);
-
-  useEffect(() => {
-      const mappedProjects = institutions.reduce((acc, institution) => {
-        // Using the institution's name to match with the project's organization
-        const institutionName = institution.name;
-        const institutionProjects = Object.entries(Projects)
-          .filter(([, project]) => project.Organization === institutionName)
-          .map(([, project]) => project);
-
-        // If there are any projects for the institution, add them to the accumulator
-        if (institutionProjects.length > 0) {
-          acc[institutionName] = institutionProjects;
+    useEffect(() => {
+      const fetchInstitutions = async () => {
+        try {
+          const response = await axios.get('/api/institution_ids');
+          const data = response.data; // Access the data property of the response object
+          setInstitutions(data);  // This updates the institutions state
+        } catch (error) {
+          console.error('Failed to fetch institutions:', error);
         }
+      };
+      
+      const fetchProjects = async () => {
+        try {
+          const response = await esProjects();
+          const data = response.aggregations.projects.buckets
+          setElasticsearchProjects(data);
+          console.log(elasticsearchProjects)
+        } catch (error) {
+          console.error('Failed to fetch projects:', error);
+        }
+      };
 
-        return acc;
-      }, {});
+      fetchProjects();
+      fetchInstitutions();
+    }, []);
 
-      setInstitutionsWithProjects(mappedProjects);
-  }, [institutions]); // Rerun when institutions are fetched
-  
+  const institutionsWithProjects = useMemo(() => {
+    return institutions.reduce((acc, institution) => {
+      // Using the institution's name to match with the project's organization
+      const institutionName = institution.name;
+      const institutionProjects = Object.entries(Projects)
+        .filter(([, project]) => project.Organization === institutionName)
+        .map(([, project]) => project);
+
+      if (institutionProjects.length > 0) {
+        acc[institutionName] = institutionProjects;
+      }
+
+      return acc;
+    }, {});
+  }, [institutions]);
+
   const handleResetNorth = () => {
-  const map = mapRef.current.getMap();
-  map.flyTo({
-    zoom: 4.5,
-    duration: 2000,
-  });
-};
+    const map = mapRef.current.getMap();
+    map.flyTo({
+      zoom: 4.5,
+      duration: 2000,
+    });
+  };
 
-const convertName = (feature: Feature) => {
+  const convertName = (feature: Feature) => {
     const originalName = feature.properties["Institution Name"];
     const convertedName = encodeURIComponent(originalName);
     setFacultyName(convertedName);
     return convertedName;
-};
+  };
 
-const closeSidebar = () => {
+  const closeSidebar = () => {
     navigate(`/maps`);
     setSelectedMarker(null);
     handleResetNorth();
@@ -126,15 +108,7 @@ const closeSidebar = () => {
         });
       };
 
-      const institutionNames = institutions.map(institution => institution.name);
-      const featuresInstitutions = Features.features.map(feature => feature.properties["Institution Name"]);
-
-      const unmatchedInstitutions = institutionNames.filter(institutionName => 
-        !featuresInstitutions.includes(institutionName)
-      );
-
-      console.log("Unmatched Institutions:", unmatchedInstitutions);
-      
+      const institutionNames = institutions.map(institution => institution.name);      
       const matchedFeatures = Features.features
         .filter(feature => institutionNames.includes(feature.properties["Institution Name"])); // Keep only features that have a matching name in institutionNames
       
@@ -173,7 +147,7 @@ const closeSidebar = () => {
         </Marker>
       );
     });
-  }, [markerSize, navigate, mapRef]);
+  }, [markerSize, navigate, mapRef, institutions]);
 
   return (
     <>
