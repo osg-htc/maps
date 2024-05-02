@@ -1,6 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { sub } from 'date-fns';
+import { Project } from "../../../types/mapTypes";
 
 type GrafanaPanelProps = {
     panelId: number;
@@ -9,10 +10,11 @@ type GrafanaPanelProps = {
     end: number;
     orgId: number;
     project: string;
-} 
+}
 
 const GrafanaPanel: React.FC<GrafanaPanelProps> = ({ panelId, panelUrl, start, end, orgId, project }) => {
-    const url = `${panelUrl}?to=${end}&from=${start}&orgId=${orgId}&panelId=${panelId}&var-Project=${project}`;
+    const encodedProject = encodeURIComponent(project); // Safely encode the project name
+    const url = `${panelUrl}?to=${end}&from=${start}&orgId=${orgId}&panelId=${panelId}&var-Filter=ResourceType%7C%3D%7CPayload&var-Project=${encodedProject}`;
     return (
         <iframe
         src={url}
@@ -23,62 +25,69 @@ const GrafanaPanel: React.FC<GrafanaPanelProps> = ({ panelId, panelUrl, start, e
     );
 }
 
-const GrafanaPanels: React.FC<{ project: string }> = ({ project }) => {
-    
+const GrafanaPanels: React.FC<{ project: Project }> = ({ project }) => {
     const data = {
         panelId:[12, 10, 16, 4, 22],
         panelUrl: `https://gracc.opensciencegrid.org/d-solo/tFUN4y44z/projects`,
         start: sub(new Date(), { years: 1 }).getTime(),
         end: new Date().getTime(),
         orgId: 1
+
       }
     
     return (
         <Box>
             <Box className="flex gap-2 flex-col lg-custom:flex-row my-2">
-                <GrafanaPanel
+                
+                <GrafanaPanel // Facilities Running project's jobs
                     panelId={12}
                     panelUrl={data.panelUrl}
                     start={data.start}
                     end={data.end}
                     orgId={data.orgId}
-                    project={project}
+                    project={project.Name}
                 />
-                <GrafanaPanel
+                <GrafanaPanel // Where the project running jobs
                     panelId={10}
                     panelUrl={data.panelUrl}
                     start={data.start}
                     end={data.end}
                     orgId={data.orgId}
-                    project={project}
+                    project={project.Name}
                 />
             </Box>
+            { project.gpuHours > 0 ? (
             <Box className="flex gap-2 flex-col lg-custom:flex-row my-2">
-                <GrafanaPanel
+                <GrafanaPanel // GPU Hours
                     panelId={16}
                     panelUrl={data.panelUrl}
                     start={data.start}
                     end={data.end}
                     orgId={data.orgId}
-                    project={project}
+                    project={project.Name}
                 />
             </Box>
+            )
+            : null
+            }
             <Box className="flex gap-2 flex-col lg-custom:flex-row my-2 ">
-                <GrafanaPanel
+            { project.cpuHours > 0 ? (
+                <GrafanaPanel // CPU Hours
                     panelId={4}
                     panelUrl={data.panelUrl}
                     start={data.start}
                     end={data.end}
                     orgId={data.orgId}
-                    project={project}
+                    project={project.Name}
                 />
-                <GrafanaPanel
+            ) : null }
+                <GrafanaPanel // Jobs Ran by project
                     panelId={22}
                     panelUrl={data.panelUrl}
                     start={data.start}
                     end={data.end}
                     orgId={data.orgId}
-                    project={project}
+                    project={project.Name}
                 />
             </Box>
         </Box>

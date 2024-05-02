@@ -1,29 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, IconButton, Typography, useMediaQuery, Slide, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import GrafanaPanels from './GrafanaPanels';
+import { Project } from '../../../types/mapTypes';
 
 
 type SidebarProps = {
   onClose: () => void;
   header: string;
   facultyName: string;
-  projects: any[];  // Define the type more precisely if possible
+  projects: any[]; 
   dataState?: boolean;
+  selectedMarker: string | null;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ onClose, header, projects}) => {
+
+
+const Sidebar: React.FC<SidebarProps> = ({ onClose, header, projects, selectedMarker}) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [selectedProject, setSelectedProject] = useState<string | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  const handleProjectClick = (projectName: string) => {
-    setSelectedProject(projectName);
+  useEffect(() => {
+    setSelectedProject(null);
+  }, [selectedMarker]);
+  
+  const handleProjectClick = (project:Project) => {
+    setSelectedProject(project);
   };
   const handleBackClick = () => {
-    setSelectedProject(null); // This will show the projects table again
+    setSelectedProject(null);
   };
 
   return (
@@ -47,7 +55,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, projects}) => {
         <IconButton onClick={handleBackClick} aria-label="back">
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h6">{selectedProject}</Typography>
+        <Typography variant="h6">{selectedProject.Name}</Typography>
         <IconButton onClick={onClose} edge="end" aria-label="close sidebar">
           <CloseIcon />
         </IconButton>
@@ -82,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose, header, projects}) => {
                 <TableCell component="th" scope="row">
                   <Typography
                     sx={{ cursor: 'pointer', color: 'blue' }}
-                    onClick={() => handleProjectClick(project.Name)}
+                    onClick={() => handleProjectClick(project)}
                   >
                     {project.Name}
                   </Typography>

@@ -3,20 +3,28 @@ import { Marker } from "react-map-gl";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from "@mui/material";
 import { Feature, TypedFeatures, MarkersProps } from "../../../types/mapTypes";
-import Features from "../../../public/features.json";
+import Institutions from "../../../public/features.json";
 import Projects from "../../../public/projects.json";
 import esProjects from "../projects/esProjects";
 import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+type Project = {
+  key: string;
+  doc_count: number;
+  projectCpuUse: { value: number };
+  projectGpuUse: { value: number };
+  projectJobsRan: { value: number };
+}
+
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   const [markerSize, setMarkerSize] = useState<any>("small");
   const [selectedMarker, setSelectedMarker] = useState<TypedFeatures | null>(null);
   const [facultyName, setFacultyName] = useState<string>("");
   const navigate = useNavigate();
-  const [institutions, setInstitutions] = useState<any[]>([]);
-  const [elasticsearchProjects, setElasticsearchProjects] = useState([]);
+  const [institutions, setInstitutions] = useState<any[]>([]); 
+  const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>([]);
   useEffect(() => {
     const zoomRate = (zoom:number) => { 
         if (zoom < 3) {
@@ -29,46 +37,53 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
     }, [zoom]);
 
     useEffect(() => {
-      const fetchInstitutions = async () => {
-        try {
-          const response = await axios.get('/api/institution_ids');
-          const data = response.data; // Access the data property of the response object
-          setInstitutions(data);  // This updates the institutions state
-        } catch (error) {
-          console.error('Failed to fetch institutions:', error);
-        }
-      };
-      
+  
+      const fetchInsitutions = async () => {
+            try {
+              const response = await axios.get('/api/institution_ids');
+              setInstitutions(response.data);
+            } catch (error) {
+              console.error('Failed to fetch institutions:', error);
+            }
+          };
       const fetchProjects = async () => {
         try {
           const response = await esProjects();
-          const data = response.aggregations.projects.buckets
-          setElasticsearchProjects(data);
-          console.log(elasticsearchProjects)
+          setElasticsearchProjects(response.aggregations.projects.buckets);
+          console.log(response.aggregations.projects.buckets);
         } catch (error) {
           console.error('Failed to fetch projects:', error);
         }
       };
-
+      fetchInsitutions();
       fetchProjects();
-      fetchInstitutions();
     }, []);
 
-  const institutionsWithProjects = useMemo(() => {
-    return institutions.reduce((acc, institution) => {
-      // Using the institution's name to match with the project's organization
-      const institutionName = institution.name;
-      const institutionProjects = Object.entries(Projects)
-        .filter(([, project]) => project.Organization === institutionName)
-        .map(([, project]) => project);
-
-      if (institutionProjects.length > 0) {
-        acc[institutionName] = institutionProjects;
-      }
-
-      return acc;
-    }, {});
-  }, [institutions]);
+    const filteredProjects = useMemo(() => {
+      const projectNames = new Set(elasticsearchProjects.map(project => project.key));
+      return Object.values(Projects).filter(project => projectNames.has(project.Name));
+    }, [elasticsearchProjects]);
+  
+    const institutionsWithProjects = useMemo(() => {
+      return institutions.reduce((acc, institution) => {
+        const institutionName = institution.name;
+        const institutionProjects = filteredProjects.filter(project => project.Organization === institutionName).map(proj => {
+          const projectData = elasticsearchProjects.find(elProj => elProj.key === proj.Name);
+          return {
+            ...proj,
+            cpuHours: projectData?.projectCpuUse.value || 0,
+            gpuHours: projectData?.projectGpuUse.value || 0
+          };
+        });
+    
+        if (institutionProjects.length > 0) {
+          acc[institutionName] = institutionProjects;
+        }
+    
+        return acc;
+      }, {});
+    }, [institutions, filteredProjects, elasticsearchProjects]);
+  
 
   const handleResetNorth = () => {
     const map = mapRef.current.getMap();
@@ -86,7 +101,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   };
 
   const closeSidebar = () => {
-    navigate(`/maps`);
+    navigate(`/maps/projects`);
     setSelectedMarker(null);
     handleResetNorth();
   };
@@ -108,9 +123,8 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         });
       };
 
-      const institutionNames = institutions.map(institution => institution.name);      
-      const matchedFeatures = Features.features
-        .filter(feature => institutionNames.includes(feature.properties["Institution Name"])); // Keep only features that have a matching name in institutionNames
+      const matchedFeatures = Institutions.features
+      .filter(feature => institutionsWithProjects[feature.properties["Institution Name"]]);
       
       // Now create markers for matched features
       return matchedFeatures.map((feature) => {
@@ -147,7 +161,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         </Marker>
       );
     });
-  }, [markerSize, navigate, mapRef, institutions]);
+  }, [markerSize, navigate, mapRef, institutionsWithProjects]);
 
   return (
     <>
@@ -159,6 +173,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       header={selectedMarker.properties["Institution Name"]}
       projects={institutionsWithProjects[selectedMarker.properties["Institution Name"]] || []}
       dataState={selectedMarker.dataState}
+      selectedMarker={selectedMarker.properties["Institution Name"]}
       />
       }
     </>

@@ -29,20 +29,15 @@ export type Geometry = {
   };
 
   export type Project = {
-    Department: string;
-    Description: string;
-    FieldOfScience: string;
-    FieldOfScienceID: string;
-    ID: string;
-    InstitutionID: string;
     Name: string;
-    Organization: string;
+    Department: string;
+    FieldOfScience: string;
     PIName: string;
-    ResourceAllocations: null | any; 
-    Sponsor: {
-      CampusGrid: {
-        ID: number;
-        Name: string;
-      };
+    cpuHours: number;
+    gpuHours: number;
+  }
+
+  export type Institution = {
+    id: number;
+    name: string;
     };
-  };

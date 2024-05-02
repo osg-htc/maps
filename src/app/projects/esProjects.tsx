@@ -14,8 +14,8 @@ const esProjects = async () => {
                     {
                         range: {
                             EndTime: {
-                                lte: DATE_RANGE['now'],
-                                gte: DATE_RANGE['oneYearAgo']
+                                lte: DATE_RANGE.now,
+                                gte: DATE_RANGE.oneYearAgo
                             }
                         }
                     },
