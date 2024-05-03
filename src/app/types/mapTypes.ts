@@ -41,3 +41,19 @@ export type Geometry = {
     id: number;
     name: string;
     };
+
+  export type SidebarProps = {
+      onClose: () => void;
+      header: string;
+      facultyName: string;
+      dataState?: boolean;
+    }
+    
+  export type GrafanaPanelProps = {
+      panelId: number;
+      panelUrl: string;
+      start: number;
+      end: number;
+      orgId: number;
+      facultyName: string;
+    }

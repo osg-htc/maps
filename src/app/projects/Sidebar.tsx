@@ -4,7 +4,7 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import GrafanaPanels from './GrafanaPanels';
-import { Project } from '../../../types/mapTypes';
+import { Project } from '../types/mapTypes';
 
 
 type SidebarProps = {

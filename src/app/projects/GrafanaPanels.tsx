@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "@mui/material";
 import { sub } from 'date-fns';
-import { Project } from "../../../types/mapTypes";
+import { Project } from "../types/mapTypes";
 
 type GrafanaPanelProps = {
     panelId: number;

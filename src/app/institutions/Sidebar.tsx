@@ -3,32 +3,7 @@ import { Box, IconButton, Typography, useMediaQuery, Slide } from '@mui/material
 import { Close as CloseIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import { sub } from 'date-fns';
-
-type SidebarProps = {
-  onClose: () => void;
-  header: string;
-  facultyName: string;
-  dataState?: boolean;
-}
-type HTMLContentProps = {
-  html: string;
-}
-
-const HTMLContent: React.FC<HTMLContentProps> = ({ html }) => {
-  return (
-    <div dangerouslySetInnerHTML={{ __html: html }} />
-  );
-};
-
-type GrafanaPanelProps = {
-  panelId: number;
-  panelUrl: string;
-  start: number;
-  end: number;
-  orgId: number;
-  facultyName: string;
-}
-
+import { GrafanaPanelProps, SidebarProps } from '../types/mapTypes';
 
 const GrafanaPanel: React.FC<GrafanaPanelProps> = ({ panelId, panelUrl, start, end, orgId, facultyName }) => {
   const url = `${panelUrl}?to=${end}&from=${start}&orgId=${orgId}&panelId=${panelId}&var-facility=${facultyName}`;

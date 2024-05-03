@@ -23,8 +23,8 @@ function HomePage() {
     transform: 'translateX(-50%)',
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)', // 50% white background
-    zIndex: 9999, // Ensure the element stays on top of other elements
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    zIndex: 9999,
   };
   return (
     <Box height={"100vh"} width={"100vw"}>

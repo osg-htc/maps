@@ -2,13 +2,12 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Marker } from "react-map-gl";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from "@mui/material";
-import { Feature, TypedFeatures, MarkersProps } from "../../../types/mapTypes";
-import Institutions from "../../../public/features.json";
-import Projects from "../../../public/projects.json";
+import { Feature, TypedFeatures, MarkersProps } from "../types/mapTypes";
+import Institutions from "../../data/features.json";
+import Projects from "../../data/projects.json";
 import esProjects from "../../data/esProjects";
 import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 type Project = {
   key: string;
@@ -53,7 +52,6 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         try {
           const response = await esProjects();
           setElasticsearchProjects(response.aggregations.projects.buckets);
-          console.log(response.aggregations.projects.buckets);
         } catch (error) {
           console.error('Failed to fetch projects:', error);
         }
