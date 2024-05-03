@@ -5,7 +5,7 @@ import { Tooltip } from "@mui/material";
 import { Feature, TypedFeatures, MarkersProps } from "../../../types/mapTypes";
 import Institutions from "../../../public/features.json";
 import Projects from "../../../public/projects.json";
-import esProjects from "../projects/esProjects";
+import esProjects from "../../data/esProjects";
 import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -16,6 +16,8 @@ type Project = {
   projectCpuUse: { value: number };
   projectGpuUse: { value: number };
   projectJobsRan: { value: number };
+  Organization: string;
+  Name: string;
 }
 
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
@@ -40,8 +42,9 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   
       const fetchInsitutions = async () => {
             try {
-              const response = await axios.get('/api/institution_ids');
-              setInstitutions(response.data);
+              const response = await fetch('https://topology-institutions.osg-htc.org/api/institution_ids');
+              const data = await response.json();
+              setInstitutions(data);
             } catch (error) {
               console.error('Failed to fetch institutions:', error);
             }
@@ -111,7 +114,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         setSelectedMarker(feature);
         const convertedName = convertName(feature); 
         centerToMarker(feature);
-        navigate(`/maps?faculty=${convertedName}`);
+        navigate(`/maps/projects?faculty=${convertedName}`);
     };
 
     const centerToMarker = (feature: Feature) => {
@@ -127,7 +130,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       .filter(feature => institutionsWithProjects[feature.properties["Institution Name"]]);
       
       // Now create markers for matched features
-      return matchedFeatures.map((feature) => {
+      return matchedFeatures.map(feature => {
         const institutionName = feature.properties["Institution Name"];
       
         // Create the feature object, now assured it's one of the institutions we want to display

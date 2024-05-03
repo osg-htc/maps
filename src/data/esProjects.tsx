@@ -1,4 +1,4 @@
-import ElasticSearchQuery, { DATE_RANGE, OSPOOL_FILTER } from '../../data/elasticsearch-v1';
+import ElasticSearchQuery, { DATE_RANGE, OSPOOL_FILTER } from './eqProjects';
 
 const esProjects = async () => {
     const elasticSearch = new ElasticSearchQuery();
