@@ -2,9 +2,9 @@ import React, { useState, useEffect, useMemo } from "react";
 import { Marker } from "react-map-gl";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from "@mui/material";
-import { Feature, TypedFeatures } from "../../../types/mapTypes";
-import Features from "../../../public/features.json";
-import { getFacilityEsData } from "@/app/institutions/elasticQuery.js";
+import { Feature, TypedFeatures } from "../types/mapTypes";
+import Features from "../../data/features.json";
+import { getFacilityEsData } from '../../data/eqInstitutions'
 import Sidebar from "./Sidebar";
 import { useNavigate } from "react-router-dom";
 
@@ -54,7 +54,7 @@ const convertName = (feature: Feature) => {
 };
 
 const closeSidebar = () => {
-    navigate(`/maps`);
+    navigate(`/maps/institutions`);
     setSelectedMarker(null);
     handleResetNorth();
   };
@@ -64,7 +64,7 @@ const closeSidebar = () => {
         setSelectedMarker(feature);
         const convertedName = convertName(feature); 
         centerToMarker(feature);
-        navigate(`/maps?faculty=${convertedName}`);
+        navigate(`/maps/institutions?faculty=${convertedName}`);
     };
 
     const centerToMarker = (feature: Feature) => {
@@ -75,10 +75,6 @@ const closeSidebar = () => {
           duration: 2000,
         });
       };
-
-    const esDataInstitutions = Object.keys(esData);
-    const featuresInstitutions = Features.features.map(feature => feature.properties["Institution Name"]);
-    const unmatchedInstitutions = esDataInstitutions.filter(institution => !featuresInstitutions.includes(institution)); //Do console.log when needed
     
     return Features.features.map((feature) => {
       const institutionName = feature.properties["Institution Name"];

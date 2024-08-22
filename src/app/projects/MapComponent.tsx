@@ -35,7 +35,6 @@ const MapComponent: React.FC = () => {
 
   const onMove = (event: MapMoveEvent) => {
     setZoom(event.viewState.zoom);
-    console.log(zoom);
   };
 
   return (
