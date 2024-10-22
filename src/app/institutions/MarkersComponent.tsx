@@ -2,9 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Marker } from 'react-map-gl';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from '@mui/material';
-import { Feature, TypedFeatures } from '../types/mapTypes';
-import Features from '../../data/features.json';
-import { getFacilityEsData } from '../../data/eqInstitutions';
+import { getFacilityEsData } from '@/data/eqInstitutions';
 import Sidebar from './Sidebar';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,11 +14,12 @@ type MarkersProps = {
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   const [esData, setEsData] = useState<any>({});
   const [markerSize, setMarkerSize] = useState<any>('small');
-  const [selectedMarker, setSelectedMarker] = useState<TypedFeatures | null>(
-    null
+  const [selectedMarker, setSelectedMarker] = useState<any | null>(
+      null
   );
   const [facultyName, setFacultyName] = useState<string>('');
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const [institutions, setInstitutions] = useState<any[]>([]);
 
   useEffect(() => {
     const zoomRate = (zoom: number) => {
@@ -36,7 +35,19 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       setEsData(data);
     };
 
+    const fetchInstitutions = async () => {
+      try{
+        const response = await fetch('https://topology-institutions.osg-htc.org/api/institution_ids')
+        const data = await response.json()
+        setInstitutions(data)
+        //console.log("data:", data)
+      } catch(error) {
+        console.error(error)
+      }
+    }
+
     fetchData();
+    fetchInstitutions()
     zoomRate(zoom);
   }, [zoom]);
 
@@ -48,8 +59,8 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
     });
   };
 
-  const convertName = (feature: Feature) => {
-    const originalName = feature.properties['Institution Name'];
+  const convertName = (institution: any) => {
+    const originalName = institution.name;
     const convertedName = encodeURIComponent(originalName);
     setFacultyName(convertedName);
     return convertedName;
@@ -62,24 +73,24 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   };
 
   const markers = useMemo(() => {
-    const handleMarkerClick = (feature: Feature) => {
-      setSelectedMarker(feature);
-      const convertedName = convertName(feature);
-      centerToMarker(feature);
+    const handleMarkerClick = (institution: any) => {
+      setSelectedMarker(institution);
+      const convertedName = convertName(institution);
+      centerToMarker(institution);
       navigate(`/maps/institutions?faculty=${convertedName}`);
     };
 
-    const centerToMarker = (feature: Feature) => {
+    const centerToMarker = (institution: any) => {
       const map = mapRef.current.getMap();
       map.flyTo({
-        center: feature.geometry.coordinates,
+        center: [institution.longitude, institution.latitude],
         zoom: 8,
         duration: 2000,
       });
     };
 
-    return Features.features.map((feature) => {
-      const institutionName = feature.properties['Institution Name'];
+    return institutions.map((institution) => {
+      const institutionName = institution.name;
       const esInfo = esData[institutionName];
 
       // Handle cases where there's no matching institution in the ElasticSearch data.
@@ -87,56 +98,40 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         return null;
       }
 
-      const filteredFeature: TypedFeatures = {
-        type: feature.type,
-        properties: {
-          'Institution Name': institutionName,
-        },
-        geometry: {
-          type: feature.geometry.type,
-          coordinates: [
-            feature.geometry.coordinates[0],
-            feature.geometry.coordinates[1],
-          ] as [number, number],
-        },
-        id: feature.id,
-        dataState: esInfo.gpuProvided > 0,
-      };
-
       return (
-        <Marker
-          key={filteredFeature.id}
-          longitude={filteredFeature.geometry.coordinates[0]}
-          latitude={filteredFeature.geometry.coordinates[1]}
-        >
-          <Tooltip
-            title={filteredFeature.properties['Institution Name']}
-            placement='top'
+          <Marker
+              key={institution.id}
+              longitude={institution.longitude}
+              latitude={institution.latitude}
           >
-            <LocationOnIcon
-              color='primary'
-              className='hover:scale-150 transition duration-300 ease-in-out cursor-pointer'
-              fontSize={markerSize}
-              onClick={() => handleMarkerClick(filteredFeature)}
-            />
-          </Tooltip>
-        </Marker>
+            <Tooltip
+                title={institution.name}
+                placement='top'
+            >
+              <LocationOnIcon
+                  color='primary'
+                  className='hover:scale-150 transition duration-300 ease-in-out cursor-pointer'
+                  fontSize={markerSize}
+                  onClick={() => handleMarkerClick(institution)}
+              />
+            </Tooltip>
+          </Marker>
       );
     });
-  }, [esData, markerSize, navigate, mapRef]);
+  }, [esData, markerSize, navigate, institutions, mapRef.current]);
 
   return (
-    <>
-      {markers}
-      {selectedMarker && (
-        <Sidebar
-          facultyName={facultyName}
-          onClose={closeSidebar}
-          header={selectedMarker.properties['Institution Name']}
-          dataState={selectedMarker.dataState}
-        />
-      )}
-    </>
+      <>
+        {markers.map((marker) => marker)}
+        {selectedMarker && (
+            <Sidebar
+                facultyName={facultyName}
+                onClose={closeSidebar}
+                header={selectedMarker.name}
+                dataState={selectedMarker.dataState}
+            />
+        )}
+      </>
   );
 };
 
