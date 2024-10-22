@@ -118,11 +118,11 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
           </Marker>
       );
     });
-  }, [esData, markerSize, navigate, mapRef, institutions]);
+  }, [esData, markerSize, navigate, institutions, mapRef.current]);
 
   return (
       <>
-        {markers}
+        {markers.map((marker) => marker)}
         {selectedMarker && (
             <Sidebar
                 facultyName={facultyName}
