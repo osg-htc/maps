@@ -19,7 +19,7 @@ const MapComponent: React.FC = () => {
   const [zoom, setZoom] = useState(1);
   const mapRef = useRef<MapRef>(null);
   const [projection, setProjection] = useState('globe');
-  
+
   const handleProjection = () => {
     setProjection(projection === 'globe' ? 'mercator' : 'globe');
   };
@@ -30,7 +30,7 @@ const MapComponent: React.FC = () => {
     zoom: zoom,
     width: '100%',
     height: '100vh',
-    transitionDuration: 300 
+    transitionDuration: 300,
   };
 
   const onMove = (event: MapMoveEvent) => {
@@ -42,12 +42,12 @@ const MapComponent: React.FC = () => {
       ref={mapRef}
       initialViewState={viewState}
       onMove={onMove}
-      mapStyle="mapbox://styles/mapbox/streets-v11"
+      mapStyle='mapbox://styles/mapbox/streets-v11'
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
       projection={projection}
     >
       <MapControls mapRef={mapRef} handleProjection={handleProjection} />
-      <MarkersComponent mapRef={mapRef} zoom={zoom}/>
+      <MarkersComponent mapRef={mapRef} zoom={zoom} />
     </Map>
   );
 };

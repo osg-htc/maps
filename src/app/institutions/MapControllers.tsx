@@ -6,14 +6,15 @@ import NorthIcon from '@mui/icons-material/Explore';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import MapIcon from '@mui/icons-material/Map';
 
-
 interface MapControlsProps {
-    mapRef: React.RefObject<any>;
-    handleProjection: () => void;
-  }
+  mapRef: React.RefObject<any>;
+  handleProjection: () => void;
+}
 
-const MapControls: React.FC<MapControlsProps> = ({ mapRef, handleProjection }) => {
-
+const MapControls: React.FC<MapControlsProps> = ({
+  mapRef,
+  handleProjection,
+}) => {
   const controlStyles: CSSProperties = {
     position: 'absolute',
     top: 10,
@@ -29,10 +30,9 @@ const MapControls: React.FC<MapControlsProps> = ({ mapRef, handleProjection }) =
 
   const runningInIframe = window.location !== window.parent.location;
 
-  
   const openInBrowser = () => {
-    window.open("https://osg-htc.org/maps/", "_blank");
-  }
+    window.open('https://osg-htc.org/maps/', '_blank');
+  };
   const handleZoomIn = () => {
     const map = mapRef.current.getMap();
     map.zoomIn();
@@ -54,33 +54,30 @@ const MapControls: React.FC<MapControlsProps> = ({ mapRef, handleProjection }) =
     });
   };
 
-
-  
-
   return (
     <>
-    { runningInIframe ?
-      <div style={controlStyles}>
-      <IconButton onClick={openInBrowser}>
-        <OpenInNewIcon />
-      </IconButton>
-      </div>
-      :
-      <div style={controlStyles}>
-      <IconButton onClick={handleZoomIn}>
-        <ZoomInIcon />
-      </IconButton>
-      <IconButton onClick={handleZoomOut}>
-        <ZoomOutIcon />
-      </IconButton>
-      <IconButton onClick={handleResetNorth}>
-        <NorthIcon />
-      </IconButton>
-      <IconButton onClick={handleProjection}>
-        <MapIcon />
-      </IconButton>
-      </div>
-    }
+      {runningInIframe ? (
+        <div style={controlStyles}>
+          <IconButton onClick={openInBrowser}>
+            <OpenInNewIcon />
+          </IconButton>
+        </div>
+      ) : (
+        <div style={controlStyles}>
+          <IconButton onClick={handleZoomIn}>
+            <ZoomInIcon />
+          </IconButton>
+          <IconButton onClick={handleZoomOut}>
+            <ZoomOutIcon />
+          </IconButton>
+          <IconButton onClick={handleResetNorth}>
+            <NorthIcon />
+          </IconButton>
+          <IconButton onClick={handleProjection}>
+            <MapIcon />
+          </IconButton>
+        </div>
+      )}
     </>
   );
 };

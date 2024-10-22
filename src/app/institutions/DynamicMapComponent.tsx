@@ -3,9 +3,9 @@ import { BrowserRouter } from 'react-router-dom';
 import MapComponent from './MapComponent';
 
 const DynamicMapComponent: React.FC = () => (
-    <BrowserRouter>
-        <MapComponent />
-    </BrowserRouter>
+  <BrowserRouter>
+    <MapComponent />
+  </BrowserRouter>
 );
 
 export default DynamicMapComponent;
