@@ -4,7 +4,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from '@mui/material';
 import { getFacilityEsData } from '@/data/eqInstitutions';
 import Sidebar from './Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation'
 
 type MarkersProps = {
   mapRef: React.RefObject<any>;
@@ -12,27 +12,23 @@ type MarkersProps = {
 };
 
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const faculty = searchParams.get('faculty')
   const [esData, setEsData] = useState<any>({});
   const [markerSize, setMarkerSize] = useState<any>('small');
   const [selectedMarker, setSelectedMarker] = useState<any | null>(
       null
   );
   const [facultyName, setFacultyName] = useState<string>('');
-  const navigate = useNavigate()
   const [institutions, setInstitutions] = useState<any[]>([]);
 
   useEffect(() => {
-    const zoomRate = (zoom: number) => {
-      if (zoom < 3) {
-        setMarkerSize('small');
-      } else {
-        setMarkerSize('large');
-      }
-    };
     // Fetch the ElasticSearch data when the component mounts
     const fetchData = async () => {
       const data = await getFacilityEsData();
       setEsData(data);
+      console.log("Facility data is fetched")
     };
 
     const fetchInstitutions = async () => {
@@ -41,6 +37,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         const data = await response.json()
         setInstitutions(data)
         //console.log("data:", data)
+        console.log("Institution data is fetched")
       } catch(error) {
         console.error(error)
       }
@@ -48,8 +45,30 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
 
     fetchData();
     fetchInstitutions()
-    zoomRate(zoom);
-  }, [zoom]);
+  }, []);
+
+  useEffect(() => {
+    const zoomRate = (zoom: number) => {
+      if (zoom < 3) {
+        setMarkerSize('small');
+      } else {
+        setMarkerSize('large');
+      }
+    }
+  }, [zoom])
+
+  // Set selected marker based on the faculty query parameter on mount
+  useEffect(() => {
+    if (faculty) {
+      const decodedFaculty = decodeURIComponent(faculty) // deocde the faculty name
+      const institution = institutions.find((institution) => institution.name === decodedFaculty) // find the institution based on the faculty name
+      if (institution) {
+        setSelectedMarker(institution)
+        setFacultyName(decodedFaculty)
+        centerToMarker(institution)
+        }
+    }
+  }, [faculty, institutions]); // re-render when the faculty changes
 
   const handleResetNorth = () => {
     const map = mapRef.current.getMap();
@@ -67,9 +86,18 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   };
 
   const closeSidebar = () => {
-    navigate(`/maps/institutions`);
+    router.push(`/institutions`);
     setSelectedMarker(null);
     handleResetNorth();
+  };
+
+  const centerToMarker = (institution: any) => {
+    const map = mapRef.current.getMap();
+    map.flyTo({
+      center: [institution.longitude, institution.latitude],
+      zoom: 8,
+      duration: 2000,
+    });
   };
 
   const markers = useMemo(() => {
@@ -77,16 +105,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       setSelectedMarker(institution);
       const convertedName = convertName(institution);
       centerToMarker(institution);
-      navigate(`/maps/institutions?faculty=${convertedName}`);
-    };
-
-    const centerToMarker = (institution: any) => {
-      const map = mapRef.current.getMap();
-      map.flyTo({
-        center: [institution.longitude, institution.latitude],
-        zoom: 8,
-        duration: 2000,
-      });
+      router.push(`/institutions?faculty=${convertedName}`);
     };
 
     return institutions.map((institution) => {
@@ -118,11 +137,11 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
           </Marker>
       );
     });
-  }, [esData, markerSize, navigate, institutions, mapRef.current]);
+  }, [esData, markerSize, institutions, mapRef]);
 
   return (
       <>
-        {markers.map((marker) => marker)}
+        {markers}
         {selectedMarker && (
             <Sidebar
                 facultyName={facultyName}
