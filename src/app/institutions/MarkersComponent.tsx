@@ -119,7 +119,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
 
       return (
           <Marker
-              key={institution.id}
+              key={institution.name}
               longitude={institution.longitude}
               latitude={institution.latitude}
           >
