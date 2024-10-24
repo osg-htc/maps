@@ -3,6 +3,7 @@
  */
 const nextConfig = {
   output: 'export',
+  basePath: '/maps'
 };
 
 module.exports = nextConfig;
