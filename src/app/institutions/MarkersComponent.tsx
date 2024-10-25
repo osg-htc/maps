@@ -4,7 +4,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from '@mui/material';
 import { getFacilityEsData } from '@/data/eqInstitutions';
 import Sidebar from './Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useRouter, useSearchParams } from 'next/navigation'
 
 type MarkersProps = {
   mapRef: React.RefObject<any>;
@@ -12,27 +12,24 @@ type MarkersProps = {
 };
 
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const faculty = searchParams.get('faculty')
   const [esData, setEsData] = useState<any>({});
   const [markerSize, setMarkerSize] = useState<any>('small');
   const [selectedMarker, setSelectedMarker] = useState<any | null>(
       null
   );
   const [facultyName, setFacultyName] = useState<string>('');
-  const navigate = useNavigate()
   const [institutions, setInstitutions] = useState<any[]>([]);
+  const [idToName, setIdToName] = useState<any>({});
 
   useEffect(() => {
-    const zoomRate = (zoom: number) => {
-      if (zoom < 3) {
-        setMarkerSize('small');
-      } else {
-        setMarkerSize('large');
-      }
-    };
     // Fetch the ElasticSearch data when the component mounts
     const fetchData = async () => {
       const data = await getFacilityEsData();
       setEsData(data);
+      console.log("Facility data is fetched")
     };
 
     const fetchInstitutions = async () => {
@@ -41,6 +38,26 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         const data = await response.json()
         setInstitutions(data)
         //console.log("data:", data)
+        console.log("Institution data is fetched")
+      } catch(error) {
+        console.error(error)
+      }
+    }
+
+    const fetchMappingEndpoint = async () => {
+      try{
+        const response = await fetch('https://topology.opensciencegrid.org/miscfacility/json')
+        const data = await response.json()
+
+        // map the institution id to the institution name
+        const mapping: Record<string, string> = {};
+        for (const [name, value] of Object.entries(data)) {
+          const institutionId = value.InstitutionID;
+          mapping[institutionId] = name;
+        }
+
+        setIdToName(mapping) // create a map from id to name for easy lookup
+        //console.log("data:", mapping)
       } catch(error) {
         console.error(error)
       }
@@ -48,8 +65,35 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
 
     fetchData();
     fetchInstitutions()
-    zoomRate(zoom);
-  }, [zoom]);
+    fetchMappingEndpoint()
+  }, []);
+
+  useEffect(() => {
+    const zoomRate = (zoom: number) => {
+      if (zoom < 3) {
+        setMarkerSize('small');
+      } else {
+        setMarkerSize('large');
+      }
+    }
+  }, [zoom])
+
+  // Set selected marker based on the faculty query parameter on mount
+  useEffect(() => {
+    if (faculty) {
+      const decodedFaculty = decodeURIComponent(faculty) // deocde the faculty name
+      const institution = institutions.find((institution) => {
+        const institutionId = institution.id;
+        const institutionName = idToName[institutionId];
+        return institutionName === decodedFaculty; // check if the name matches the decoded faculty name
+      }) // find the institution based on the faculty name
+      if (institution) {
+        setSelectedMarker(institution)
+        setFacultyName(decodedFaculty)
+        centerToMarker(institution)
+        }
+    }
+  }, [faculty, institutions]); // re-render when the faculty changes
 
   const handleResetNorth = () => {
     const map = mapRef.current.getMap();
@@ -59,38 +103,39 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
     });
   };
 
-  const convertName = (institution: any) => {
-    const originalName = institution.name;
-    const convertedName = encodeURIComponent(originalName);
+  const convertName = (institutionName: string) => {
+    const convertedName = encodeURIComponent(institutionName);
     setFacultyName(convertedName);
     return convertedName;
   };
 
   const closeSidebar = () => {
-    navigate(`/maps/institutions`);
+    router.push(`/institutions`);
     setSelectedMarker(null);
     handleResetNorth();
   };
 
-  const markers = useMemo(() => {
-    const handleMarkerClick = (institution: any) => {
-      setSelectedMarker(institution);
-      const convertedName = convertName(institution);
-      centerToMarker(institution);
-      navigate(`/maps/institutions?faculty=${convertedName}`);
-    };
+  const centerToMarker = (institution: any) => {
+    const map = mapRef.current.getMap();
+    map.flyTo({
+      center: [institution.longitude, institution.latitude],
+      zoom: 8,
+      duration: 2000,
+    });
+  };
 
-    const centerToMarker = (institution: any) => {
-      const map = mapRef.current.getMap();
-      map.flyTo({
-        center: [institution.longitude, institution.latitude],
-        zoom: 8,
-        duration: 2000,
-      });
+  const markers = useMemo(() => {
+    const handleMarkerClick = (institution: any, institutionName: any) => {
+      setSelectedMarker(institution);
+      const convertedName = convertName(institutionName);
+      centerToMarker(institution);
+      router.push(`/institutions?faculty=${convertedName}`);
     };
 
     return institutions.map((institution) => {
-      const institutionName = institution.name;
+      // Use the institution id to get the institution name form the mapping endpoints and then use the id to lookup the facility data
+      const institutionId = institution.id;
+      const institutionName = idToName[institutionId];
       const esInfo = esData[institutionName];
 
       // Handle cases where there's no matching institution in the ElasticSearch data.
@@ -112,17 +157,17 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
                   color='primary'
                   className='hover:scale-150 transition duration-300 ease-in-out cursor-pointer'
                   fontSize={markerSize}
-                  onClick={() => handleMarkerClick(institution)}
+                  onClick={() => handleMarkerClick(institution, institutionName)}
               />
             </Tooltip>
           </Marker>
       );
     });
-  }, [esData, markerSize, navigate, institutions, mapRef.current]);
+  }, [esData, markerSize, institutions, mapRef, idToName]);
 
   return (
       <>
-        {markers.map((marker) => marker)}
+        {markers}
         {selectedMarker && (
             <Sidebar
                 facultyName={facultyName}
