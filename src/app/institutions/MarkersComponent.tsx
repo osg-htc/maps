@@ -49,6 +49,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         const response = await fetch('https://topology.opensciencegrid.org/miscfacility/json')
         const data = await response.json()
 
+        // map the institution id to the institution name
         const mapping: Record<string, string> = {};
         for (const [name, value] of Object.entries(data)) {
           const institutionId = value.InstitutionID;
@@ -56,7 +57,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         }
 
         setIdToName(mapping) // create a map from id to name for easy lookup
-        console.log("data:", mapping)
+        //console.log("data:", mapping)
       } catch(error) {
         console.error(error)
       }
@@ -81,7 +82,11 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   useEffect(() => {
     if (faculty) {
       const decodedFaculty = decodeURIComponent(faculty) // deocde the faculty name
-      const institution = institutions.find((institution) => institution.name === decodedFaculty) // find the institution based on the faculty name
+      const institution = institutions.find((institution) => {
+        const institutionId = institution.id;
+        const institutionName = idToName[institutionId];
+        return institutionName === decodedFaculty; // check if the name matches the decoded faculty name
+      }) // find the institution based on the faculty name
       if (institution) {
         setSelectedMarker(institution)
         setFacultyName(decodedFaculty)
@@ -98,9 +103,8 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
     });
   };
 
-  const convertName = (institution: any) => {
-    const originalName = institution.name;
-    const convertedName = encodeURIComponent(originalName);
+  const convertName = (institutionName: string) => {
+    const convertedName = encodeURIComponent(institutionName);
     setFacultyName(convertedName);
     return convertedName;
   };
@@ -121,14 +125,15 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   };
 
   const markers = useMemo(() => {
-    const handleMarkerClick = (institution: any) => {
+    const handleMarkerClick = (institution: any, institutionName: any) => {
       setSelectedMarker(institution);
-      const convertedName = convertName(institution);
+      const convertedName = convertName(institutionName);
       centerToMarker(institution);
       router.push(`/institutions?faculty=${convertedName}`);
     };
 
     return institutions.map((institution) => {
+      // Use the institution id to get the institution name form the mapping endpoints and then use the id to lookup the facility data
       const institutionId = institution.id;
       const institutionName = idToName[institutionId];
       const esInfo = esData[institutionName];
@@ -152,7 +157,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
                   color='primary'
                   className='hover:scale-150 transition duration-300 ease-in-out cursor-pointer'
                   fontSize={markerSize}
-                  onClick={() => handleMarkerClick(institution)}
+                  onClick={() => handleMarkerClick(institution, institutionName)}
               />
             </Tooltip>
           </Marker>
