@@ -22,6 +22,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   );
   const [facultyName, setFacultyName] = useState<string>('');
   const [institutions, setInstitutions] = useState<any[]>([]);
+  const [idToName, setIdToName] = useState<any>({});
 
   useEffect(() => {
     // Fetch the ElasticSearch data when the component mounts
@@ -43,8 +44,27 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       }
     }
 
+    const fetchMappingEndpoint = async () => {
+      try{
+        const response = await fetch('https://topology.opensciencegrid.org/miscfacility/json')
+        const data = await response.json()
+
+        const mapping: Record<string, string> = {};
+        for (const [name, value] of Object.entries(data)) {
+          const institutionId = value.InstitutionID;
+          mapping[institutionId] = name;
+        }
+
+        setIdToName(mapping) // create a map from id to name for easy lookup
+        console.log("data:", mapping)
+      } catch(error) {
+        console.error(error)
+      }
+    }
+
     fetchData();
     fetchInstitutions()
+    fetchMappingEndpoint()
   }, []);
 
   useEffect(() => {
@@ -109,7 +129,8 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
     };
 
     return institutions.map((institution) => {
-      const institutionName = institution.name;
+      const institutionId = institution.id;
+      const institutionName = idToName[institutionId];
       const esInfo = esData[institutionName];
 
       // Handle cases where there's no matching institution in the ElasticSearch data.
@@ -119,7 +140,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
 
       return (
           <Marker
-              key={institution.name}
+              key={institution.id}
               longitude={institution.longitude}
               latitude={institution.latitude}
           >
@@ -137,7 +158,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
           </Marker>
       );
     });
-  }, [esData, markerSize, institutions, mapRef]);
+  }, [esData, markerSize, institutions, mapRef, idToName]);
 
   return (
       <>
