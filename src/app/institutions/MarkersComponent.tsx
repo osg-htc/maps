@@ -72,7 +72,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef}) => {
 
     const map = mapRef.current.getMap();
     const currentZoom = map.getZoom();
-    console.log('Current zoom:', currentZoom);
+    //console.log('Current zoom:', currentZoom);
 
     const newSize = currentZoom < 3 ? 'small' : 'large';
     if (markerSize !== newSize) {
