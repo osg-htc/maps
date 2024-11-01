@@ -16,7 +16,6 @@ interface MapMoveEvent {
 }
 
 const MapComponent: React.FC = () => {
-  const [zoom, setZoom] = useState(1);
   const mapRef = useRef<MapRef>(null);
   const [projection, setProjection] = useState('globe');
 
@@ -27,27 +26,22 @@ const MapComponent: React.FC = () => {
   const viewState = {
     latitude: 39.8283,
     longitude: -98.5795,
-    zoom: zoom,
+    zoom: 1,
     width: '100%',
     height: '100vh',
     transitionDuration: 300,
-  };
-
-  const onMove = (event: MapMoveEvent) => {
-    setZoom(event.viewState.zoom);
   };
 
   return (
     <Map
       ref={mapRef}
       initialViewState={viewState}
-      onMove={onMove}
       mapStyle='mapbox://styles/mapbox/streets-v11'
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
       projection={projection}
     >
       <MapControls mapRef={mapRef} handleProjection={handleProjection} />
-      <MarkersComponent mapRef={mapRef} zoom={zoom} />
+      <MarkersComponent mapRef={mapRef}/>
     </Map>
   );
 };

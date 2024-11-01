@@ -8,10 +8,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 type MarkersProps = {
   mapRef: React.RefObject<any>;
-  zoom: number;
 };
 
-const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
+const MarkersComponent: React.FC<MarkersProps> = ({ mapRef}) => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const faculty = searchParams.get('faculty')
@@ -29,7 +28,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
     const fetchData = async () => {
       const data = await getFacilityEsData();
       setEsData(data);
-      console.log("Facility data is fetched")
+      //console.log("Facility data is fetched")
     };
 
     const fetchInstitutions = async () => {
@@ -38,7 +37,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         const data = await response.json()
         setInstitutions(data)
         //console.log("data:", data)
-        console.log("Institution data is fetched")
+        //console.log("Institution data is fetched")
       } catch(error) {
         console.error(error)
       }
@@ -69,14 +68,17 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   }, []);
 
   useEffect(() => {
-    const zoomRate = (zoom: number) => {
-      if (zoom < 3) {
-        setMarkerSize('small');
-      } else {
-        setMarkerSize('large');
-      }
+    if (!mapRef.current) return;
+
+    const map = mapRef.current.getMap();
+    const currentZoom = map.getZoom();
+    console.log('Current zoom:', currentZoom);
+
+    const newSize = currentZoom < 3 ? 'small' : 'large';
+    if (markerSize !== newSize) {
+      setMarkerSize(newSize);
     }
-  }, [zoom])
+  }, [mapRef, markerSize]);
 
   // Set selected marker based on the faculty query parameter on mount
   useEffect(() => {
