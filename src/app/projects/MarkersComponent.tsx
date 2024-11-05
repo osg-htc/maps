@@ -43,7 +43,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   }, [zoom]);
 
   useEffect(() => {
-    const fetchInsitutions = async () => {
+    const fetchInstitutions = async () => {
       try {
         const response = await fetch(
           'https://topology-institutions.osg-htc.org/api/institution_ids'
@@ -62,7 +62,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         console.error('Failed to fetch projects:', error);
       }
     };
-    fetchInsitutions();
+    fetchInstitutions();
     fetchProjects();
   }, []);
 
