@@ -7,7 +7,7 @@ import Institutions from '../../data/features.json';
 import Projects from '../../data/projects.json';
 import esProjects from '../../data/esProjects';
 import Sidebar from './Sidebar';
-import { useNavigate } from 'react-router-dom';
+import {useRouter, useSearchParams} from "next/navigation";
 
 type Project = {
   key: string;
@@ -20,12 +20,13 @@ type Project = {
 };
 
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [markerSize, setMarkerSize] = useState<any>('small');
   const [selectedMarker, setSelectedMarker] = useState<TypedFeatures | null>(
     null
   );
   const [facultyName, setFacultyName] = useState<string>('');
-  const navigate = useNavigate();
   const [institutions, setInstitutions] = useState<any[]>([]);
   const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>(
     []
@@ -74,6 +75,8 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
     );
   }, [elasticsearchProjects]);
 
+  console.log('filteredProjects:', filteredProjects);
+
   const institutionsWithProjects = useMemo(() => {
     return institutions.reduce((acc, institution) => {
       const institutionName = institution.name;
@@ -114,7 +117,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   };
 
   const closeSidebar = () => {
-    navigate(`/maps/projects`);
+    router.push(`/maps/projects`);
     setSelectedMarker(null);
     handleResetNorth();
   };
@@ -124,7 +127,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       setSelectedMarker(feature);
       const convertedName = convertName(feature);
       centerToMarker(feature);
-      navigate(`/maps/projects?faculty=${convertedName}`);
+      router.push(`/maps/projects?faculty=${convertedName}`);
     };
 
     const centerToMarker = (feature: Feature) => {
@@ -181,7 +184,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
         </Marker>
       );
     });
-  }, [markerSize, navigate, mapRef, institutionsWithProjects]);
+  }, [markerSize, mapRef, institutionsWithProjects]);
 
   return (
     <>
