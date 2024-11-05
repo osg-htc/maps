@@ -19,7 +19,7 @@ type Project = {
   Name: string;
 };
 
-const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
+const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [markerSize, setMarkerSize] = useState<any>('small');
@@ -31,16 +31,19 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>(
     []
   );
+
   useEffect(() => {
-    const zoomRate = (zoom: number) => {
-      if (zoom < 3) {
-        setMarkerSize('small');
-      } else {
-        setMarkerSize('large');
-      }
-    };
-    zoomRate(zoom);
-  }, [zoom]);
+    if (!mapRef.current) return;
+
+    const map = mapRef.current.getMap();
+    const currentZoom = map.getZoom();
+    //console.log('Current zoom:', currentZoom);
+
+    const newSize = currentZoom < 3 ? 'small' : 'large';
+    if (markerSize !== newSize) {
+      setMarkerSize(newSize);
+    }
+  }, [mapRef, markerSize]);
 
   useEffect(() => {
     const fetchInstitutions = async () => {
@@ -117,7 +120,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   };
 
   const closeSidebar = () => {
-    router.push(`/maps/projects`);
+    router.push(`/projects`);
     setSelectedMarker(null);
     handleResetNorth();
   };
@@ -127,7 +130,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       setSelectedMarker(feature);
       const convertedName = convertName(feature);
       centerToMarker(feature);
-      router.push(`/maps/projects?faculty=${convertedName}`);
+      router.push(`/projects?faculty=${convertedName}`);
     };
 
     const centerToMarker = (feature: Feature) => {
