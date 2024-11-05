@@ -48,16 +48,18 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
       }, {});
 
       // Combine institution data with facility data
+      // first use Object.entries to convert facilitiesData into an array of key-value pairs
+      // key is the facilityName and value is the facilityInfo
       const combinedData = Object.entries(facilitiesData).map(([facilityName, facilityInfo]) => {
-        const institutionId = facilityInfo.InstitutionID;
-        const institutionDetails = institutionMap[institutionId] || []; // array of matched institutions
+        const institutionId = facilityInfo.InstitutionID; //get the institutionId from the facilityInfo
+        const institutionArray = institutionMap[institutionId] || []; // get the array of institutions grouped by institutionId
         return {
           facilityName,
           facilityID: facilityInfo.ID,
           isCCStar: facilityInfo.IsCCStar,
-          institutions: institutionDetails.map(institution => ({
-            ...institution,
-            esInfo: esData[facilityName] || null // Attach esData if available
+          institutions: institutionArray.map(institution => ({ // iterate through the InstitutionArray to get each institution
+            ...institution, // spread the institution object
+            esInfo: esData[facilityName] || null // Attach esData using the facilityName as the key
           }))
         };
       });
