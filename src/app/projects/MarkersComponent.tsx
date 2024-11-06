@@ -2,9 +2,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Marker } from 'react-map-gl';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from '@mui/material';
-import { Feature, TypedFeatures, MarkersProps } from '../types/mapTypes';
-import Institutions from '../../data/features.json';
-import Projects from '../../data/projects.json';
 import esProjects from '../../data/esProjects';
 import Sidebar from './Sidebar';
 import {useRouter, useSearchParams} from "next/navigation";
@@ -19,15 +16,14 @@ type Project = {
   Name: string;
 };
 
-const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
+const MarkersComponent: React.FC< {mapRef: any} > = ({ mapRef }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [markerSize, setMarkerSize] = useState<any>('small');
-  const [selectedMarker, setSelectedMarker] = useState<TypedFeatures | null>(
-    null
-  );
+  const [selectedMarker, setSelectedMarker] = useState<any>(null);
   const [facultyName, setFacultyName] = useState<string>('');
   const [institutions, setInstitutions] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any>([]);
   const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>(
     []
   );
@@ -57,52 +53,78 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
         console.error('Failed to fetch institutions:', error);
       }
     };
-    const fetchProjects = async () => {
+
+    const fetchProjects = async() => {
+      try{
+        const response = await fetch('https://topology.opensciencegrid.org/miscproject/json')
+        const data = await response.json();
+        setProjects(data);
+        console.log('Projects:', data);
+      } catch (error){
+        console.error('Failed to fetch projects:', error);
+      }
+    }
+
+    const fetchElasticsearchProjects = async () => {
       try {
         const response = await esProjects();
         setElasticsearchProjects(response.aggregations.projects.buckets);
+        console.log('Elasticsearch projects:', response.aggregations.projects.buckets);
       } catch (error) {
         console.error('Failed to fetch projects:', error);
       }
     };
-    fetchInstitutions();
+
     fetchProjects();
+    fetchInstitutions();
+    fetchElasticsearchProjects();
   }, []);
 
   const filteredProjects = useMemo(() => {
     const projectNames = new Set(
       elasticsearchProjects.map((project) => project.key)
     );
-    return Object.values(Projects).filter((project) =>
+    return Object.values(projects).filter((project) =>
       projectNames.has(project.Name)
     );
-  }, [elasticsearchProjects]);
+  }, [elasticsearchProjects, projects])
 
-  console.log('filteredProjects:', filteredProjects);
+  console.log('Filtered projects:', filteredProjects);
 
   const institutionsWithProjects = useMemo(() => {
     return institutions.reduce((acc, institution) => {
-      const institutionName = institution.name;
+      const institutionId = institution.id;
       const institutionProjects = filteredProjects
-        .filter((project) => project.Organization === institutionName)
-        .map((proj) => {
-          const projectData = elasticsearchProjects.find(
-            (elProj) => elProj.key === proj.Name
-          );
-          return {
-            ...proj,
-            cpuHours: projectData?.projectCpuUse.value || 0,
-            gpuHours: projectData?.projectGpuUse.value || 0,
-          };
-        });
+          .filter((project) => project.InstitutionID === institutionId)
+          .map((proj) => {
+            const projectData = elasticsearchProjects.find((elProj) => elProj.key === proj.Name);
+            return {
+              ...proj,
+              cpuHours: projectData?.projectCpuUse.value || 0,
+              gpuHours: projectData?.projectGpuUse.value || 0,
+            };
+          });
 
       if (institutionProjects.length > 0) {
-        acc[institutionName] = institutionProjects;
+        acc[institution.name] = institutionProjects;
       }
 
       return acc;
     }, {});
   }, [institutions, filteredProjects, elasticsearchProjects]);
+
+    console.log('Institutions with projects:', institutionsWithProjects);
+
+
+
+  const centerToMarker = (institution: any) => {
+    const map = mapRef.current.getMap();
+    map.flyTo({
+      center: [institution.longitude, institution.latitude],
+      zoom: 8,
+      duration: 2000,
+    });
+  };
 
   const handleResetNorth = () => {
     const map = mapRef.current.getMap();
@@ -112,9 +134,8 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
     });
   };
 
-  const convertName = (feature: Feature) => {
-    const originalName = feature.properties['Institution Name'];
-    const convertedName = encodeURIComponent(originalName);
+  const convertName = (institutionName: string) => {
+    const convertedName = encodeURIComponent(institutionName);
     setFacultyName(convertedName);
     return convertedName;
   };
@@ -126,85 +147,46 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
   };
 
   const markers = useMemo(() => {
-    const handleMarkerClick = (feature: Feature) => {
-      setSelectedMarker(feature);
-      const convertedName = convertName(feature);
-      centerToMarker(feature);
+    const handleMarkerClick = (institution: any, institutionName: any) => {
+      setSelectedMarker(institution);
+      const convertedName = convertName(institutionName);
+      centerToMarker(institution);
       router.push(`/projects?faculty=${convertedName}`);
     };
-
-    const centerToMarker = (feature: Feature) => {
-      const map = mapRef.current.getMap();
-      map.flyTo({
-        center: feature.geometry.coordinates,
-        zoom: 8,
-        duration: 2000,
-      });
-    };
-
-    const matchedFeatures = Institutions.features.filter(
-      (feature) =>
-        institutionsWithProjects[feature.properties['Institution Name']]
-    );
-
     // Now create markers for matched features
-    return matchedFeatures.map((feature) => {
-      const institutionName = feature.properties['Institution Name'];
+    return institutions
+        .filter((institution) => institutionsWithProjects[institution.name])
+        .map((institution) => (
+            <Marker
+                key={institution.id}
+                longitude={institution.longitude}
+                latitude={institution.latitude}
+            >
+              <Tooltip title={institution.name} placement="top">
+                <LocationOnIcon
+                    color="primary"
+                    className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
+                    fontSize={markerSize}
+                    onClick={() => handleMarkerClick(institution, institution.name)}
+                />
+              </Tooltip>
+            </Marker>
+        ));
+  }, [institutionsWithProjects, markerSize, mapRef]);
 
-      // Create the feature object, now assured it's one of the institutions we want to display
-      const filteredFeature: TypedFeatures = {
-        type: feature.type,
-        properties: {
-          'Institution Name': institutionName,
-        },
-        geometry: {
-          type: feature.geometry.type,
-          coordinates: [
-            feature.geometry.coordinates[0],
-            feature.geometry.coordinates[1],
-          ] as [number, number],
-        },
-        id: feature.id,
-      };
-
-      return (
-        <Marker
-          key={filteredFeature.id}
-          longitude={filteredFeature.geometry.coordinates[0]}
-          latitude={filteredFeature.geometry.coordinates[1]}
-        >
-          <Tooltip
-            title={filteredFeature.properties['Institution Name']}
-            placement='top'
-          >
-            <LocationOnIcon
-              color='primary'
-              className='hover:scale-150 transition duration-300 ease-in-out cursor-pointer'
-              fontSize={markerSize}
-              onClick={() => handleMarkerClick(filteredFeature)}
-            />
-          </Tooltip>
-        </Marker>
-      );
-    });
-  }, [markerSize, mapRef, institutionsWithProjects]);
 
   return (
     <>
       {markers}
       {selectedMarker && (
-        <Sidebar
-          facultyName={facultyName}
-          onClose={closeSidebar}
-          header={selectedMarker.properties['Institution Name']}
-          projects={
-            institutionsWithProjects[
-              selectedMarker.properties['Institution Name']
-            ] || []
-          }
-          dataState={selectedMarker.dataState}
-          selectedMarker={selectedMarker.properties['Institution Name']}
-        />
+          <Sidebar
+              facultyName={facultyName}
+              onClose={closeSidebar}
+              header={selectedMarker.name} // Ensure this is a string
+              projects={institutionsWithProjects[selectedMarker.name] || []} // Ensure this is an array
+              dataState={selectedMarker} // Check if this is necessary
+              selectedMarker={selectedMarker} // Check if this is necessary
+          />
       )}
     </>
   );
