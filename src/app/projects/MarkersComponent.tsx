@@ -19,6 +19,7 @@ type Project = {
 const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const faculty = searchParams.get('faculty');
     const [markerSize, setMarkerSize] = useState<any>('small');
     const [selectedMarker, setSelectedMarker] = useState<any>(null);
     const [facultyName, setFacultyName] = useState<string>('');
@@ -64,6 +65,23 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
             setMarkerSize(newSize);
         }
     }, [mapRef, markerSize]);
+
+    // Set selected marker based on the faculty query parameter on mount
+    useEffect(() => {
+        if (faculty && institutions.length > 0) {
+            const decodedFaculty = decodeURIComponent(faculty); // Decode the faculty name
+
+            const matchedInstitution = institutions.find(
+                (institution) => institution.name === decodedFaculty
+            );
+
+            if (matchedInstitution) {
+                setSelectedMarker(matchedInstitution);
+                setFacultyName(decodedFaculty);
+                centerToMarker(matchedInstitution);
+            }
+        }
+    }, [faculty, institutions]);
 
     const filteredProjects = useMemo(() => {
         const projectNames = new Set(
