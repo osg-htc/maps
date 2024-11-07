@@ -110,7 +110,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
   };
 
   const closeSidebar = () => {
-    router.push(`/institutions`);
+    window.history.pushState(null, '', `/maps/institutions`);
     setSelectedMarker(null);
     handleResetNorth();
   };
@@ -129,7 +129,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, zoom }) => {
       setSelectedMarker(institution);
       const convertedName = convertName(institutionName);
       centerToMarker(institution);
-      router.push(`/institutions?faculty=${convertedName}`);
+      window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
     };
 
     return institutions.map((institution) => {
