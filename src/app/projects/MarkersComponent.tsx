@@ -137,7 +137,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
     };
 
     const closeSidebar = () => {
-        router.push(`/projects`);
+        window.history.pushState(null, '', `/maps/projects`);
         setSelectedMarker(null);
         handleResetNorth();
     };
@@ -157,7 +157,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
             setSelectedMarker(institution);
             const convertedName = convertName(institutionName);
             centerToMarker(institution);
-            router.push(`/projects?faculty=${convertedName}`);
+            window.history.pushState(null, '', `/maps/projects?faculty=${convertedName}`);
         };
 
         return institutions

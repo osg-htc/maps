@@ -54,7 +54,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
                     }
                 });
 
-                // Convert the institutionMap back to an array for easier rendering
+                // convert to an array
                 const combinedData = Object.values(institutionMap);
                 setFacilityInstitutionData(combinedData);
                 console.log(combinedData);
@@ -109,7 +109,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
     };
 
     const closeSidebar = () => {
-        router.push(`/institutions`);
+        window.history.pushState(null, '', `/maps/institutions`);
         setSelectedMarker(null);
         handleResetNorth();
     };
@@ -128,7 +128,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
             setSelectedMarker(institution);
             const convertedName = convertName(facilityName);
             centerToMarker(institution);
-            router.push(`/institutions?faculty=${convertedName}`);
+            window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
         };
 
         const renderedMarkers = facilityInstitutionData.flatMap(institution =>
