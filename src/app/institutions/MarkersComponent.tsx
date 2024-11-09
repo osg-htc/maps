@@ -185,7 +185,9 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
 
     return (
         <>
-            <SearchBar institutions={filteredInstitutions} onSelectInstitution={handleSelectInstitution}
+            <SearchBar institutions={filteredInstitutions}
+                       onSelectInstitution={handleSelectInstitution}
+                       shifted={Boolean(selectedMarker)}
             />
             {markers}
             {selectedMarker && (
