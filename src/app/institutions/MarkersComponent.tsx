@@ -5,6 +5,7 @@ import { Tooltip } from '@mui/material';
 import { getFacilityEsData } from '@/data/eqInstitutions';
 import Sidebar from './Sidebar';
 import { useRouter, useSearchParams } from 'next/navigation';
+import SearchBar from "@/app/components/SearchBar";
 
 type MarkersProps = {
     mapRef: React.RefObject<any>;
@@ -123,6 +124,19 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
         });
     };
 
+    const filteredInstitutions = useMemo(() => {
+        return facilityInstitutionData.filter(institution =>
+        institution.facilities.some(facility => facility.esData));
+
+    }, [facilityInstitutionData]);
+
+    const handleSelectInstitution = (institution: any) => {
+        console.log(institution);
+        setSelectedMarker(institution);
+        console.log('Rendering sidebar with selectedMarker:', selectedMarker);
+        centerToMarker(institution);
+    };
+
     const markers = useMemo(() => {
         const handleMarkerClick = (institution: any, facilityName: any) => {
             setSelectedMarker(institution);
@@ -165,6 +179,8 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
 
     return (
         <>
+            <SearchBar institutions={filteredInstitutions} onSelectInstitution={handleSelectInstitution}
+            />
             {markers}
             {selectedMarker && (
                 <Sidebar
