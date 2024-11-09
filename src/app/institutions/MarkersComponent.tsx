@@ -95,6 +95,12 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
         }
     }, [faculty, facilityInstitutionData]);
 
+    useEffect(() => {
+        if(selectedMarker) {
+            console.log(selectedMarker)
+        }
+    }, [selectedMarker])
+
     const handleResetNorth = () => {
         const map = mapRef.current.getMap();
         map.flyTo({
@@ -131,17 +137,17 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
     }, [facilityInstitutionData]);
 
     const handleSelectInstitution = (institution: any) => {
-        console.log(institution);
         setSelectedMarker(institution);
-        console.log('Rendering sidebar with selectedMarker:', selectedMarker);
         centerToMarker(institution);
+        const convertedName = convertName(institution.facilities.map(facility => facility.name)[0]);
+        window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
     };
 
     const markers = useMemo(() => {
         const handleMarkerClick = (institution: any, facilityName: any) => {
             setSelectedMarker(institution);
+            centerToMarker(institution)
             const convertedName = convertName(facilityName);
-            centerToMarker(institution);
             window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
         };
 
