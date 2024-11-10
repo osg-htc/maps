@@ -4,14 +4,13 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from '@mui/material';
 import { getFacilityEsData } from '@/data/eqInstitutions';
 import Sidebar from './Sidebar';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 type MarkersProps = {
     mapRef: React.RefObject<any>;
 };
 
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const faculty = searchParams.get('faculty');
     const [esData, setEsData] = useState<any>({});
@@ -57,7 +56,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
                 // convert to an array
                 const combinedData = Object.values(institutionMap);
                 setFacilityInstitutionData(combinedData);
-                console.log(combinedData);
+                // console.log('Combined Data', combinedData);
             } catch (error) {
                 console.error('Failed to fetch data:', error);
             }

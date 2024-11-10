@@ -4,42 +4,82 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from '@mui/material';
 import esProjects from '../../data/esProjects';
 import Sidebar from './Sidebar';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
-type Project = {
-    key: string;
-    doc_count: number;
-    projectCpuUse: { value: number };
-    projectGpuUse: { value: number };
-    projectJobsRan: { value: number };
+type ProjectWithESData = {
+    name: string;
+    ID: string;
+    Department: string;
+    Description: string;
+    FieldOfScience: string;
+    FieldOfScienceID: string;
     Organization: string;
-    Name: string;
+    PIName: string;
+    ResourceAllocations: any;
+    Sponsor: {
+        CampusGrid: {
+            ID: number;
+            Name: string;
+        };
+    };
+    esData: {
+        docCount: number;
+        cpuHours: number;
+        gpuHours: number;
+        jobsRan: number;
+    };
+};
+
+type Institution = {
+    id: string;
+    name: string;
+    ror_id: string;
+    unitid: string | null;
+    longitude: number;
+    latitude: number;
+    ipeds_metadata: any;
+};
+
+type InstitutionWithProjects = Institution & {
+    projects: ProjectWithESData[];
 };
 
 const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const faculty = searchParams.get('faculty');
-    const [markerSize, setMarkerSize] = useState<any>('small');
-    const [selectedMarker, setSelectedMarker] = useState<any>(null);
+    const [markerSize, setMarkerSize] = useState<'small' | 'large'>('small');
+    const [selectedMarker, setSelectedMarker] = useState<InstitutionWithProjects | null>(null);
     const [facultyName, setFacultyName] = useState<string>('');
-    const [institutions, setInstitutions] = useState<any[]>([]);
-    const [projects, setProjects] = useState<any>([]);
+    const [institutions, setInstitutions] = useState<Institution[]>([]);
+    const [projects, setProjects] = useState<any[]>([]);
     const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Fetch Institutions
                 const institutionsResponse = await fetch(
                     'https://topology-institutions.osg-htc.org/api/institution_ids'
                 );
-                const institutionsData = await institutionsResponse.json();
+                const institutionsData: Institution[] = await institutionsResponse.json();
                 setInstitutions(institutionsData);
 
+                // Fetch Projects
                 const projectsResponse = await fetch('https://topology.opensciencegrid.org/miscproject/json');
                 const projectsData = await projectsResponse.json();
-                setProjects(projectsData);
+                // console.log('Fetched Projects Data:', projectsData);
 
+                // Convert projectsData to array from object
+                if (Array.isArray(projectsData)) {
+                    setProjects(projectsData);
+                } else if (typeof projectsData === 'object' && projectsData !== null) {
+                    setProjects(Object.values(projectsData));
+                } else {
+                    console.error('Unexpected projectsData format:', projectsData);
+                    setProjects([]);
+                }
+
+                // Fetch Elasticsearch Projects
                 const elasticsearchResponse = await esProjects();
                 setElasticsearchProjects(elasticsearchResponse.aggregations.projects.buckets);
             } catch (error) {
@@ -54,44 +94,36 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
         if (!mapRef.current) return;
 
         const map = mapRef.current.getMap();
-        const currentZoom = map.getZoom();
-        const newSize = currentZoom < 3 ? 'small' : 'large';
-        if (markerSize !== newSize) {
-            setMarkerSize(newSize);
-        }
-    }, [mapRef, markerSize]);
-
-    // Set selected marker based on the faculty query parameter on mount
-    useEffect(() => {
-        if (faculty && institutions.length > 0) {
-            const decodedFaculty = decodeURIComponent(faculty); // Decode the faculty name
-
-            const matchedInstitution = institutions.find(
-                (institution) => institution.name === decodedFaculty
-            );
-
-            if (matchedInstitution) {
-                setSelectedMarker(matchedInstitution);
-                setFacultyName(decodedFaculty);
-                centerToMarker(matchedInstitution);
+        const handleZoom = () => {
+            const currentZoom = map.getZoom();
+            const newSize = currentZoom < 3 ? 'small' : 'large';
+            if (markerSize !== newSize) {
+                setMarkerSize(newSize);
             }
-        }
-    }, [faculty, institutions]);
+        };
+
+        handleZoom();
+
+        map.on('zoom', handleZoom);
+
+        return () => {
+            map.off('zoom', handleZoom);
+        };
+    }, [mapRef, markerSize]);
 
     const filteredProjects = useMemo(() => {
         const projectNames = new Set(
             elasticsearchProjects.map((project) => project.key)
         );
-        return Object.values(projects).filter((project) =>
+        return projects.filter((project) =>
             projectNames.has(project.Name)
         );
     }, [elasticsearchProjects, projects]);
 
-    const institutionsWithProjects = useMemo(() => {
-        return institutions.reduce((acc, institution) => {
-            const institutionId = institution.id;
-            const institutionProjects = filteredProjects
-                .filter((project) => project.InstitutionID === institutionId)
+    const institutionsWithProjects: InstitutionWithProjects[] = useMemo(() => {
+        return institutions.map((institution) => {
+            const institutionProjects: ProjectWithESData[] = filteredProjects
+                .filter((project) => project.InstitutionID === institution.id)
                 .map((proj) => {
                     const projectData = elasticsearchProjects.find((elProj) => elProj.key === proj.Name);
                     return {
@@ -105,13 +137,31 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
                     };
                 });
 
-            if (institutionProjects.length > 0) {
-                acc[institution.name] = institutionProjects;
-            }
-
-            return acc;
-        }, {});
+            return {
+                ...institution,
+                projects: institutionProjects
+            };
+        }).filter((iwp) => iwp.projects.length > 0);
     }, [institutions, filteredProjects, elasticsearchProjects]);
+
+    // console.log('institutionsWithProjects', institutionsWithProjects);
+
+    // Set selected marker based on the faculty query parameter on mount
+    useEffect(() => {
+        if (faculty && institutionsWithProjects.length > 0) {
+            const decodedFaculty = decodeURIComponent(faculty); // Decode the faculty name
+
+            const matchedInstitution = institutionsWithProjects.find(
+                (iwp) => iwp.name === decodedFaculty
+            );
+
+            if (matchedInstitution) {
+                setSelectedMarker(matchedInstitution);
+                setFacultyName(decodedFaculty);
+                centerToMarker(matchedInstitution);
+            }
+        }
+    }, [faculty, institutionsWithProjects]);
 
     const handleResetNorth = () => {
         const map = mapRef.current.getMap();
@@ -133,7 +183,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
         handleResetNorth();
     };
 
-    const centerToMarker = (institution: any) => {
+    const centerToMarker = (institution: Institution) => {
         const map = mapRef.current.getMap();
         map.flyTo({
             center: [institution.longitude, institution.latitude],
@@ -143,31 +193,29 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
     };
 
     const markers = useMemo(() => {
-        const handleMarkerClick = (institution: any, institutionName: any) => {
-            setSelectedMarker(institution);
-            const convertedName = convertName(institutionName);
-            centerToMarker(institution);
+        const handleMarkerClick = (iwp: InstitutionWithProjects) => {
+            setSelectedMarker(iwp);
+            const convertedName = convertName(iwp.name);
+            centerToMarker(iwp);
             window.history.pushState(null, '', `/maps/projects?faculty=${convertedName}`);
         };
 
-        return institutions
-            .filter((institution) => institutionsWithProjects[institution.name])
-            .map((institution) => (
-                <Marker
-                    key={institution.id}
-                    longitude={institution.longitude}
-                    latitude={institution.latitude}
-                >
-                    <Tooltip title={institution.name} placement="top">
-                        <LocationOnIcon
-                            color="primary"
-                            className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
-                            fontSize={markerSize}
-                            onClick={() => handleMarkerClick(institution, institution.name)}
-                        />
-                    </Tooltip>
-                </Marker>
-            ));
+        return institutionsWithProjects.map((iwp) => (
+            <Marker
+                key={iwp.id}
+                longitude={iwp.longitude}
+                latitude={iwp.latitude}
+            >
+                <Tooltip title={iwp.name} placement="top">
+                    <LocationOnIcon
+                        color="primary"
+                        className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
+                        fontSize={markerSize}
+                        onClick={() => handleMarkerClick(iwp)}
+                    />
+                </Tooltip>
+            </Marker>
+        ));
     }, [institutionsWithProjects, markerSize, mapRef]);
 
     return (
@@ -178,7 +226,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
                     facultyName={facultyName}
                     onClose={closeSidebar}
                     header={selectedMarker.name}
-                    projects={institutionsWithProjects[selectedMarker.name] || []}
+                    projects={selectedMarker.projects}
                     dataState={selectedMarker}
                     selectedMarker={selectedMarker}
                 />
