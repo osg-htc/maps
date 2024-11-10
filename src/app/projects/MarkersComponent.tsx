@@ -5,6 +5,7 @@ import { Tooltip } from '@mui/material';
 import esProjects from '../../data/esProjects';
 import Sidebar from './Sidebar';
 import { useSearchParams } from 'next/navigation';
+import SearchBar from "@/app/components/SearchBar";
 
 type ProjectWithESData = {
     name: string;
@@ -192,6 +193,13 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
         });
     };
 
+    const handleSelectInstitution = (institution: any) => {
+        setSelectedMarker(institution);
+        centerToMarker(institution);
+        const convertedName = convertName(institution.name);
+        window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
+    };
+
     const markers = useMemo(() => {
         const handleMarkerClick = (iwp: InstitutionWithProjects) => {
             setSelectedMarker(iwp);
@@ -220,6 +228,10 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
 
     return (
         <>
+            <SearchBar institutions={institutionsWithProjects}
+                       onSelectInstitution={handleSelectInstitution}
+                       shifted={Boolean(selectedMarker)}
+            />
             {markers}
             {selectedMarker && (
                 <Sidebar
