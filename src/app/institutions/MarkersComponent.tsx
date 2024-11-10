@@ -4,7 +4,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Tooltip } from '@mui/material';
 import { getFacilityEsData } from '@/data/eqInstitutions';
 import Sidebar from './Sidebar';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import SearchBar from "@/app/components/SearchBar";
 
 type MarkersProps = {
@@ -12,7 +12,6 @@ type MarkersProps = {
 };
 
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
-    const router = useRouter();
     const searchParams = useSearchParams();
     const faculty = searchParams.get('faculty');
     const [esData, setEsData] = useState<any>({});
