@@ -1,10 +1,10 @@
-import React, {useState, useEffect, useMemo} from 'react';
-import {Marker} from 'react-map-gl';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Marker } from 'react-map-gl';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import {Tooltip} from '@mui/material';
+import { Tooltip } from '@mui/material';
 import esProjects from '../../data/esProjects';
 import Sidebar from './Sidebar';
-import {useRouter, useSearchParams} from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 
 type Project = {
     key: string;
@@ -16,7 +16,7 @@ type Project = {
     Name: string;
 };
 
-const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
+const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const faculty = searchParams.get('faculty');
@@ -35,16 +35,13 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
                 );
                 const institutionsData = await institutionsResponse.json();
                 setInstitutions(institutionsData);
-                // console.log('Institutions:', institutions);
 
                 const projectsResponse = await fetch('https://topology.opensciencegrid.org/miscproject/json');
                 const projectsData = await projectsResponse.json();
                 setProjects(projectsData);
-                // console.log('Projects:', projects);
 
                 const elasticsearchResponse = await esProjects();
                 setElasticsearchProjects(elasticsearchResponse.aggregations.projects.buckets);
-                // console.log('Elasticsearch projects:', elasticsearchProjects);
             } catch (error) {
                 console.error('Failed to fetch data:', error);
             }
@@ -58,8 +55,6 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
 
         const map = mapRef.current.getMap();
         const currentZoom = map.getZoom();
-        //console.log('Current zoom:', currentZoom);
-
         const newSize = currentZoom < 3 ? 'small' : 'large';
         if (markerSize !== newSize) {
             setMarkerSize(newSize);
@@ -90,9 +85,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
         return Object.values(projects).filter((project) =>
             projectNames.has(project.Name)
         );
-    }, [elasticsearchProjects, projects])
-
-    // console.log('Filtered projects:', filteredProjects);
+    }, [elasticsearchProjects, projects]);
 
     const institutionsWithProjects = useMemo(() => {
         return institutions.reduce((acc, institution) => {
@@ -103,10 +96,12 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
                     const projectData = elasticsearchProjects.find((elProj) => elProj.key === proj.Name);
                     return {
                         ...proj,
-                        docCount: projectData?.doc_count || 0,
-                        cpuHours: projectData?.projectCpuUse.value || 0,
-                        gpuHours: projectData?.projectGpuUse.value || 0,
-                        jobsRan: projectData?.projectJobsRan.value || 0,
+                        esData: {
+                            docCount: projectData?.doc_count || 0,
+                            cpuHours: projectData?.projectCpuUse.value || 0,
+                            gpuHours: projectData?.projectGpuUse.value || 0,
+                            jobsRan: projectData?.projectJobsRan.value || 0,
+                        }
                     };
                 });
 
@@ -117,10 +112,6 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
             return acc;
         }, {});
     }, [institutions, filteredProjects, elasticsearchProjects]);
-
-    // console.log('Institutions with projects:', institutionsWithProjects);
-    // console.log('Number of institutions with projects:', Object.keys(institutionsWithProjects).length);
-
 
     const handleResetNorth = () => {
         const map = mapRef.current.getMap();
@@ -137,7 +128,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
     };
 
     const closeSidebar = () => {
-        window.history.pushState(null, '', `/maps/projects`);
+        window.history.pushState(null, '', `/maps`);
         setSelectedMarker(null);
         handleResetNorth();
     };
@@ -150,7 +141,6 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({mapRef}) => {
             duration: 2000,
         });
     };
-
 
     const markers = useMemo(() => {
         const handleMarkerClick = (institution: any, institutionName: any) => {

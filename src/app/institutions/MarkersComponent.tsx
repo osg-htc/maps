@@ -116,7 +116,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
     };
 
     const closeSidebar = () => {
-        window.history.pushState(null, '', `/maps/institutions`);
+        window.history.pushState(null, '', `/maps`);
         setSelectedMarker(null);
         handleResetNorth();
     };
