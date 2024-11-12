@@ -220,6 +220,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
                         className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
                         fontSize={markerSize}
                         onClick={() => handleMarkerClick(iwp)}
+                        style={{ color: "darkorange", cursor: "pointer"}}
                     />
                 </Tooltip>
             </Marker>

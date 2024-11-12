@@ -173,7 +173,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
                                 className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
                                 fontSize={markerSize}
                                 onClick={() => handleMarkerClick(institution, facility.name)}
-                                style={{ color: "darkorange" }}
+                                style={{ color: "darkorange", cursor: "pointer"}}
                             />
                         </Tooltip>
                     </Marker>
