@@ -57,7 +57,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
                 // convert to an array
                 const combinedData = Object.values(institutionMap);
                 setFacilityInstitutionData(combinedData);
-                console.log(combinedData);
+                // console.log(combinedData);
             } catch (error) {
                 console.error('Failed to fetch data:', error);
             }
@@ -156,7 +156,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
     const markers = useMemo(() => {
         const handleMarkerClick = (institution: any, facilityName: any) => {
             setSelectedMarker(institution);
-            console.log("selected marker", selectedMarker);
+            // console.log("selected marker", selectedMarker);
             centerToMarker(institution)
             const convertedName = convertName(facilityName);
             window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);

@@ -242,6 +242,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
                     projects={selectedMarker.projects}
                     dataState={selectedMarker}
                     selectedMarker={selectedMarker}
+                    website={selectedMarker.ipeds_metadata?.website_address}
                 />
             )}
         </>
