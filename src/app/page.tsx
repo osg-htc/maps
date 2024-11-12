@@ -11,7 +11,7 @@ function HomePage() {
     ssr: false,
     loading: () => (
       <Box sx={{ marginTop: '5em', textAlign: 'center' }}>
-        <CircularProgress />
+        <CircularProgress style={{color: 'darkorange', alignContent: 'center'}}/>
       </Box>
     ),
   });
@@ -21,7 +21,7 @@ function HomePage() {
       ssr: false,
       loading: () => (
         <Box sx={{ marginTop: '5em', textAlign: 'center' }}>
-          <CircularProgress />
+          <CircularProgress style={{color: 'darkorange', alignContent: 'center'}}/>
         </Box>
       ),
     }
