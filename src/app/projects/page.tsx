@@ -5,6 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import NavigationButtons from "@/app/components/NavigationButtons";
 
 const DynamicLoadedMapComponent = dynamic(
   () => import('./DynamicMapComponent'),
@@ -16,6 +17,7 @@ const DynamicLoadedMapComponent = dynamic(
 
 const Page: React.FC = () => (
   <>
+      <NavigationButtons/>
     <Head>
       <link
         rel='stylesheet'
