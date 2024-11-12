@@ -68,12 +68,23 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
 
     useEffect(() => {
         if (!mapRef.current) return;
+
         const map = mapRef.current.getMap();
-        const currentZoom = map.getZoom();
-        const newSize = currentZoom < 3 ? 'small' : 'large';
-        if (markerSize !== newSize) {
-            setMarkerSize(newSize);
-        }
+        const handleZoom = () => {
+            const currentZoom = map.getZoom();
+            const newSize = currentZoom < 3 ? 'small' : 'large';
+            if (markerSize !== newSize) {
+                setMarkerSize(newSize);
+            }
+        };
+
+        handleZoom();
+
+        map.on('zoom', handleZoom);
+
+        return () => {
+            map.off('zoom', handleZoom);
+        };
     }, [mapRef, markerSize]);
 
     // Set selected marker based on the faculty query parameter on mount
