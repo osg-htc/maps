@@ -47,6 +47,7 @@ export type SidebarProps = {
   header: string;
   facultyName: string;
   dataState?: boolean;
+  website?: string;
 };
 
 export type GrafanaPanelProps = {

@@ -145,6 +145,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
     const markers = useMemo(() => {
         const handleMarkerClick = (institution: any, facilityName: any) => {
             setSelectedMarker(institution);
+            console.log("selected marker", selectedMarker);
             centerToMarker(institution)
             const convertedName = convertName(facilityName);
             window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
@@ -195,6 +196,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
                     onClose={closeSidebar}
                     header={selectedMarker.name}
                     dataState={selectedMarker.dataState}
+                    website={selectedMarker.ipeds_metadata?.website_address}
                 />
             )}
         </>

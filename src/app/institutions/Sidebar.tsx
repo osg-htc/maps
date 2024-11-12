@@ -10,6 +10,7 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import { sub } from 'date-fns';
 import { GrafanaPanelProps, SidebarProps } from '../types/mapTypes';
+import Link from 'next/link';
 
 const GrafanaPanel: React.FC<GrafanaPanelProps> = ({
   panelId,
@@ -28,10 +29,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   header,
   facultyName,
   dataState,
+  website
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+  const formattedWebsite = website && !/^https?:\/\//i.test(website) ? `https://${website}` : website;
   const data = {
     panelId: [12, 16, 8, 6, 2],
     panelUrl: `https://gracc.opensciencegrid.org/d-solo/axV4YtN4k/facility`,
@@ -61,7 +64,17 @@ const Sidebar: React.FC<SidebarProps> = ({
           alignItems='center'
           mb={2}
         >
-          <Typography variant='h6'>{header}</Typography>
+          <Typography variant='h6'>
+            {website ? (
+                <Link href={formattedWebsite} passHref legacyBehavior>
+                  <a target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                    {header}
+                  </a>
+                </Link>
+            ) : (
+                header
+            )}
+          </Typography>
           <IconButton onClick={onClose} edge='end' aria-label='close sidebar'>
             <CloseIcon />
           </IconButton>
