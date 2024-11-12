@@ -34,7 +34,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
             sx={{
                 position: 'absolute',
                 top: '2px',
-                left: shifted ? '620px' : '16px',
+                left: shifted ? '45%' : '0.5%',
                 transition: 'left 0.3s ease-in-out',
                 zIndex: 2,
             }}
