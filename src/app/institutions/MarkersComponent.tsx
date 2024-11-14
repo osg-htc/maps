@@ -6,6 +6,8 @@ import { getFacilityEsData } from '@/data/eqInstitutions';
 import Sidebar from './Sidebar';
 import { useSearchParams } from 'next/navigation';
 import SearchBar from "@/app/components/SearchBar";
+// @ts-ignore
+import { Institution, Facility, FacilityInfo} from '@/types/mapTypes';
 
 type MarkersProps = {
     mapRef: React.RefObject<any>;
@@ -14,11 +16,11 @@ type MarkersProps = {
 const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
     const searchParams = useSearchParams();
     const faculty = searchParams.get('faculty');
-    const [esData, setEsData] = useState<any>({});
-    const [markerSize, setMarkerSize] = useState<any>('small');
-    const [selectedMarker, setSelectedMarker] = useState<any | null>(null);
+    const [esData, setEsData] = useState<Record<string, []>>({});
+    const [markerSize, setMarkerSize] = useState<'small' | 'large'>('small');
+    const [selectedMarker, setSelectedMarker] = useState<Institution | null>(null);
     const [facultyName, setFacultyName] = useState<string>('');
-    const [facilityInstitutionData, setFacilityInstitutionData] = useState<any[]>([]);
+    const [facilityInstitutionData, setFacilityInstitutionData] = useState<Institution[]>([]);
 
     useEffect(() => {
         // Fetch data from ElasticSearch and both APIs
@@ -31,10 +33,10 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
                 const institutionsData = await institutionsResponse.json();
 
                 const facilityResponse = await fetch('https://topology.opensciencegrid.org/miscfacility/json');
-                const facilitiesData = await facilityResponse.json();
+                const facilitiesData: Record<string, FacilityInfo> = await facilityResponse.json();
 
                 // Create a mapping of institution data by institutionId
-                const institutionMap = institutionsData.reduce((acc, institution) => {
+                const institutionMap: Record<string, Institution> = institutionsData.reduce((acc: Record<string, Institution>, institution: Institution) => {
                     const id = institution.id;
                     acc[id] = { ...institution, facilities: [] }; // Initialize each institution with an empty facilities array
                     return acc;
@@ -131,7 +133,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
         handleResetNorth();
     };
 
-    const centerToMarker = (institution: any) => {
+    const centerToMarker = (institution: Institution) => {
         const map = mapRef.current.getMap();
         map.flyTo({
             center: [institution.longitude, institution.latitude],
@@ -142,19 +144,19 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
 
     const filteredInstitutions = useMemo(() => {
         return facilityInstitutionData.filter(institution =>
-        institution.facilities.some(facility => facility.esData));
+        institution.facilities.some((facility: Facility) => facility.esData));
 
     }, [facilityInstitutionData]);
 
-    const handleSelectInstitution = (institution: any) => {
+    const handleSelectInstitution = (institution: Institution) => {
         setSelectedMarker(institution);
         centerToMarker(institution);
-        const convertedName = convertName(institution.facilities.map(facility => facility.name)[0]);
+        const convertedName = convertName(institution.facilities.map((facility: Facility) => facility.name)[0]);
         window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
     };
 
     const markers = useMemo(() => {
-        const handleMarkerClick = (institution: any, facilityName: any) => {
+        const handleMarkerClick = (institution: Institution, facilityName: string) => {
             setSelectedMarker(institution);
             // console.log("selected marker", selectedMarker);
             centerToMarker(institution)
@@ -163,7 +165,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
         };
 
         const renderedMarkers = facilityInstitutionData.flatMap(institution =>
-            institution.facilities.map(facility => {
+            institution.facilities.map((facility: Facility) => {
                 const esData = facility.esData;
                 if (!esData) {
                     return null;

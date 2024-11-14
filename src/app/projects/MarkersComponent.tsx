@@ -6,44 +6,8 @@ import esProjects from '../../data/esProjects';
 import Sidebar from './Sidebar';
 import { useSearchParams } from 'next/navigation';
 import SearchBar from "@/app/components/SearchBar";
-
-type ProjectWithESData = {
-    name: string;
-    ID: string;
-    Department: string;
-    Description: string;
-    FieldOfScience: string;
-    FieldOfScienceID: string;
-    Organization: string;
-    PIName: string;
-    ResourceAllocations: any;
-    Sponsor: {
-        CampusGrid: {
-            ID: number;
-            Name: string;
-        };
-    };
-    esData: {
-        docCount: number;
-        cpuHours: number;
-        gpuHours: number;
-        jobsRan: number;
-    };
-};
-
-type Institution = {
-    id: string;
-    name: string;
-    ror_id: string;
-    unitid: string | null;
-    longitude: number;
-    latitude: number;
-    ipeds_metadata: any;
-};
-
-type InstitutionWithProjects = Institution & {
-    projects: ProjectWithESData[];
-};
+// @ts-ignore
+import { Institution, Project, ProjectWithESData, InstitutionWithProjects} from '@/types/mapTypes';
 
 const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
     const searchParams = useSearchParams();
@@ -52,7 +16,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
     const [selectedMarker, setSelectedMarker] = useState<InstitutionWithProjects | null>(null);
     const [facultyName, setFacultyName] = useState<string>('');
     const [institutions, setInstitutions] = useState<Institution[]>([]);
-    const [projects, setProjects] = useState<any[]>([]);
+    const [projects, setProjects] = useState<Project[]>([]);
     const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>([]);
 
     useEffect(() => {
@@ -193,7 +157,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
         });
     };
 
-    const handleSelectInstitution = (institution: any) => {
+    const handleSelectInstitution = (institution: Institution) => {
         setSelectedMarker(institution);
         centerToMarker(institution);
         const convertedName = convertName(institution.name);

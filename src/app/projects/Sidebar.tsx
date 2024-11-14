@@ -24,7 +24,7 @@ type SidebarProps = {
   onClose: () => void;
   header: string;
   facultyName: string;
-  projects: any[];
+  projects: Project[];
   dataState?: boolean;
   selectedMarker: string | null;
   website?: string;

@@ -2,19 +2,15 @@ import {useState} from "react";
 import useFuse from "../helpers/useFuse";
 import {Box, ClickAwayListener, InputAdornment, List, ListItem, ListItemText, Paper, TextField} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
-
-interface SearchBarProps {
-    institutions: any[];
-    onSelectInstitution: (institution: any) => void;
-    shifted?: boolean;
-}
+// @ts-ignore
+import {Institution, SearchBarProps} from "@/types/mapTypes";
 
 const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution, shifted = false }) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
     const filteredInstitutions = useFuse(institutions, searchTerm, { keys: ['name'] });
 
-    const handleSelect = (institution: any) => {
+    const handleSelect = (institution: Institution) => {
         setSearchTerm(institution.name);
         onSelectInstitution(institution);
         setOpen(false);
@@ -71,7 +67,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
                     <Paper elevation={3} sx={{ maxHeight: 200, overflow: 'auto', marginTop: 1 }}>
                         <List>
                             {filteredInstitutions.length > 0 ? (
-                                filteredInstitutions.map((institution) => (
+                                filteredInstitutions.map((institution: Institution) => (
                                     <ListItem
                                         key={institution.id}
                                         onClick={() => handleSelect(institution)}
