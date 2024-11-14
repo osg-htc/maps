@@ -100,7 +100,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               mb={2}
             >
               <Typography variant='h6'>
-                  {website ? (
+                  {formattedWebsite ? (
                       <Link href={formattedWebsite} passHref legacyBehavior>
                           <a target="_blank" rel="noopener noreferrer" style={{color: 'darkorange', cursor: 'pointer'}}>
                               {header}
