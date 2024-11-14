@@ -18,14 +18,16 @@ import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import GrafanaPanels from './GrafanaPanels';
 import { Project } from '../types/mapTypes';
+import Link from "next/link";
 
 type SidebarProps = {
   onClose: () => void;
   header: string;
   facultyName: string;
-  projects: any[];
+  projects: Project[];
   dataState?: boolean;
   selectedMarker: string | null;
+  website?: string;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -33,10 +35,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   header,
   projects,
   selectedMarker,
+  website
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const formattedWebsite = website && !/^https?:\/\//i.test(website) ? `https://${website}` : website;
 
   useEffect(() => {
     setSelectedProject(null);
@@ -95,7 +99,17 @@ const Sidebar: React.FC<SidebarProps> = ({
               alignItems='center'
               mb={2}
             >
-              <Typography variant='h6'>{header}</Typography>
+              <Typography variant='h6'>
+                  {formattedWebsite ? (
+                      <Link href={formattedWebsite} passHref legacyBehavior>
+                          <a target="_blank" rel="noopener noreferrer" style={{color: 'darkorange', cursor: 'pointer'}}>
+                              {header}
+                          </a>
+                      </Link>
+                  ) : (
+                      header
+                  )}
+              </Typography>
               <IconButton
                 onClick={onClose}
                 edge='end'
