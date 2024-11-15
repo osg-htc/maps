@@ -135,13 +135,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                   {projects.map((project, index) => (
                     <TableRow
                       key={index}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 },
+                        cursor: 'pointer' ,
+                        '&:hover': {
+                        backgroundColor: 'lightgray'}}}
+                      onClick={() => handleProjectClick(project)}
                     >
                       <TableCell component='th' scope='row'>
-                        <Typography
-                          sx={{ cursor: 'pointer', color: 'blue' }}
-                          onClick={() => handleProjectClick(project)}
-                        >
+                        <Typography>
                           {project.Name}
                         </Typography>
                       </TableCell>
