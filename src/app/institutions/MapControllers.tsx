@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
@@ -27,6 +27,23 @@ const MapControls: React.FC<MapControlsProps> = ({
     padding: '3px', // Some padding around the buttons
     boxShadow: '0 2px 4px rgba(0,0,0,0.2)', // Optional: a subtle shadow for depth
   };
+
+  useEffect(() => {
+    const handleUrlChange = () => {
+      const currentPath = window.location.pathname;
+      if (currentPath === '/maps' || currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
+        handleResetNorth();
+      }
+    };
+
+    handleUrlChange();
+
+    window.addEventListener('popstate', handleUrlChange); // detect back/forward button clicks / url changes
+
+    return () => {
+      window.removeEventListener('popstate', handleUrlChange);
+    };
+  }, []);
 
   const runningInIframe = window.location !== window.parent.location;
 
