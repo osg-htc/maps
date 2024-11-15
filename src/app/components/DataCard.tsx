@@ -22,6 +22,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
         alignItems: 'center',
         justifyContent: 'center',
         height: '60px',
+        borderRadius: '8px'
       }}>
       <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography gutterBottom sx={{ color: 'black', fontSize: 14}}>
