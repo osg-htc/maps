@@ -22,20 +22,45 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
         alignItems: 'center',
         justifyContent: 'center',
         height: '60px',
-        borderRadius: '8px'
+        borderRadius: '8px',
       }}>
       <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Typography gutterBottom sx={{ color: 'black', fontSize: 14}}>
+        <Typography
+          gutterBottom
+          sx={{
+            color: 'darkorange',
+            fontSize: 14,
+            '&:hover': {
+              color: 'black',
+            },}}>
           Institutions: {numberOfInstitutions}
         </Typography>
 
-        {numberOfProjects && <Typography gutterBottom sx={{ color: 'black', fontSize: 14}}>
+        {numberOfProjects &&
+          <Typography
+            gutterBottom
+            sx={{
+              color: 'darkorange',
+              fontSize: 14,
+              '&:hover': {
+                color: 'black',
+              },
+            }}>
           Projects: {numberOfProjects}
         </Typography>}
       </CardContent>
 
       <CardActions>
-        <Button variant="contained" href="https://osg-htc.org/" sx={{fontSize: 10, padding: '10px 8px', backgroundColor: 'darkorange'}}>
+        <Button variant="contained"
+                href="https://osg-htc.org/"
+                sx={{
+                  fontSize: 10,
+                  padding: '10px 8px',
+                  backgroundColor: 'darkorange',
+                  '&:hover': {
+                    backgroundColor: 'black',
+                  },
+                }}>
           Open Science Grid
         </Button>
       </CardActions>
