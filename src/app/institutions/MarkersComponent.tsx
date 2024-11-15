@@ -8,6 +8,7 @@ import { useSearchParams } from 'next/navigation';
 import SearchBar from "@/app/components/SearchBar";
 // @ts-ignore
 import { Institution, Facility, FacilityInfo} from '@/types/mapTypes';
+import DataCard from '@/app/components/DataCard';
 
 type MarkersProps = {
     mapRef: React.RefObject<any>;
@@ -221,6 +222,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
                        onSelectInstitution={handleSelectInstitution}
                        shifted={Boolean(selectedMarker)}
             />
+            <DataCard numberOfInstitutions={filteredInstitutions.length} shifted={Boolean(selectedMarker)} />
             {markers}
             {selectedMarker && (
                 <Sidebar

@@ -9,6 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import SearchBar from "@/app/components/SearchBar";
 // @ts-ignore
 import { Institution, Project, ProjectWithESData, InstitutionWithProjects} from '@/types/mapTypes';
+import DataCard from '@/app/components/DataCard';
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -246,6 +247,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
                        onSelectInstitution={handleSelectInstitution}
                        shifted={Boolean(selectedMarker)}
             />
+            <DataCard numberOfInstitutions={institutionsWithProjects.length} shifted={Boolean(selectedMarker)} numberOfProjects={filteredProjects.length}/>
             {markers}
             {selectedMarker && (
                 <Sidebar
