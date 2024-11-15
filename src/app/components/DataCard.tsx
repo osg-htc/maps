@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Typography, useMediaQuery } from '@mui/material';
 
 type DataCardProps = {
   numberOfInstitutions: number;
@@ -7,7 +7,7 @@ type DataCardProps = {
 }
 
 const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numberOfProjects }) => {
-
+  const isMobile = useMediaQuery('(max-width: 600px)');
 
   return (
     <Card
@@ -16,7 +16,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
         display: 'flex',
         position: 'absolute',
         bottom: '35px',
-        left: shifted ? '84%' : '0.5%',
+        left: shifted ? (isMobile ? '50%' : '89%') : '0.5%',
         transition: 'left 0.6s ease-in-out',
         zIndex: 2,
         alignItems: 'center',
@@ -24,7 +24,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
         height: '60px',
         borderRadius: '8px',
       }}>
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <CardContent sx={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', alignItems: 'center' }}>
         <Typography
           gutterBottom
           sx={{
