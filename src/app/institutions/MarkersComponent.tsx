@@ -89,6 +89,24 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
         };
     }, [mapRef, markerSize]);
 
+    useEffect(() => {
+        const handleUrlChange = () => {
+            const currentPath = window.location.pathname;
+            if (currentPath === '/maps' || currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
+                handleResetNorth();
+                closeSidebar();
+            }
+        };
+
+        handleUrlChange();
+
+        window.addEventListener('popstate', handleUrlChange); // detect back/forward button clicks / url changes
+
+        return () => {
+            window.removeEventListener('popstate', handleUrlChange);
+        };
+    }, []);
+
     // Set selected marker based on the faculty query parameter on mount
     useEffect(() => {
         if (faculty && facilityInstitutionData.length > 0) {

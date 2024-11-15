@@ -1,13 +1,24 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Marker } from 'react-map-gl';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Tooltip } from '@mui/material';
+import { Badge, Tooltip, BadgeProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import esProjects from '../../data/esProjects';
 import Sidebar from './Sidebar';
 import { useSearchParams } from 'next/navigation';
 import SearchBar from "@/app/components/SearchBar";
 // @ts-ignore
 import { Institution, Project, ProjectWithESData, InstitutionWithProjects} from '@/types/mapTypes';
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: 0,
+        top: 5,
+        padding: '0 4px',
+        backgroundColor: 'black',
+        color: 'white',
+    },
+}));
 
 const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
     const searchParams = useSearchParams();
@@ -18,6 +29,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
     const [institutions, setInstitutions] = useState<Institution[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
     const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>([]);
+    const [currentZoom, setCurrentZoom] = useState<number>(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -60,8 +72,9 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
 
         const map = mapRef.current.getMap();
         const handleZoom = () => {
-            const currentZoom = map.getZoom();
-            const newSize = currentZoom < 3 ? 'small' : 'large';
+            const zoom = map.getZoom();
+            setCurrentZoom(zoom); // Update zoom level state
+            const newSize = zoom < 3 ? 'small' : 'large';
             if (markerSize !== newSize) {
                 setMarkerSize(newSize);
             }
@@ -75,6 +88,24 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
             map.off('zoom', handleZoom);
         };
     }, [mapRef, markerSize]);
+
+    useEffect(() => {
+        const handleUrlChange = () => {
+            const currentPath = window.location.pathname;
+            if (currentPath === '/maps' || currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
+                handleResetNorth();
+                closeSidebar();
+            }
+        };
+
+        handleUrlChange();
+
+        window.addEventListener('popstate', handleUrlChange); // detect back/forward button clicks / url changes
+
+        return () => {
+            window.removeEventListener('popstate', handleUrlChange);
+        };
+    }, []);
 
     const filteredProjects = useMemo(() => {
         const projectNames = new Set(
@@ -165,29 +196,47 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
     };
 
     const markers = useMemo(() => {
-        const handleMarkerClick = (iwp: InstitutionWithProjects) => {
-            setSelectedMarker(iwp);
-            const convertedName = convertName(iwp.name);
-            centerToMarker(iwp);
+        const handleMarkerClick = (institution: InstitutionWithProjects) => {
+            setSelectedMarker(institution);
+            const convertedName = convertName(institution.name);
+            centerToMarker(institution);
             window.history.pushState(null, '', `/maps/projects?faculty=${convertedName}`);
         };
 
-        return institutionsWithProjects.map((iwp) => (
+        return institutionsWithProjects.map((institution) => (
+
             <Marker
-                key={iwp.id}
-                longitude={iwp.longitude}
-                latitude={iwp.latitude}
+                key={institution.id}
+                longitude={institution.longitude}
+                latitude={institution.latitude}
             >
-                <Tooltip title={iwp.name} placement="top">
-                    <LocationOnIcon
+                {currentZoom >= 3 && (
+                  <StyledBadge badgeContent={institution.projects.length} style={{ color: 'blue' }}>
+                      <Tooltip title={institution.name} placement="top">
+                          <LocationOnIcon
+                            color="primary"
+                            className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
+                            fontSize={markerSize}
+                            onClick={() => handleMarkerClick(institution)}
+                            style={{ color: "darkorange", cursor: "pointer"}}
+                          />
+                      </Tooltip>
+                  </StyledBadge>
+                )}
+                {currentZoom < 3 && (
+                  <Tooltip title={institution.name} placement="top">
+                      <LocationOnIcon
                         color="primary"
                         className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
                         fontSize={markerSize}
-                        onClick={() => handleMarkerClick(iwp)}
+                        onClick={() => handleMarkerClick(institution)}
                         style={{ color: "darkorange", cursor: "pointer"}}
-                    />
-                </Tooltip>
+                      />
+                  </Tooltip>
+                )}
+
             </Marker>
+
         ));
     }, [institutionsWithProjects, markerSize, mapRef]);
 

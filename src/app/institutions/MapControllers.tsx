@@ -28,23 +28,6 @@ const MapControls: React.FC<MapControlsProps> = ({
     boxShadow: '0 2px 4px rgba(0,0,0,0.2)', // Optional: a subtle shadow for depth
   };
 
-  useEffect(() => {
-    const handleUrlChange = () => {
-      const currentPath = window.location.pathname;
-      if (currentPath === '/maps' || currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
-        handleResetNorth();
-      }
-    };
-
-    handleUrlChange();
-
-    window.addEventListener('popstate', handleUrlChange); // detect back/forward button clicks / url changes
-
-    return () => {
-      window.removeEventListener('popstate', handleUrlChange);
-    };
-  }, []);
-
   const runningInIframe = window.location !== window.parent.location;
 
   const openInBrowser = () => {
