@@ -10,6 +10,7 @@ import SearchBar from "@/app/components/SearchBar";
 // @ts-ignore
 import { Institution, Project, ProjectWithESData, InstitutionWithProjects} from '@/types/mapTypes';
 import DataCard from '@/app/components/DataCard';
+import useSWR from 'swr';
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -21,52 +22,59 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     },
 }));
 
-const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
-    const searchParams = useSearchParams();
+const fetcher = (key: string) => {
+    if (key === 'projects') {
+        return fetch('https://topology.opensciencegrid.org/miscproject/json').then((res) => res.json());
+    } else if (key === 'institutions') {
+        return fetch('https://topology-institutions.osg-htc.org/api/institution_ids').then((res) => res.json());
+    } else if (key === 'esProjects') {
+        return fetchElasticsearchProjects();
+    }
+    throw new Error(`Unknown key: ${key}`);
+};
+
+const fetchElasticsearchProjects = async () => {
+    const response = await esProjects();
+    return response.aggregations.projects.buckets;
+};
+
+const MarkersComponent: React.FC<{
+    institutions: Institution[];
+    projects: Project[];
+    elasticsearchProjects: any[];
+    mapRef: any;
+}> = ({ institutions: initialInstitutions, projects: initialProjects, elasticsearchProjects: initialElasticsearchProjects, mapRef }) => {
+
+    const { data: institutions } = useSWR('institutions', fetcher, {
+        fallbackData: initialInstitutions,
+    });
+
+    let { data: projects } = useSWR('projects', fetcher, {
+        fallbackData: initialProjects,
+    });
+
+    let { data: elasticsearchProjects } = useSWR('esProjects', fetcher, {
+        fallbackData: initialElasticsearchProjects
+    });
+
+    const searchParams = useSearchParams()
     const faculty = searchParams.get('faculty');
     const [markerSize, setMarkerSize] = useState<'small' | 'large'>('small');
     const [selectedMarker, setSelectedMarker] = useState<InstitutionWithProjects | null>(null);
     const [facultyName, setFacultyName] = useState<string>('');
-    const [institutions, setInstitutions] = useState<Institution[]>([]);
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>([]);
     const [currentZoom, setCurrentZoom] = useState<number>(0);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Fetch Institutions
-                const institutionsResponse = await fetch(
-                    'https://topology-institutions.osg-htc.org/api/institution_ids'
-                );
-                const institutionsData: Institution[] = await institutionsResponse.json();
-                setInstitutions(institutionsData);
-
-                // Fetch Projects
-                const projectsResponse = await fetch('https://topology.opensciencegrid.org/miscproject/json');
-                const projectsData = await projectsResponse.json();
-                // console.log('Fetched Projects Data:', projectsData);
-
-                // Convert projectsData to array from object
-                if (Array.isArray(projectsData)) {
-                    setProjects(projectsData);
-                } else if (typeof projectsData === 'object' && projectsData !== null) {
-                    setProjects(Object.values(projectsData));
-                } else {
-                    console.error('Unexpected projectsData format:', projectsData);
-                    setProjects([]);
-                }
-
-                // Fetch Elasticsearch Projects
-                const elasticsearchResponse = await esProjects();
-                setElasticsearchProjects(elasticsearchResponse.aggregations.projects.buckets);
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
+    projects = useMemo(() => {
+        if (!projects) return [];
+        if (Array.isArray(projects)) {
+            return projects;
+        } else if (typeof projects === 'object' && projects !== null) {
+            return Object.values(projects);
+        } else {
+            console.error('Unexpected projectsData format:', projects);
+            return [];
+        }
+    }, [projects]);
 
     useEffect(() => {
         if (!mapRef.current) return;
@@ -110,35 +118,33 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
 
     const filteredProjects = useMemo(() => {
         const projectNames = new Set(
-            elasticsearchProjects.map((project) => project.key)
+          (elasticsearchProjects || []).map((project: Project) => project.key)
         );
-        return projects.filter((project) =>
-            projectNames.has(project.Name)
-        );
+        return (projects || []).filter((project: Project) => projectNames.has(project.Name));
     }, [elasticsearchProjects, projects]);
 
     const institutionsWithProjects: InstitutionWithProjects[] = useMemo(() => {
-        return institutions.map((institution) => {
+        return (institutions || []).map((institution: Institution) => {
             const institutionProjects: ProjectWithESData[] = filteredProjects
-                .filter((project) => project.InstitutionID === institution.id)
-                .map((proj) => {
-                    const projectData = elasticsearchProjects.find((elProj) => elProj.key === proj.Name);
-                    return {
-                        ...proj,
-                        esData: {
-                            docCount: projectData?.doc_count || 0,
-                            cpuHours: projectData?.projectCpuUse.value || 0,
-                            gpuHours: projectData?.projectGpuUse.value || 0,
-                            jobsRan: projectData?.projectJobsRan.value || 0,
-                        }
-                    };
-                });
+              .filter((project: Project) => project.InstitutionID === institution.id)
+              .map((proj: Project) => {
+                  const projectData = (elasticsearchProjects || []).find((elProj: Project) => elProj.key === proj.Name);
+                  return {
+                      ...proj,
+                      esData: {
+                          docCount: projectData?.doc_count || 0,
+                          cpuHours: projectData?.projectCpuUse.value || 0,
+                          gpuHours: projectData?.projectGpuUse.value || 0,
+                          jobsRan: projectData?.projectJobsRan.value || 0,
+                      }
+                  };
+              });
 
             return {
                 ...institution,
                 projects: institutionProjects
             };
-        }).filter((iwp) => iwp.projects.length > 0);
+        }).filter((iwp: { projects: string | any[]; }) => iwp.projects.length > 0);
     }, [institutions, filteredProjects, elasticsearchProjects]);
 
     // console.log('institutionsWithProjects', institutionsWithProjects);
