@@ -8,7 +8,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import NavigationButtons from "@/app/components/NavigationButtons";
 
 const DynamicProjects = dynamic(
-  () => import('./DynamicMapComponent'),
+  () => import('./MapComponent'),
   {
     ssr: false,
     loading: () => (
