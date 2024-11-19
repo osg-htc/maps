@@ -1,4 +1,4 @@
-// mapTypes.ts
+
 
 type MarkersProps = {
   mapRef: React.RefObject<any>;

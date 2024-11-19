@@ -1,4 +1,4 @@
-import MarkersComponent from '../components/MarkersComponent';
+
 import esProjects from '../../data/esProjects';
 
 export async function getStaticProps() {
@@ -9,14 +9,14 @@ export async function getStaticProps() {
     const projectsResponse = await fetch('https://topology.opensciencegrid.org/miscproject/json');
     const projects = await projectsResponse.json();
 
-    const elasticsearchResponse = await esProjects();
-    const elasticsearchProjects = elasticsearchResponse.aggregations.projects.buckets;
+    const esResponse = await esProjects();
+    const esProjects = esResponse.aggregations.projects.buckets;
 
     return {
       props: {
         institutions,
         projects,
-        elasticsearchProjects: elasticsearchProjects,
+        esProjects: esProjects,
       },
       revalidate: 60,
     };
@@ -34,7 +34,7 @@ export async function getStaticProps() {
 
 export default function Page({ institutions, projects, elasticsearchProjects }) {
   return (
-    <MarkersComponent
+    <Page
       institutions={institutions}
       projects={projects}
       elasticsearchProjects={elasticsearchProjects}
