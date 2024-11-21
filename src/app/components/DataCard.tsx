@@ -1,4 +1,5 @@
-import { Button, Card, CardActions, CardContent, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, Typography, useMediaQuery } from '@mui/material';
+import useTheme from '@mui/material/styles/useTheme';
 
 type DataCardProps = {
   numberOfInstitutions: number;
@@ -7,16 +8,31 @@ type DataCardProps = {
 }
 
 const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numberOfProjects }) => {
-  const isMobile = useMediaQuery('(max-width: 600px)');
+  const theme = useTheme();
 
   return (
+    <Box>
     <Card
       variant="outlined"
       sx={{
         display: 'flex',
         position: 'absolute',
-        bottom: '35px',
-        left: shifted ? (isMobile ? '50%' : '89%') : '0.5%',
+        bottom: theme.breakpoints.down('sm') ? '30px' : '35px',
+        left: shifted
+          ? {
+            xs: '50%',
+            sm: '85%',
+            md: '85%',
+            lg: '90%',
+          }
+          : '0.5%',
+        width: {
+          xs: '95%',
+          sm: '47%',
+          md: '32%',
+          lg: '22%',
+        },
+        transform: theme.breakpoints.down('sm') && shifted ? 'translateX(-50%)' : 'none',
         transition: 'left 0.6s ease-in-out',
         zIndex: 2,
         alignItems: 'center',
@@ -24,7 +40,14 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
         height: '60px',
         borderRadius: '8px',
       }}>
-      <CardContent sx={{ display: 'flex', flexDirection: isMobile ? 'row' : 'column', alignItems: 'center' }}>
+      <CardContent sx={{
+        display: 'flex',
+        flexDirection: {
+          xs: 'row',
+          sm: 'column',
+        },
+        alignItems: 'center',
+      }}>
         <Typography
           gutterBottom
           sx={{
@@ -66,6 +89,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
         </Button>
       </CardActions>
     </Card>
+    </Box>
   );
 };
 
