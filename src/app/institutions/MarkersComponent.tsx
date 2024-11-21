@@ -43,7 +43,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, esData, facilityInst
         return () => {
             map.off('zoom', handleZoom);
         };
-    }, [mapRef, markerSize]);
+    }, [markerSize]);
 
     useEffect(() => {
         const handleUrlChange = () => {

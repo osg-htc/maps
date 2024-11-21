@@ -58,7 +58,7 @@ const Sidebar: React.FC<SidebarProps> = ({
       <Box
         component='aside'
         sx={{
-          width: isSmallScreen ? '100%' : '40%',
+          width: isSmallScreen ? '93%' : '40%',
           position: 'absolute',
           top: 0,
           left: 0,
