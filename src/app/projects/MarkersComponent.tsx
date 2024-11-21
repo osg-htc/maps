@@ -66,9 +66,8 @@ const MarkersComponent: React.FC<{
     useEffect(() => {
         const handleUrlChange = () => {
             const currentPath = window.location.pathname;
-            if (currentPath === '/maps' || currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
+            if (currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
                 handleResetNorth();
-                closeSidebar();
             }
         };
 

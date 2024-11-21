@@ -4,18 +4,15 @@ import { Box } from '@mui/material';
 import DynamicProjects from './projects/page';
 import DynamicInstitutions from './institutions/page';
 import NavigationButtons from './components/NavigationButtons';
+import Link from 'next/link';
 
 function HomePage() {
-    const [selectedButton, setSelectedButton] = useState('projects');
 
     return (
         <Box height={'100vh'} width={'100vw'}>
             {/*<NavigationButtons/>*/}
-            {selectedButton === 'projects' ? (
-                <DynamicProjects/>
-            ) : (
-                <DynamicInstitutions/>
-            )}
+            <Link href={'/projects'}>Maps</Link>
+            <Link href={'/institutions'}>Institutions</Link>
         </Box>
     );
 }

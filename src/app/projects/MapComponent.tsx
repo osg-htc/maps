@@ -20,7 +20,7 @@ interface MapMoveEvent {
 const MapComponent: React.FC<{institutions: Institution[],
   projects: Project[],
   esProjects: any[],
-institutionsWithProjects: InstitutionWithProjects[],
+  institutionsWithProjects: InstitutionWithProjects[],
   filteredProjects: Project[]}> = ({institutions, projects, esProjects, institutionsWithProjects, filteredProjects}) => {
   const mapRef = useRef<MapRef>(null);
   const [projection, setProjection] = useState('globe');

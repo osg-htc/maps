@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import Map, { MapRef } from 'react-map-gl';
 import MarkersComponent from './MarkersComponent';
 import MapControls from './MapControllers';
+import { Facility, FacilityInfo, Institution } from '@/app/types/mapTypes';
 
 interface ViewState {
   longitude: number;
@@ -15,7 +16,10 @@ interface MapMoveEvent {
   viewState: ViewState;
 }
 
-const MapComponent: React.FC = () => {
+const MapComponent: React.FC<{
+  esData: any[],
+  facilityInstitutionData: any[]}
+  > = ({ esData, facilityInstitutionData}) => {
   const mapRef = useRef<MapRef>(null);
   const [projection, setProjection] = useState('globe');
 
@@ -41,7 +45,9 @@ const MapComponent: React.FC = () => {
       projection={projection}
     >
       <MapControls mapRef={mapRef} handleProjection={handleProjection} />
-      <MarkersComponent mapRef={mapRef}/>
+      <MarkersComponent mapRef={mapRef}
+        esData={esData}
+        facilityInstitutionData={facilityInstitutionData}/>
     </Map>
   );
 };
