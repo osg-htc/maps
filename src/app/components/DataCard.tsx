@@ -32,7 +32,8 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
             fontSize: 14,
             '&:hover': {
               color: 'black',
-            },}}>
+            },
+          marginRight: 1}}>
           Institutions: {numberOfInstitutions}
         </Typography>
 
