@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Marker } from 'react-map-gl';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { Badge, Tooltip, BadgeProps } from '@mui/material';
@@ -35,8 +35,7 @@ const MarkersComponent: React.FC<{
     const [selectedMarker, setSelectedMarker] = useState<InstitutionWithProjects | null>(null);
     const [facultyName, setFacultyName] = useState<string>('');
     const [currentZoom, setCurrentZoom] = useState<number>(0);
-
-
+    const zoomRef = useRef(0);
 
     useEffect(() => {
         if (!mapRef.current) return;
@@ -44,14 +43,16 @@ const MarkersComponent: React.FC<{
         const map = mapRef.current.getMap();
         const handleZoom = () => {
             const zoom = map.getZoom();
-            setCurrentZoom(zoom); // Update zoom level state
+            zoomRef.current = zoom;
+
+            // Only update state if the marker size needs to change
             const newSize = zoom < 3 ? 'small' : 'large';
             if (markerSize !== newSize) {
                 setMarkerSize(newSize);
             }
         };
 
-        handleZoom();
+        handleZoom(); // Call initially to set correct values
 
         map.on('zoom', handleZoom);
 
@@ -59,6 +60,7 @@ const MarkersComponent: React.FC<{
             map.off('zoom', handleZoom);
         };
     }, [markerSize]);
+
 
     useEffect(() => {
         const handleUrlChange = () => {
