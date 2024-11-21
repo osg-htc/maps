@@ -5,7 +5,7 @@ type MarkersProps = {
   zoom: number;
 };
 
-interface Project {
+interface ProjectWithESData {
   id: number;
   Name: string;
   Department: string;
@@ -47,7 +47,7 @@ type GrafanaPanelProps = {
   facultyName: string;
 };
 
-interface ProjectWithESData extends Project{
+interface ProjectWithESData extends ProjectWithESData{
   name: string;
   ID: string;
   Department: string;
@@ -110,7 +110,7 @@ export type {
   SidebarProps,
   SearchBarProps,
   GrafanaPanelProps,
-  Project,
+  ProjectWithESData,
   ProjectWithESData,
     InstitutionWithProjects,
 };

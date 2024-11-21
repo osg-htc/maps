@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { sub } from 'date-fns';
-import { Project, ProjectWithESData } from '../types/mapTypes';
+import { ProjectWithESData, ProjectWithESData } from '../types/mapTypes';
 
 type GrafanaPanelProps = {
   panelId: number;
@@ -26,7 +26,7 @@ const GrafanaPanel: React.FC<GrafanaPanelProps> = ({
 };
 
 const GrafanaPanels: React.FC<{ project: ProjectWithESData }> = ({ project }) => {
-  console.log('GpuHours:', project?.esData.gpuHours);
+  // console.log('GpuHours:', project?.esData.gpuHours);
   const data = {
     panelId: [12, 10, 16, 4, 22],
     panelUrl: `https://gracc.opensciencegrid.org/d-solo/tFUN4y44z/projects`,

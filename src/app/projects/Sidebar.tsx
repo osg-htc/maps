@@ -17,14 +17,14 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import GrafanaPanels from './GrafanaPanels';
-import { Project } from '../types/mapTypes';
+import { ProjectWithESData } from '../types/mapTypes';
 import Link from "next/link";
 
 type SidebarProps = {
   onClose: () => void;
   header: string;
   facultyName: string;
-  projects: Project[];
+  projects: ProjectWithESData[];
   dataState?: boolean;
   selectedMarker: string | null;
   website?: string;
@@ -39,14 +39,14 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectWithESData | null>(null);
   const formattedWebsite = website && !/^https?:\/\//i.test(website) ? `https://${website}` : website;
 
   useEffect(() => {
     setSelectedProject(null);
   }, [selectedMarker]);
 
-  const handleProjectClick = (project: Project) => {
+  const handleProjectClick = (project: ProjectWithESData) => {
     setSelectedProject(project);
   };
   const handleBackClick = () => {
