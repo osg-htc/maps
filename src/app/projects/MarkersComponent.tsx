@@ -152,7 +152,7 @@ const MarkersComponent: React.FC<{
                 longitude={institution.longitude}
                 latitude={institution.latitude}
             >
-                {currentZoom >= 3 && (
+                {zoomRef.current >= 3 && (
                   <StyledBadge badgeContent={institution.projects.length} style={{ color: 'blue' }}>
                       <Tooltip title={institution.name} placement="top">
                           <LocationOnIcon
@@ -165,7 +165,7 @@ const MarkersComponent: React.FC<{
                       </Tooltip>
                   </StyledBadge>
                 )}
-                {currentZoom < 3 && (
+                {zoomRef.current < 3 && (
                   <Tooltip title={institution.name} placement="top">
                       <LocationOnIcon
                         color="primary"
