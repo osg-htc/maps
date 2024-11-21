@@ -132,7 +132,7 @@ const MarkersComponent: React.FC<{
 
     const handleSelectInstitution = (institution: Institution) => {
         setSelectedMarker(institution);
-        console.log('slected marker', selectedMarker);
+        // console.log('slected marker', selectedMarker);
         centerToMarker(institution);
         const convertedName = convertName(institution.name);
         window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);

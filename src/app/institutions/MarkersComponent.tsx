@@ -82,7 +82,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, esData, facilityInst
 
     useEffect(() => {
         if(selectedMarker) {
-            console.log(selectedMarker)
+            // console.log(selectedMarker)
         }
     }, [selectedMarker])
 

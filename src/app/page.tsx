@@ -11,8 +11,11 @@ function HomePage() {
     return (
         <Box height={'100vh'} width={'100vw'}>
             {/*<NavigationButtons/>*/}
-            <Link href={'/projects'}>Maps</Link>
-            <Link href={'/institutions'}>Institutions</Link>
+            {/*<Link href={'/projects'}>Maps</Link>*/}
+            {/*<Link href={'/institutions'}>Institutions</Link>*/}
+            <Box height="100vh" width="100vw">
+                <DynamicProjects />
+            </Box>
         </Box>
     );
 }
