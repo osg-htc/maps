@@ -24,13 +24,10 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 }));
 
 const MarkersComponent: React.FC<{
-    institutions: Institution[],
-    projects: Project[],
-    esProjects: any[],
     mapRef: any,
     institutionsWithProjects: InstitutionWithProjects[],
     filteredProjects: Project[]
-}> = ({ institutions, projects, esProjects, mapRef, institutionsWithProjects, filteredProjects}) => {
+}> = ({ mapRef, institutionsWithProjects, filteredProjects}) => {
 
     const searchParams = useSearchParams()
     const faculty = searchParams.get('faculty');

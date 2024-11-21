@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import Map, { MapRef } from 'react-map-gl';
 import MarkersComponent from './MarkersComponent';
 import MapControls from './MapControllers';
@@ -17,11 +17,9 @@ interface MapMoveEvent {
   viewState: ViewState;
 }
 
-const MapComponent: React.FC<{institutions: Institution[],
-  projects: ProjectWithESData[],
-  esProjects: any[],
+const MapComponent: React.FC<{
   institutionsWithProjects: InstitutionWithProjects[],
-  filteredProjects: ProjectWithESData[]}> = ({institutions, projects, esProjects, institutionsWithProjects, filteredProjects}) => {
+  filteredProjects: ProjectWithESData[]}> = ({institutionsWithProjects, filteredProjects}) => {
   const mapRef = useRef<MapRef>(null);
   const [projection, setProjection] = useState('globe');
 
@@ -47,7 +45,7 @@ const MapComponent: React.FC<{institutions: Institution[],
       projection={projection}
     >
       <MapControls mapRef={mapRef} handleProjection={handleProjection} />
-      <MarkersComponent institutions={institutions} projects={projects} esProjects={esProjects} institutionsWithProjects={institutionsWithProjects} mapRef={mapRef} filteredProjects={filteredProjects}/>
+      <MarkersComponent institutionsWithProjects={institutionsWithProjects} mapRef={mapRef} filteredProjects={filteredProjects}/>
     </Map>
   );
 };

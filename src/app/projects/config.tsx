@@ -94,9 +94,6 @@ const Config: React.FC<{
 
   return (
     <MapComponent
-      institutions={institutions}
-      projects={projects}
-      esProjects={esProjects}
       institutionsWithProjects={institutionsWithProjects}
       filteredProjects={filteredProjects}
     />
