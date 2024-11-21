@@ -5,14 +5,20 @@ type MarkersProps = {
   zoom: number;
 };
 
-type Project = {
+interface Project {
+  id: number;
   Name: string;
   Department: string;
   FieldOfScience: string;
   PIName: string;
-  cpuHours: number;
-  gpuHours: number;
-};
+  InstitutionID: number;
+  esData?: {
+    docCount: number;
+    cpuHours: number;
+    gpuHours: number;
+    jobsRan: number;
+  };
+}
 
 type InstitutionWithProjects = Institution & {
   projects: ProjectWithESData[];
@@ -41,7 +47,7 @@ type GrafanaPanelProps = {
   facultyName: string;
 };
 
-interface ProjectWithESData {
+interface ProjectWithESData extends Project{
   name: string;
   ID: string;
   Department: string;

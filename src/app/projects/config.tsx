@@ -76,18 +76,18 @@ const Config: React.FC<{
             ...proj,
             esData: {
               docCount: projectData?.doc_count || 0,
-              cpuHours: projectData?.projectCpuUse.value || 0,
-              gpuHours: projectData?.projectGpuUse.value || 0,
-              jobsRan: projectData?.projectJobsRan.value || 0,
-            }
+              cpuHours: projectData?.projectCpuUse?.value || 0,
+              gpuHours: projectData?.projectGpuUse?.value || 0,
+              jobsRan: projectData?.projectJobsRan?.value || 0,
+            },
           };
         });
 
       return {
         ...institution,
-        projects: institutionProjects
+        projects: institutionProjects,
       };
-    }).filter((iwp: { projects: string | any[]; }) => iwp.projects.length > 0);
+    }).filter((iwp: { projects: ProjectWithESData[] }) => iwp.projects.length > 0);
   }, [institutions, filteredProjects, esProjects]);
 
   // console.log('institutionsWithProjects', institutionsWithProjects);
