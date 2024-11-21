@@ -12,12 +12,7 @@ interface Project {
   FieldOfScience: string;
   PIName: string;
   InstitutionID: number;
-  esData?: {
-    docCount: number;
-    cpuHours: number;
-    gpuHours: number;
-    jobsRan: number;
-  };
+  esData?: EsData
 }
 
 type InstitutionWithProjects = Institution & {
@@ -63,12 +58,7 @@ interface ProjectWithESData extends Project{
       Name: string;
     };
   };
-  esData: {
-    docCount: number;
-    cpuHours: number;
-    gpuHours: number;
-    jobsRan: number;
-  };
+  esData: EsData
 };
 
 interface Facility {
@@ -102,6 +92,17 @@ interface Institution{
   }
 }
 
+interface EsData {
+  docCount: number;
+  cpuHours: number;
+  gpuHours: number;
+  jobsRan: number;
+}
+
+type EsDataType = Record<string, EsData>;
+
+type FetcherKey = 'facilities' | 'institutions' | 'esData';
+
 export type {
   Facility,
   FacilityInfo,
@@ -113,4 +114,7 @@ export type {
   Project,
   ProjectWithESData,
     InstitutionWithProjects,
+    FetcherKey,
+    EsData,
+    EsDataType
 };

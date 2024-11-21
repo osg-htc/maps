@@ -6,46 +6,48 @@ import MapComponent from '@/app/institutions/MapComponent';
 // @ts-ignore
 import { Institution, Project, ProjectWithESData, InstitutionWithProjects } from '@/types/mapTypes';
 import { getFacilityEsData } from '@/data/eqInstitutions';
-import { Facility, FacilityInfo } from '@/app/types/mapTypes';
+import { Facility, FacilityInfo, FetcherKey, EsDataType } from '@/app/types/mapTypes';
 
-const fetcher = (key: string) => {
+const fetcher = <T,>(key: FetcherKey): Promise<T> => {
   if (key === 'facilities') {
     return fetch('https://topology.opensciencegrid.org/miscfacility/json').then((res) => res.json());
   } else if (key === 'institutions') {
     return fetch('https://topology-institutions.osg-htc.org/api/institution_ids').then((res) => res.json());
   } else if (key === 'esData') {
-    return getFacilityEsData();
+    return getFacilityEsData() as Promise<T>;
   }
-}
+  throw new Error('Invalid fetch key');
+};
+
 
 const Config: React.FC<{
   initialInstitutions: Institution[];
   initialFacilities: Record<string, FacilityInfo>;
-  initialEsData: any[];
+  initialEsData: EsDataType;
 }> = ({ initialInstitutions, initialFacilities, initialEsData }) => {
 
   // console.log('initialInstitutions', initialInstitutions);
   // console.log('initialEsProjects', initialEsProjects);
-  const { data: institutions } = useSWR('institutions', fetcher, {
+  const { data: institutions = initialInstitutions} = useSWR<Institution[]>('institutions', fetcher, {
     fallbackData: initialInstitutions,
   });
 
-  let { data: facilities } = useSWR('facilities', fetcher, {
+  const { data: facilities = initialFacilities} = useSWR<Record<string, FacilityInfo>>('facilities', fetcher, {
     fallbackData: initialFacilities,
   });
 
-  const { data: esData } = useSWR('esData', fetcher, {
+  const { data: esData = initialEsData} = useSWR<EsDataType>('esData', fetcher, {
     fallbackData: initialEsData,
   });
 
-  // Create a mapping of institution data by institutionId
+// Create a mapping of institution data by institutionId
   const institutionMap: Record<string, Institution> = institutions.reduce((acc: Record<string, Institution>, institution: Institution) => {
-    const id = institution.id;
+    const id = institution.id.toString(); // Ensure ID is a string if necessary
     acc[id] = { ...institution, facilities: [] }; // Initialize each institution with an empty facilities array
     return acc;
   }, {});
 
-  // Combine facility data under corresponding institutions
+// Combine facility data under corresponding institutions
   Object.entries(facilities).forEach(([facilityName, facilityInfo]) => {
     const institutionId = facilityInfo.InstitutionID;
     if (institutionMap[institutionId]) {
@@ -58,6 +60,7 @@ const Config: React.FC<{
       });
     }
   });
+
 
   // convert to an array
   const facilityInstitutionData = Object.values(institutionMap);

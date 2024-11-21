@@ -9,10 +9,11 @@ import SearchBar from "@/app/components/SearchBar";
 // @ts-ignore
 import { Institution, Facility, FacilityInfo} from '@/types/mapTypes';
 import DataCard from '@/app/components/DataCard';
+import { EsDataType } from '@/app/types/mapTypes';
 
 type MarkersProps = {
     mapRef: React.RefObject<any>,
-    esData: any[],
+    esData: EsDataType,
     facilityInstitutionData: any[]
 };
 

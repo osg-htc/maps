@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import Map, { MapRef } from 'react-map-gl';
 import MarkersComponent from './MarkersComponent';
 import MapControls from './MapControllers';
-import { Facility, FacilityInfo, Institution } from '@/app/types/mapTypes';
+import { EsData, EsDataType, Facility, FacilityInfo, Institution } from '@/app/types/mapTypes';
 
 interface ViewState {
   longitude: number;
@@ -17,7 +17,7 @@ interface MapMoveEvent {
 }
 
 const MapComponent: React.FC<{
-  esData: any[],
+  esData: EsDataType,
   facilityInstitutionData: any[]}
   > = ({ esData, facilityInstitutionData}) => {
   const mapRef = useRef<MapRef>(null);
