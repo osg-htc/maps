@@ -79,6 +79,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
           alignItems: 'center',
         }}>
           <Typography
+            title='Number of institutions'
             gutterBottom
             sx={{
               color: 'darkorange',
@@ -93,6 +94,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
 
           {numberOfProjects &&
             <Typography
+              title='Number of Projects'
               gutterBottom
               sx={{
                 color: 'darkorange',
@@ -109,9 +111,11 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 1, // Adds spacing between the button and switch
+          gap: 0.5,
+          paddingTop: '4px'
         }}>
-          <Button variant="contained"
+          <Button title='osg-htc.org'
+            variant="contained"
                   href="https://osg-htc.org/"
                   sx={{
                     fontSize: 10,
@@ -121,11 +125,12 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
                       backgroundColor: 'black',
                     },
                     width: '60%',
-                    height: '15px'
+                    height: '20px'
                   }}>
             OSPOOL
           </Button>
           <FormControlLabel
+            title= 'Toggle between institutions and projects pages'
             control={
               <Switch
                 checked={page === 'institutions'}
@@ -150,7 +155,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
               width: '100%',
               color: 'darkorange',
               margin: 0,
-              height: '15px',
+              height: '20px',
               justifyContent: 'center',
             }}
           />
