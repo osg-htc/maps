@@ -34,11 +34,11 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
             xl: '0.5%',
           },
         width: {
-          xs: '95%',
-          sm: '47%',
-          md: '32%',
+          xs: '65%',
+          sm: '38%',
+          md: '28%',
           lg: '24%',
-          xl: '19%',
+          xl: '15%',
         },
         transform: theme.breakpoints.down('sm') && shifted ? 'translateX(-50%)' : 'none',
         transition: 'left 0.6s ease-in-out',
@@ -93,7 +93,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
                     backgroundColor: 'black',
                   },
                 }}>
-          Open Science Grid
+          OSPOOL
         </Button>
       </CardActions>
     </Card>
