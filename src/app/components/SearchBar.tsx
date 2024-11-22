@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import useFuse from '../helpers/useFuse';
 import {
   Box,
@@ -21,8 +21,9 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 // @ts-ignore
 import { Institution, SearchBarProps } from '@/types/mapTypes';
 import useTheme from '@mui/material/styles/useTheme';
+import { Project } from '@/app/types/mapTypes';
 
-const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution, shifted = false }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution, shifted = false, onFilterUpdate}) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [open, setOpen] = useState<boolean>(false);
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null);
@@ -76,10 +77,14 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
       const updatedFilters = categoryFilters.includes(value)
         ? categoryFilters.filter((item) => item !== value)
         : [...categoryFilters, value];
-      return {
+
+      const newFilters = {
         ...prevFilters,
         [category]: updatedFilters,
-      };
+      }
+
+      onFilterUpdate(newFilters);
+      return newFilters
     });
   };
 
