@@ -171,8 +171,8 @@ const MarkersComponent: React.FC<{
 
     // filter the list of institutions based on the selected field of science
     const filteredInstitutionsWithProjects = useMemo(() => {
-        console.log("Institutions with projects:", institutionsWithProjects);
-        console.log("Selected filters:", selectedFilters);
+        // console.log("Institutions with projects:", institutionsWithProjects);
+        // console.log("Selected filters:", selectedFilters);
 
         return institutionsWithProjects.filter((institution) => {
             if (selectedFilters.fieldOfScience.length > 0) {
@@ -191,7 +191,7 @@ const MarkersComponent: React.FC<{
         });
     }, [institutionsWithProjects, selectedFilters]);
 
-    console.log("filteredInstitutionsWithProjects", filteredInstitutionsWithProjects);
+    // console.log("filteredInstitutionsWithProjects", filteredInstitutionsWithProjects);
 
     const markers = useMemo(() => {
         const handleMarkerClick = (institution: InstitutionWithProjects) => {
