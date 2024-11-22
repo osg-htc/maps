@@ -14,7 +14,7 @@ import {
   Menu,
   MenuItem,
   Checkbox,
-  FormControlLabel,
+  FormControlLabel, Tooltip,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -107,9 +107,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
           ),
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={handleFilterClick}>
-                <FilterListIcon />
-              </IconButton>
+              <Tooltip title="Filter" arrow>
+                <IconButton onClick={handleFilterClick}>
+                  <FilterListIcon />
+                </IconButton>
+              </Tooltip>
             </InputAdornment>
           ),
         }}

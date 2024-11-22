@@ -4,7 +4,7 @@ import {
   Card,
   CardActions,
   CardContent,
-  FormControlLabel, Switch,
+  FormControlLabel, Switch, Tooltip,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -78,23 +78,8 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
           },
           alignItems: 'center',
         }}>
-          <Typography
-            title='Number of institutions'
-            gutterBottom
-            sx={{
-              color: 'darkorange',
-              fontSize: 14,
-              '&:hover': {
-                color: 'black',
-              },
-              marginRight: 1,
-            justifyContent: 'center'}}>
-            Institutions: {numberOfInstitutions}
-          </Typography>
-
-          {numberOfProjects &&
+          <Tooltip title="Number of institutions" arrow>
             <Typography
-              title='Number of Projects'
               gutterBottom
               sx={{
                 color: 'darkorange',
@@ -102,9 +87,26 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
                 '&:hover': {
                   color: 'black',
                 },
+                marginRight: 1,
+                justifyContent: 'center',
               }}>
-              Projects: {numberOfProjects}
-            </Typography>}
+              Institutions: {numberOfInstitutions}
+            </Typography>
+          </Tooltip>
+          {numberOfProjects &&
+            <Tooltip title="Number of Projects" arrow>
+              <Typography
+                gutterBottom
+                sx={{
+                  color: 'darkorange',
+                  fontSize: 14,
+                  '&:hover': {
+                    color: 'black',
+                  },
+                }}>
+                Projects: {numberOfProjects}
+              </Typography>
+            </Tooltip>}
         </CardContent>
 
         <CardActions sx={{
@@ -112,53 +114,56 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
           flexDirection: 'column',
           alignItems: 'center',
           gap: 0.5,
-          paddingTop: '4px'
+          paddingTop: '4px',
         }}>
-          <Button title='osg-htc.org'
-            variant="contained"
-                  href="https://osg-htc.org/"
+          <Tooltip title="osg-htc.org" arrow>
+            <Button
+              variant="contained"
+              href="https://osg-htc.org/"
+              sx={{
+                fontSize: 10,
+                padding: '10px 16px',
+                backgroundColor: 'darkorange',
+                '&:hover': {
+                  backgroundColor: 'black',
+                },
+                width: '60%',
+                height: '20px',
+              }}>
+              OSPOOL
+            </Button>
+          </Tooltip>
+          <Tooltip title="Toggle between institutions and projects pages" arrow>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={page === 'institutions'}
+                  onChange={handlePageChange}
+                  name="pageSwitch"
+                  size="small"
+                  color="warning"
                   sx={{
-                    fontSize: 10,
-                    padding: '10px 16px',
-                    backgroundColor: 'darkorange',
-                    '&:hover': {
-                      backgroundColor: 'black',
-                    },
-                    width: '60%',
-                    height: '20px'
-                  }}>
-            OSPOOL
-          </Button>
-          <FormControlLabel
-            title= 'Toggle between institutions and projects pages'
-            control={
-              <Switch
-                checked={page === 'institutions'}
-                onChange={handlePageChange}
-                name="pageSwitch"
-                size='small'
-                color='warning'
-                sx={{
-                  color: 'darkorange',
-                  fontSize: 5,
-                }}
-              />
-            }
-            label={page === 'institutions' ? "Institutions" : "Projects"}
-            sx={{
-              '& .MuiFormControlLabel-label': {
-                fontSize: '14px',
-              },
-              '&:hover': {
-                color: 'black',
-              },
-              width: '100%',
-              color: 'darkorange',
-              margin: 0,
-              height: '20px',
-              justifyContent: 'center',
-            }}
-          />
+                    color: 'darkorange',
+                    fontSize: 5,
+                  }}
+                />
+              }
+              label={page === 'institutions' ? 'Institutions' : 'Projects'}
+              sx={{
+                '& .MuiFormControlLabel-label': {
+                  fontSize: '14px',
+                },
+                '&:hover': {
+                  color: 'black',
+                },
+                width: '100%',
+                color: 'darkorange',
+                margin: 0,
+                height: '20px',
+                justifyContent: 'center',
+              }}
+            />
+          </Tooltip>
         </CardActions>
       </Card>
     </Box>
