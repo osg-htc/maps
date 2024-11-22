@@ -52,14 +52,37 @@ const MarkersComponent: React.FC<{
             }
         };
 
-        handleZoom(); // Call initially to set correct values
+        // Update the URL with the current zoom level once the user interaction is finished
+        const handleIdle = () => {
+            const url = new URL(window.location.href);
+            url.searchParams.set('zoom', zoomRef.current.toFixed(2));
+            window.history.replaceState(null, '', url.toString());
+        };
 
         map.on('zoom', handleZoom);
+        map.on('idle', handleIdle);
 
         return () => {
             map.off('zoom', handleZoom);
+            map.off('idle', handleIdle);
         };
-    }, [markerSize]);
+    }, [markerSize, mapRef]);
+
+    // Read zoom level from URL on first load
+    useEffect(() => {
+        if (!mapRef.current) return;
+
+        const map = mapRef.current.getMap();
+        const zoomFromUrl = searchParams.get('zoom');
+
+        if (zoomFromUrl) {
+            const zoom = parseFloat(zoomFromUrl);
+            if (!isNaN(zoom)) {
+                map.setZoom(zoom);
+                zoomRef.current = zoom;
+            }
+        }
+    }, [searchParams, mapRef]);
 
 
     useEffect(() => {
@@ -115,7 +138,7 @@ const MarkersComponent: React.FC<{
     };
 
     const closeSidebar = () => {
-        window.history.pushState(null, '', `/maps`);
+        window.history.pushState(null, '', `/maps/projects`);
         setSelectedMarker(null);
         handleResetNorth();
     };
@@ -124,17 +147,18 @@ const MarkersComponent: React.FC<{
         const map = mapRef.current.getMap();
         map.flyTo({
             center: [institution.longitude, institution.latitude],
-            zoom: 8,
-            duration: 2000,
+            zoom: Math.max(zoomRef.current, 8),
+            duration: 1500,
         });
     };
 
     const handleSelectInstitution = (institution: Institution) => {
         setSelectedMarker(institution);
+
         // console.log('slected marker', selectedMarker);
         centerToMarker(institution);
         const convertedName = convertName(institution.name);
-        window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
+        window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}&zoom=${zoomRef.current.toFixed(2)}`);
     };
 
     const markers = useMemo(() => {

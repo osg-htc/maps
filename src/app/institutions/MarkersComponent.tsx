@@ -28,6 +28,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, esData, facilityInst
         if (!mapRef.current) return;
 
         const map = mapRef.current.getMap();
+
         const handleZoom = () => {
             const currentZoom = map.getZoom();
             const newSize = currentZoom < 3 ? 'small' : 'large';
@@ -36,14 +37,35 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, esData, facilityInst
             }
         };
 
-        handleZoom();
+        const handleIdle = () => {
+            const url = new URL(window.location.href);
+            url.searchParams.set('zoom', map.getZoom().toFixed(2));
+            window.history.replaceState(null, '', url.toString());
+        }
+
 
         map.on('zoom', handleZoom);
+        map.on('idle', handleIdle);
 
         return () => {
             map.off('zoom', handleZoom);
         };
-    }, [markerSize]);
+    }, [markerSize, mapRef]);
+
+    useEffect(() => {
+        if(!mapRef.current) return;
+
+        const map = mapRef.current.getMap();
+        const zoomFromUrl = searchParams.get('zoom');
+        if (zoomFromUrl) {
+            const zoom = parseInt(zoomFromUrl);
+            if(!isNaN(zoom)) {
+                map.setZoom(zoom);
+            }
+        }
+    })
+
+
 
     useEffect(() => {
         const handleUrlChange = () => {
@@ -101,7 +123,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, esData, facilityInst
     };
 
     const closeSidebar = () => {
-        window.history.pushState(null, '', `/maps`);
+        window.history.pushState(null, '', `/maps/institutions`);
         setSelectedMarker(null);
         handleResetNorth();
     };
@@ -110,7 +132,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, esData, facilityInst
         const map = mapRef.current.getMap();
         map.flyTo({
             center: [institution.longitude, institution.latitude],
-            zoom: 8,
+            zoom: Math.max(map.getZoom(), 8),
             duration: 2000,
         });
     };
@@ -125,7 +147,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, esData, facilityInst
         setSelectedMarker(institution);
         centerToMarker(institution);
         const convertedName = convertName(institution.facilities.map((facility: Facility) => facility.name)[0]);
-        window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
+        window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}&zoom=${mapRef.current.getmap().getzoom().toFixed(2)}`);
     };
 
     const markers = useMemo(() => {
