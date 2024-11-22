@@ -160,7 +160,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
         <MenuItem>
           <Box>
             <strong>Field of Science</strong>
-            {['Neuroscience', 'Computer Science', 'Physics'].map((field) => (
+            {' '}{['Neuroscience', 'Computer Science', 'Physics'].map((field) => (
               <FormControlLabel
                 key={field}
                 control={
@@ -177,7 +177,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
         <MenuItem>
           <Box>
             <strong>Department</strong>
-            {['Department A', 'Department B', 'Department C'].map((department) => (
+            {' '}{['Department A', 'Department B', 'Department C'].map((department) => (
               <FormControlLabel
                 key={department}
                 control={
@@ -194,7 +194,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
         <MenuItem>
           <Box>
             <strong>PI Name</strong>
-            {['PI 1', 'PI 2', 'PI 3'].map((piName) => (
+            {' '}{['PI 1', 'PI 2', 'PI 3'].map((piName) => (
               <FormControlLabel
                 key={piName}
                 control={

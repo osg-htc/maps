@@ -78,7 +78,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
           },
           alignItems: 'center',
         }}>
-          <Tooltip title="Number of institutions" arrow>
+          <Tooltip title="Number of institutions" arrow placement='top'>
             <Typography
               gutterBottom
               sx={{
@@ -116,7 +116,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
           gap: 0.5,
           paddingTop: '4px',
         }}>
-          <Tooltip title="osg-htc.org" arrow>
+          <Tooltip title="osg-htc.org" arrow placement='top'>
             <Button
               variant="contained"
               href="https://osg-htc.org/"
