@@ -21,16 +21,24 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
         left: shifted
           ? {
             xs: '50%',
-            sm: '85%',
+            sm: '78%',
             md: '85%',
-            lg: '90%',
+            lg: '88%',
+            xl: '91%',
           }
-          : '0.5%',
+          : {
+            xs: '2%',
+            sm: '0.5%',
+            md: '0.5%',
+            lg: '0.5%',
+            xl: '0.5%',
+          },
         width: {
           xs: '95%',
           sm: '47%',
           md: '32%',
-          lg: '22%',
+          lg: '24%',
+          xl: '19%',
         },
         transform: theme.breakpoints.down('sm') && shifted ? 'translateX(-50%)' : 'none',
         transition: 'left 0.6s ease-in-out',

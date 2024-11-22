@@ -1,14 +1,29 @@
 import {useState} from "react";
 import useFuse from "../helpers/useFuse";
-import {Box, ClickAwayListener, InputAdornment, List, ListItem, ListItemText, Paper, TextField} from "@mui/material";
+import {
+  Box,
+  ClickAwayListener,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  TextField,
+  useMediaQuery,
+} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 // @ts-ignore
 import {Institution, SearchBarProps} from "@/types/mapTypes";
+import useTheme from '@mui/material/styles/useTheme';
+
 
 const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution, shifted = false }) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [open, setOpen] = useState<boolean>(false);
     const filteredInstitutions = useFuse(institutions, searchTerm, { keys: ['name'] });
+    const theme = useTheme();
+    const isMediumUp = useMediaQuery(theme.breakpoints.up('md'));
+    const isSmallDown = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleSelect = (institution: Institution) => {
         setSearchTerm(institution.name);
@@ -25,12 +40,22 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
         setOpen(false);
     }
 
+    const handleLeftPosition = () => {
+      if(isMediumUp){
+        return shifted ? '45%' : '0.5%';
+      } else if(isSmallDown){
+        return shifted ? '45%' : '2%';
+      } else{
+        return shifted ? '45%' : '0.5%';
+      }
+    }
+
     return (
         <Box
             sx={{
                 position: 'absolute',
                 top: '10px',
-                left: shifted ? '45%' : '0.5%',
+                left: handleLeftPosition(),
                 transition: 'left 0.3s ease-in-out',
                 zIndex: 2,
             }}
