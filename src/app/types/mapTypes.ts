@@ -1,18 +1,19 @@
-// mapTypes.ts
+
 
 type MarkersProps = {
   mapRef: React.RefObject<any>;
   zoom: number;
 };
 
-type Project = {
+interface Project {
+  id: number;
   Name: string;
   Department: string;
   FieldOfScience: string;
   PIName: string;
-  cpuHours: number;
-  gpuHours: number;
-};
+  InstitutionID: number;
+  esData?: EsData
+}
 
 type InstitutionWithProjects = Institution & {
   projects: ProjectWithESData[];
@@ -41,7 +42,7 @@ type GrafanaPanelProps = {
   facultyName: string;
 };
 
-interface ProjectWithESData {
+interface ProjectWithESData extends Project{
   name: string;
   ID: string;
   Department: string;
@@ -57,12 +58,7 @@ interface ProjectWithESData {
       Name: string;
     };
   };
-  esData: {
-    docCount: number;
-    cpuHours: number;
-    gpuHours: number;
-    jobsRan: number;
-  };
+  esData: EsData
 };
 
 interface Facility {
@@ -96,6 +92,17 @@ interface Institution{
   }
 }
 
+interface EsData {
+  docCount: number;
+  cpuHours: number;
+  gpuHours: number;
+  jobsRan: number;
+}
+
+type EsDataType = Record<string, EsData>;
+
+type FetcherKey = 'facilities' | 'institutions' | 'esData';
+
 export type {
   Facility,
   FacilityInfo,
@@ -107,4 +114,7 @@ export type {
   Project,
   ProjectWithESData,
     InstitutionWithProjects,
+    FetcherKey,
+    EsData,
+    EsDataType
 };

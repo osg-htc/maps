@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { sub } from 'date-fns';
-import { Project } from '../types/mapTypes';
+import { ProjectWithESData } from '../types/mapTypes';
 
 type GrafanaPanelProps = {
   panelId: number;
@@ -25,7 +25,8 @@ const GrafanaPanel: React.FC<GrafanaPanelProps> = ({
   return <iframe src={url} width='100%' height='250px' title='Faculty Panel' />;
 };
 
-const GrafanaPanels: React.FC<{ project: Project }> = ({ project }) => {
+const GrafanaPanels: React.FC<{ project: ProjectWithESData }> = ({ project }) => {
+  // console.log('GpuHours:', project?.esData.gpuHours);
   const data = {
     panelId: [12, 10, 16, 4, 22],
     panelUrl: `https://gracc.opensciencegrid.org/d-solo/tFUN4y44z/projects`,
@@ -54,7 +55,7 @@ const GrafanaPanels: React.FC<{ project: Project }> = ({ project }) => {
           project={project.Name}
         />
       </Box>
-      {project.gpuHours > 0 ? (
+      {project.esData.gpuHours > 0 ? (
         <Box className='flex gap-2 flex-col lg-custom:flex-row my-2'>
           <GrafanaPanel // GPU Hours
             panelId={16}
@@ -67,7 +68,7 @@ const GrafanaPanels: React.FC<{ project: Project }> = ({ project }) => {
         </Box>
       ) : null}
       <Box className='flex gap-2 flex-col lg-custom:flex-row my-2 '>
-        {project.cpuHours > 0 ? (
+        {project.esData.cpuHours > 0 ? (
           <GrafanaPanel // CPU Hours
             panelId={4}
             panelUrl={data.panelUrl}

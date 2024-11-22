@@ -1,113 +1,85 @@
-import React, { useState, useEffect, useMemo } from 'react';
+'use client'
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Marker } from 'react-map-gl';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { Tooltip } from '@mui/material';
+import { Badge, Tooltip, BadgeProps } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import esProjects from '../../data/esProjects';
 import Sidebar from './Sidebar';
 import { useSearchParams } from 'next/navigation';
 import SearchBar from "@/app/components/SearchBar";
 // @ts-ignore
 import { Institution, Project, ProjectWithESData, InstitutionWithProjects} from '@/types/mapTypes';
+import DataCard from '@/app/components/DataCard';
+import useSWR from 'swr';
 
-const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
-    const searchParams = useSearchParams();
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+    '& .MuiBadge-badge': {
+        right: 0,
+        top: 5,
+        padding: '0 4px',
+        backgroundColor: 'black',
+        color: 'white',
+    },
+}));
+
+const MarkersComponent: React.FC<{
+    mapRef: any,
+    institutionsWithProjects: InstitutionWithProjects[],
+    filteredProjects: Project[]
+}> = ({ mapRef, institutionsWithProjects, filteredProjects}) => {
+
+    const searchParams = useSearchParams()
     const faculty = searchParams.get('faculty');
     const [markerSize, setMarkerSize] = useState<'small' | 'large'>('small');
     const [selectedMarker, setSelectedMarker] = useState<InstitutionWithProjects | null>(null);
     const [facultyName, setFacultyName] = useState<string>('');
-    const [institutions, setInstitutions] = useState<Institution[]>([]);
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [elasticsearchProjects, setElasticsearchProjects] = useState<Project[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Fetch Institutions
-                const institutionsResponse = await fetch(
-                    'https://topology-institutions.osg-htc.org/api/institution_ids'
-                );
-                const institutionsData: Institution[] = await institutionsResponse.json();
-                setInstitutions(institutionsData);
-
-                // Fetch Projects
-                const projectsResponse = await fetch('https://topology.opensciencegrid.org/miscproject/json');
-                const projectsData = await projectsResponse.json();
-                // console.log('Fetched Projects Data:', projectsData);
-
-                // Convert projectsData to array from object
-                if (Array.isArray(projectsData)) {
-                    setProjects(projectsData);
-                } else if (typeof projectsData === 'object' && projectsData !== null) {
-                    setProjects(Object.values(projectsData));
-                } else {
-                    console.error('Unexpected projectsData format:', projectsData);
-                    setProjects([]);
-                }
-
-                // Fetch Elasticsearch Projects
-                const elasticsearchResponse = await esProjects();
-                setElasticsearchProjects(elasticsearchResponse.aggregations.projects.buckets);
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
+    const [currentZoom, setCurrentZoom] = useState<number>(0);
+    const zoomRef = useRef(0);
 
     useEffect(() => {
         if (!mapRef.current) return;
 
         const map = mapRef.current.getMap();
         const handleZoom = () => {
-            const currentZoom = map.getZoom();
-            const newSize = currentZoom < 3 ? 'small' : 'large';
+            const zoom = map.getZoom();
+            zoomRef.current = zoom;
+
+            // Only update state if the marker size needs to change
+            const newSize = zoom < 3 ? 'small' : 'large';
             if (markerSize !== newSize) {
                 setMarkerSize(newSize);
             }
         };
 
-        handleZoom();
+        handleZoom(); // Call initially to set correct values
 
         map.on('zoom', handleZoom);
 
         return () => {
             map.off('zoom', handleZoom);
         };
-    }, [mapRef, markerSize]);
+    }, [markerSize]);
 
-    const filteredProjects = useMemo(() => {
-        const projectNames = new Set(
-            elasticsearchProjects.map((project) => project.key)
-        );
-        return projects.filter((project) =>
-            projectNames.has(project.Name)
-        );
-    }, [elasticsearchProjects, projects]);
 
-    const institutionsWithProjects: InstitutionWithProjects[] = useMemo(() => {
-        return institutions.map((institution) => {
-            const institutionProjects: ProjectWithESData[] = filteredProjects
-                .filter((project) => project.InstitutionID === institution.id)
-                .map((proj) => {
-                    const projectData = elasticsearchProjects.find((elProj) => elProj.key === proj.Name);
-                    return {
-                        ...proj,
-                        esData: {
-                            docCount: projectData?.doc_count || 0,
-                            cpuHours: projectData?.projectCpuUse.value || 0,
-                            gpuHours: projectData?.projectGpuUse.value || 0,
-                            jobsRan: projectData?.projectJobsRan.value || 0,
-                        }
-                    };
-                });
+    useEffect(() => {
+        const handleUrlChange = () => {
+            const currentPath = window.location.pathname;
+            if (currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
+                handleResetNorth();
+            }
+        };
 
-            return {
-                ...institution,
-                projects: institutionProjects
-            };
-        }).filter((iwp) => iwp.projects.length > 0);
-    }, [institutions, filteredProjects, elasticsearchProjects]);
+        handleUrlChange();
+
+        window.addEventListener('popstate', handleUrlChange);
+
+        return () => {
+            window.removeEventListener('popstate', handleUrlChange);
+        };
+    }, []);
+
+
 
     // console.log('institutionsWithProjects', institutionsWithProjects);
 
@@ -159,35 +131,54 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
 
     const handleSelectInstitution = (institution: Institution) => {
         setSelectedMarker(institution);
+        // console.log('slected marker', selectedMarker);
         centerToMarker(institution);
         const convertedName = convertName(institution.name);
         window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
     };
 
     const markers = useMemo(() => {
-        const handleMarkerClick = (iwp: InstitutionWithProjects) => {
-            setSelectedMarker(iwp);
-            const convertedName = convertName(iwp.name);
-            centerToMarker(iwp);
+        const handleMarkerClick = (institution: InstitutionWithProjects) => {
+            setSelectedMarker(institution);
+            const convertedName = convertName(institution.name);
+            centerToMarker(institution);
             window.history.pushState(null, '', `/maps/projects?faculty=${convertedName}`);
         };
 
-        return institutionsWithProjects.map((iwp) => (
+        return institutionsWithProjects.map((institution) => (
+
             <Marker
-                key={iwp.id}
-                longitude={iwp.longitude}
-                latitude={iwp.latitude}
+                key={institution.id}
+                longitude={institution.longitude}
+                latitude={institution.latitude}
             >
-                <Tooltip title={iwp.name} placement="top">
-                    <LocationOnIcon
+                {zoomRef.current >= 3 && (
+                  <StyledBadge badgeContent={institution.projects.length} style={{ color: 'blue' }}>
+                      <Tooltip title={institution.name} placement="top">
+                          <LocationOnIcon
+                            color="primary"
+                            className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
+                            fontSize={markerSize}
+                            onClick={() => handleMarkerClick(institution)}
+                            style={{ color: "darkorange", cursor: "pointer"}}
+                          />
+                      </Tooltip>
+                  </StyledBadge>
+                )}
+                {zoomRef.current < 3 && (
+                  <Tooltip title={institution.name} placement="top">
+                      <LocationOnIcon
                         color="primary"
                         className="hover:scale-150 transition duration-300 ease-in-out cursor-pointer"
                         fontSize={markerSize}
-                        onClick={() => handleMarkerClick(iwp)}
+                        onClick={() => handleMarkerClick(institution)}
                         style={{ color: "darkorange", cursor: "pointer"}}
-                    />
-                </Tooltip>
+                      />
+                  </Tooltip>
+                )}
+
             </Marker>
+
         ));
     }, [institutionsWithProjects, markerSize, mapRef]);
 
@@ -197,6 +188,7 @@ const MarkersComponent: React.FC<{ mapRef: any }> = ({ mapRef }) => {
                        onSelectInstitution={handleSelectInstitution}
                        shifted={Boolean(selectedMarker)}
             />
+            <DataCard numberOfInstitutions={institutionsWithProjects.length} shifted={Boolean(selectedMarker)} numberOfProjects={filteredProjects.length}/>
             {markers}
             {selectedMarker && (
                 <Sidebar

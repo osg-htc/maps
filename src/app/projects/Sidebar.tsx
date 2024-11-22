@@ -17,14 +17,14 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material';
 import useTheme from '@mui/material/styles/useTheme';
 import GrafanaPanels from './GrafanaPanels';
-import { Project } from '../types/mapTypes';
+import { ProjectWithESData } from '../types/mapTypes';
 import Link from "next/link";
 
 type SidebarProps = {
   onClose: () => void;
   header: string;
   facultyName: string;
-  projects: Project[];
+  projects: ProjectWithESData[];
   dataState?: boolean;
   selectedMarker: string | null;
   website?: string;
@@ -39,14 +39,14 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectWithESData | null>(null);
   const formattedWebsite = website && !/^https?:\/\//i.test(website) ? `https://${website}` : website;
 
   useEffect(() => {
     setSelectedProject(null);
   }, [selectedMarker]);
 
-  const handleProjectClick = (project: Project) => {
+  const handleProjectClick = (project: ProjectWithESData) => {
     setSelectedProject(project);
   };
   const handleBackClick = () => {
@@ -58,7 +58,10 @@ const Sidebar: React.FC<SidebarProps> = ({
       <Box
         component='aside'
         sx={{
-          width: isSmallScreen ? '100%' : '40%',
+          width:{
+            xs: '94%',
+            sm: '40%',
+          },
           position: 'absolute',
           top: 0,
           left: 0,
@@ -135,13 +138,14 @@ const Sidebar: React.FC<SidebarProps> = ({
                   {projects.map((project, index) => (
                     <TableRow
                       key={index}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 },
+                        cursor: 'pointer' ,
+                        '&:hover': {
+                        backgroundColor: 'lightgray'}}}
+                      onClick={() => handleProjectClick(project)}
                     >
                       <TableCell component='th' scope='row'>
-                        <Typography
-                          sx={{ cursor: 'pointer', color: 'blue' }}
-                          onClick={() => handleProjectClick(project)}
-                        >
+                        <Typography>
                           {project.Name}
                         </Typography>
                       </TableCell>

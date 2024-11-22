@@ -8,65 +8,21 @@ import { useSearchParams } from 'next/navigation';
 import SearchBar from "@/app/components/SearchBar";
 // @ts-ignore
 import { Institution, Facility, FacilityInfo} from '@/types/mapTypes';
+import DataCard from '@/app/components/DataCard';
+import { EsDataType } from '@/app/types/mapTypes';
 
 type MarkersProps = {
-    mapRef: React.RefObject<any>;
+    mapRef: React.RefObject<any>,
+    esData: EsDataType,
+    facilityInstitutionData: any[]
 };
 
-const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
+const MarkersComponent: React.FC<MarkersProps> = ({ mapRef, esData, facilityInstitutionData }) => {
     const searchParams = useSearchParams();
     const faculty = searchParams.get('faculty');
-    const [esData, setEsData] = useState<Record<string, []>>({});
     const [markerSize, setMarkerSize] = useState<'small' | 'large'>('small');
     const [selectedMarker, setSelectedMarker] = useState<Institution | null>(null);
     const [facultyName, setFacultyName] = useState<string>('');
-    const [facilityInstitutionData, setFacilityInstitutionData] = useState<Institution[]>([]);
-
-    useEffect(() => {
-        // Fetch data from ElasticSearch and both APIs
-        const fetchData = async () => {
-            try {
-                const esData = await getFacilityEsData();
-                setEsData(esData);
-
-                const institutionsResponse = await fetch('https://topology-institutions.osg-htc.org/api/institution_ids');
-                const institutionsData = await institutionsResponse.json();
-
-                const facilityResponse = await fetch('https://topology.opensciencegrid.org/miscfacility/json');
-                const facilitiesData: Record<string, FacilityInfo> = await facilityResponse.json();
-
-                // Create a mapping of institution data by institutionId
-                const institutionMap: Record<string, Institution> = institutionsData.reduce((acc: Record<string, Institution>, institution: Institution) => {
-                    const id = institution.id;
-                    acc[id] = { ...institution, facilities: [] }; // Initialize each institution with an empty facilities array
-                    return acc;
-                }, {});
-
-                // Combine facility data under corresponding institutions
-                Object.entries(facilitiesData).forEach(([facilityName, facilityInfo]) => {
-                    const institutionId = facilityInfo.InstitutionID;
-                    if (institutionMap[institutionId]) {
-                        // Push facility data into the corresponding institution's facilities array
-                        institutionMap[institutionId].facilities.push({
-                            name: facilityName,
-                            ID: facilityInfo.ID,
-                            isCCStar: facilityInfo.IsCCStar,
-                            esData: esData[facilityName] || null // Attach esData if available
-                        });
-                    }
-                });
-
-                // convert to an array
-                const combinedData = Object.values(institutionMap);
-                setFacilityInstitutionData(combinedData);
-                // console.log(combinedData);
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
 
     useEffect(() => {
         if (!mapRef.current) return;
@@ -87,7 +43,24 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
         return () => {
             map.off('zoom', handleZoom);
         };
-    }, [mapRef, markerSize]);
+    }, [markerSize]);
+
+    useEffect(() => {
+        const handleUrlChange = () => {
+            const currentPath = window.location.pathname;
+            if (currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
+                handleResetNorth();
+            }
+        };
+
+        handleUrlChange();
+
+        window.addEventListener('popstate', handleUrlChange); // detect back/forward button clicks / url changes
+
+        return () => {
+            window.removeEventListener('popstate', handleUrlChange);
+        };
+    }, []);
 
     // Set selected marker based on the faculty query parameter on mount
     useEffect(() => {
@@ -109,7 +82,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
 
     useEffect(() => {
         if(selectedMarker) {
-            console.log(selectedMarker)
+            // console.log(selectedMarker)
         }
     }, [selectedMarker])
 
@@ -203,6 +176,7 @@ const MarkersComponent: React.FC<MarkersProps> = ({ mapRef }) => {
                        onSelectInstitution={handleSelectInstitution}
                        shifted={Boolean(selectedMarker)}
             />
+            <DataCard numberOfInstitutions={filteredInstitutions.length} shifted={Boolean(selectedMarker)} />
             {markers}
             {selectedMarker && (
                 <Sidebar
