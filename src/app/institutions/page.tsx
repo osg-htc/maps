@@ -2,24 +2,10 @@
 import Head from 'next/head';
 import Box from '@mui/material/Box';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import dynamic from 'next/dynamic';
 import React from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import NavigationButtons from "@/app/components/NavigationButtons";
 import { getFacilityEsData } from '@/data/eqInstitutions';
 import { FacilityInfo, Institution } from '@/app/types/mapTypes';
 import Config from '@/app/institutions/config';
-
-// const DynamicInstitutions = dynamic(
-//   () => import('./MapComponent'),
-//   {
-//     ssr: false,
-//     loading: () =>
-//         (<Box sx={{marginTop: '5em', textAlign: 'center'}}>
-//             <CircularProgress style={{color: 'darkorange', alignContent: 'center'}}/>
-//         </Box>)
-//   }
-// );
 
 
 const Page = async () => {

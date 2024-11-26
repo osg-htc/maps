@@ -11,7 +11,6 @@ import SearchBar from "@/app/components/SearchBar";
 // @ts-ignore
 import { Institution, Project, ProjectWithESData, InstitutionWithProjects} from '@/types/mapTypes';
 import DataCard from '@/app/components/DataCard';
-import useSWR from 'swr';
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
     '& .MuiBadge-badge': {
@@ -34,8 +33,13 @@ const MarkersComponent: React.FC<{
     const [markerSize, setMarkerSize] = useState<'small' | 'large'>('small');
     const [selectedMarker, setSelectedMarker] = useState<InstitutionWithProjects | null>(null);
     const [facultyName, setFacultyName] = useState<string>('');
-    const [currentZoom, setCurrentZoom] = useState<number>(0);
     const zoomRef = useRef(0);
+    const [selectedFilters, setSelectedFilters] = useState<{ [key: string]: string[] }>({
+        fieldOfScience: [],
+        department: [],
+        piName: [],
+    });
+
 
     useEffect(() => {
         if (!mapRef.current) return;
@@ -52,14 +56,37 @@ const MarkersComponent: React.FC<{
             }
         };
 
-        handleZoom(); // Call initially to set correct values
+        // Update the URL with the current zoom level once the user interaction is finished
+        const handleIdle = () => {
+            const url = new URL(window.location.href);
+            url.searchParams.set('zoom', zoomRef.current.toFixed(2));
+            window.history.replaceState(null, '', url.toString());
+        };
 
         map.on('zoom', handleZoom);
+        map.on('idle', handleIdle);
 
         return () => {
             map.off('zoom', handleZoom);
+            map.off('idle', handleIdle);
         };
-    }, [markerSize]);
+    }, [markerSize, mapRef]);
+
+    // Read zoom level from URL on first load
+    useEffect(() => {
+        if (!mapRef.current) return;
+
+        const map = mapRef.current.getMap();
+        const zoomFromUrl = searchParams.get('zoom');
+
+        if (zoomFromUrl) {
+            const zoom = parseFloat(zoomFromUrl);
+            if (!isNaN(zoom)) {
+                map.setZoom(zoom);
+                zoomRef.current = zoom;
+            }
+        }
+    }, [searchParams, mapRef]);
 
 
     useEffect(() => {
@@ -115,7 +142,7 @@ const MarkersComponent: React.FC<{
     };
 
     const closeSidebar = () => {
-        window.history.pushState(null, '', `/maps`);
+        window.history.pushState(null, '', `/maps/projects`);
         setSelectedMarker(null);
         handleResetNorth();
     };
@@ -124,18 +151,47 @@ const MarkersComponent: React.FC<{
         const map = mapRef.current.getMap();
         map.flyTo({
             center: [institution.longitude, institution.latitude],
-            zoom: 8,
-            duration: 2000,
+            zoom: Math.max(zoomRef.current, 8),
+            duration: 1500,
         });
     };
 
     const handleSelectInstitution = (institution: Institution) => {
         setSelectedMarker(institution);
+
         // console.log('slected marker', selectedMarker);
         centerToMarker(institution);
         const convertedName = convertName(institution.name);
-        window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}`);
+        window.history.pushState(null, '', `/maps/institutions?faculty=${convertedName}&zoom=${zoomRef.current.toFixed(2)}`);
     };
+
+    const handleFilterUpdate = (filters: { [key: string]: string[]}) => {
+        setSelectedFilters(filters)
+    }
+
+    // filter the list of institutions based on the selected field of science
+    const filteredInstitutionsWithProjects = useMemo(() => {
+        // console.log("Institutions with projects:", institutionsWithProjects);
+        // console.log("Selected filters:", selectedFilters);
+
+        return institutionsWithProjects.filter((institution) => {
+            if (selectedFilters.fieldOfScience.length > 0) {
+                const hasMatchingField = institution.projects.some((project: ProjectWithESData) => {
+                    return (
+                      project.FieldOfScience &&
+                      selectedFilters.fieldOfScience.some((field) =>
+                        project.FieldOfScience.includes(field)
+                      )
+                    );
+                });
+                if (!hasMatchingField) return false;
+            }
+
+            return true;
+        });
+    }, [institutionsWithProjects, selectedFilters]);
+
+    // console.log("filteredInstitutionsWithProjects", filteredInstitutionsWithProjects);
 
     const markers = useMemo(() => {
         const handleMarkerClick = (institution: InstitutionWithProjects) => {
@@ -145,7 +201,7 @@ const MarkersComponent: React.FC<{
             window.history.pushState(null, '', `/maps/projects?faculty=${convertedName}`);
         };
 
-        return institutionsWithProjects.map((institution) => (
+        return filteredInstitutionsWithProjects.map((institution) => (
 
             <Marker
                 key={institution.id}
@@ -180,15 +236,20 @@ const MarkersComponent: React.FC<{
             </Marker>
 
         ));
-    }, [institutionsWithProjects, markerSize, mapRef]);
+    }, [filteredInstitutionsWithProjects, markerSize, mapRef]);
 
     return (
         <>
-            <SearchBar institutions={institutionsWithProjects}
+            <SearchBar institutions={filteredInstitutionsWithProjects}
                        onSelectInstitution={handleSelectInstitution}
                        shifted={Boolean(selectedMarker)}
+                       onFilterUpdate={handleFilterUpdate}
             />
-            <DataCard numberOfInstitutions={institutionsWithProjects.length} shifted={Boolean(selectedMarker)} numberOfProjects={filteredProjects.length}/>
+            <DataCard
+              numberOfInstitutions={filteredInstitutionsWithProjects.length}
+              shifted={Boolean(selectedMarker)}
+              numberOfProjects={filteredInstitutionsWithProjects.reduce((acc, institution) => acc + institution.projects.length, 0)}
+            />
             {markers}
             {selectedMarker && (
                 <Sidebar

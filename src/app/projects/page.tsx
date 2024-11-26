@@ -2,29 +2,11 @@
 import Head from 'next/head';
 import Box from '@mui/material/Box';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import dynamic from 'next/dynamic';
 import React, { useMemo } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import NavigationButtons from "@/app/components/NavigationButtons";
-import useSWR from 'swr';
 // @ts-ignore
-import { Institution, Project, ProjectWithESData, InstitutionWithProjects } from '@/types/mapTypes';
+import { Institution, Project} from '@/types/mapTypes';
 import esProjects from '@/data/esProjects';
 import Config from './config';
-
-// const DynamicProjects = dynamic(
-//   () => import('./MapComponent'),
-//   {
-//     ssr: false,
-//     loading: () => (
-//         <Box sx={{marginTop: '5em', textAlign: 'center'}}>
-//             <CircularProgress style={{color: 'darkorange', alignContent: 'center'}}/>
-//         </Box>
-//     )
-//   }
-// );
-
-
 
 const fetchElasticsearchProjects = async () => {
   const response = await esProjects();
@@ -41,8 +23,6 @@ const Page= async() => {
   const esProjects = await fetchElasticsearchProjects();
 
   // console.log(institutions)
-  //
-  // projects = Array.isArray(projects) ? projects : Object.values(projects);
 
   return (
     <>
