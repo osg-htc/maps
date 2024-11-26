@@ -10,6 +10,8 @@ import esProjects from "@/data/esProjects";
 
 export const getInstitutionsWithProjects = async (): Promise<InstitutionWithProjects[]> => {
 
+	console.log('Refreshing things');
+
 	const projects = await getTopologyProjects();
 	const institutions = await getInstitutions();
 	const esProjects = await fetchElasticsearchProjects();

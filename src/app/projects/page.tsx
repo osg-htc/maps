@@ -1,3 +1,4 @@
+import 'server-only'
 
 import Head from 'next/head';
 import Box from '@mui/material/Box';
@@ -8,7 +9,7 @@ import {
   getInstitutionsWithProjects,
 } from "@/app/projects/util";
 
-const Page= async() => {
+const Page = async () => {
 
   const institutionsWithProjects = await getInstitutionsWithProjects();
 

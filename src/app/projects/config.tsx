@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useMemo } from 'react';
-import useSWR from 'swr';
+import useSWR from 'swr/immutable'
 import MapComponent from '@/app/projects/MapComponent';
 import {InstitutionWithProjects} from '@/app/types/mapTypes';
 import {getInstitutionsWithProjects} from "@/app/projects/util";
