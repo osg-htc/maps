@@ -88,22 +88,22 @@ const MarkersComponent: React.FC<{
     }, [searchParams, mapRef]);
 
 
-    useEffect(() => {
-        const handleUrlChange = () => {
-            const currentPath = window.location.pathname;
-            if (currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
-                handleResetNorth();
-            }
-        };
-
-        handleUrlChange();
-
-        window.addEventListener('popstate', handleUrlChange);
-
-        return () => {
-            window.removeEventListener('popstate', handleUrlChange);
-        };
-    }, []);
+    // useEffect(() => {
+    //     const handleUrlChange = () => {
+    //         const currentPath = window.location.pathname;
+    //         if (currentPath === '/maps/institutions' || currentPath === '/maps/projects') {
+    //             handleResetNorth();
+    //         }
+    //     };
+    //
+    //     handleUrlChange();
+    //
+    //     window.addEventListener('popstate', handleUrlChange);
+    //
+    //     return () => {
+    //         window.removeEventListener('popstate', handleUrlChange);
+    //     };
+    // }, []);
 
 
 
