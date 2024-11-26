@@ -58,11 +58,11 @@ const DataCard: React.FC<DataCardProps> = ({institutionsLabel, projectsLabel, nu
               xl: '0.5%',
             },
           width: {
-            xs: '70%',
-            sm: '38%',
-            md: '28%',
-            lg: '24%',
-            xl: '15%',
+            xs: '96%',
+            sm: '48%',
+            md: '34%',
+            lg: '28%',
+            xl: '19%',
           },
           transform: theme.breakpoints.down('sm') && shifted ? 'translateX(-50%)' : 'none',
           transition: 'left 0.6s ease-in-out',
@@ -74,10 +74,7 @@ const DataCard: React.FC<DataCardProps> = ({institutionsLabel, projectsLabel, nu
         }}>
         <CardContent sx={{
           display: 'flex',
-          flexDirection: {
-            xs: 'row',
-            sm: 'column',
-          },
+          flexDirection: 'column',
           alignItems: 'center',
         }}>
           {numberOfProjects &&
