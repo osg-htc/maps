@@ -12,12 +12,14 @@ import useTheme from '@mui/material/styles/useTheme';
 import { useState } from 'react';
 
 type DataCardProps = {
+  institutionsLabel?: string;
   numberOfInstitutions: number;
-  shifted: boolean;
+  projectsLabel?: string;
   numberOfProjects?: number;
+  shifted: boolean;
 }
 
-const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numberOfProjects }) => {
+const DataCard: React.FC<DataCardProps> = ({institutionsLabel, projectsLabel, numberOfProjects, numberOfInstitutions, shifted  }) => {
   const theme = useTheme();
   const [page, setPage] = useState<string>(() => {
     if (typeof window !== 'undefined') {
@@ -78,23 +80,8 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
           },
           alignItems: 'center',
         }}>
-          <Tooltip title="Number of institutions" arrow placement='top'>
-            <Typography
-              gutterBottom
-              sx={{
-                color: 'darkorange',
-                fontSize: 14,
-                '&:hover': {
-                  color: 'black',
-                },
-                marginRight: 1,
-                justifyContent: 'center',
-              }}>
-              Institutions: {numberOfInstitutions}
-            </Typography>
-          </Tooltip>
           {numberOfProjects &&
-            <Tooltip title="Number of Projects" arrow>
+            <Tooltip title="Number of OSPool Projects Active in last year" arrow placement='right-end'>
               <Typography
                 gutterBottom
                 sx={{
@@ -104,9 +91,24 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
                     color: 'black',
                   },
                 }}>
-                Projects: {numberOfProjects}
+                {projectsLabel || "Projects:"} {numberOfProjects}
               </Typography>
             </Tooltip>}
+          <Tooltip title="Number of institutions associated with active projects" arrow placement='right-end'>
+            <Typography
+                gutterBottom
+                sx={{
+                  color: 'darkorange',
+                  fontSize: 14,
+                  '&:hover': {
+                    color: 'black',
+                  },
+                  marginRight: 1,
+                  justifyContent: 'center',
+                }}>
+              {institutionsLabel || "Institutions:"} {numberOfInstitutions}
+            </Typography>
+          </Tooltip>
         </CardContent>
 
         <CardActions sx={{
@@ -119,7 +121,7 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
           <Tooltip title="osg-htc.org" arrow placement='top'>
             <Button
               variant="contained"
-              href="https://osg-htc.org/"
+              href="https://osg-htc.org/ospool"
               sx={{
                 fontSize: 10,
                 padding: '10px 16px',
@@ -128,41 +130,10 @@ const DataCard: React.FC<DataCardProps> = ({ numberOfInstitutions, shifted, numb
                   backgroundColor: 'black',
                 },
                 width: '60%',
-                height: '20px',
+                height: '30px',
               }}>
-              OSPOOL
+              OSPool
             </Button>
-          </Tooltip>
-          <Tooltip title="Toggle between institutions and projects pages" arrow>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={page === 'institutions'}
-                  onChange={handlePageChange}
-                  name="pageSwitch"
-                  size="small"
-                  color="warning"
-                  sx={{
-                    color: 'darkorange',
-                    fontSize: 5,
-                  }}
-                />
-              }
-              label={page === 'institutions' ? 'Institutions' : 'Projects'}
-              sx={{
-                '& .MuiFormControlLabel-label': {
-                  fontSize: '14px',
-                },
-                '&:hover': {
-                  color: 'black',
-                },
-                width: '100%',
-                color: 'darkorange',
-                margin: 0,
-                height: '20px',
-                justifyContent: 'center',
-              }}
-            />
           </Tooltip>
         </CardActions>
       </Card>

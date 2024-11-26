@@ -18,8 +18,8 @@ interface MapMoveEvent {
 }
 
 const MapComponent: React.FC<{
-  institutionsWithProjects: InstitutionWithProjects[],
-  filteredProjects: ProjectWithESData[]}> = ({institutionsWithProjects, filteredProjects}) => {
+  institutionsWithProjects: InstitutionWithProjects[]
+}> = ({institutionsWithProjects}) => {
   const mapRef = useRef<MapRef>(null);
   const [projection, setProjection] = useState('globe');
 
@@ -45,7 +45,7 @@ const MapComponent: React.FC<{
       projection={projection}
     >
       <MapControls mapRef={mapRef} handleProjection={handleProjection} />
-      <MarkersComponent institutionsWithProjects={institutionsWithProjects} mapRef={mapRef} filteredProjects={filteredProjects}/>
+      <MarkersComponent institutionsWithProjects={institutionsWithProjects} mapRef={mapRef}/>
     </Map>
   );
 };

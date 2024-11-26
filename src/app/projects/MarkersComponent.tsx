@@ -24,9 +24,8 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 
 const MarkersComponent: React.FC<{
     mapRef: any,
-    institutionsWithProjects: InstitutionWithProjects[],
-    filteredProjects: Project[]
-}> = ({ mapRef, institutionsWithProjects, filteredProjects}) => {
+    institutionsWithProjects: InstitutionWithProjects[]
+}> = ({ mapRef, institutionsWithProjects}) => {
 
     const searchParams = useSearchParams()
     const faculty = searchParams.get('faculty');
@@ -201,7 +200,9 @@ const MarkersComponent: React.FC<{
             window.history.pushState(null, '', `/maps/projects?faculty=${convertedName}`);
         };
 
-        return filteredInstitutionsWithProjects.map((institution) => (
+        return filteredInstitutionsWithProjects
+            .sort((a, b) => b.latitude - a.latitude)
+            .map((institution) => (
 
             <Marker
                 key={institution.id}
@@ -246,6 +247,7 @@ const MarkersComponent: React.FC<{
                        onFilterUpdate={handleFilterUpdate}
             />
             <DataCard
+                institutionsLabel={'Project Institutions:'}
               numberOfInstitutions={filteredInstitutionsWithProjects.length}
               shifted={Boolean(selectedMarker)}
               numberOfProjects={filteredInstitutionsWithProjects.reduce((acc, institution) => acc + institution.projects.length, 0)}

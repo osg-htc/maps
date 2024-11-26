@@ -5,6 +5,39 @@ type MarkersProps = {
   zoom: number;
 };
 
+export interface TopologyProject {
+  Department: string;
+  Description: string;
+  FieldOfScience: string;
+  FieldOfScienceID: string;
+  ID: string;
+  InstitutionID: string;
+  Name: string;
+  Organization: string;
+  PIName: string;
+  ResourceAllocations: any;
+  Sponsor: {
+    CampusGrid: {
+      ID: number;
+      Name: string;
+    };
+  };
+}
+
+export interface EsProject {
+  key: string;
+  doc_count: number;
+  projectJobsRan: {
+    value: number;
+  };
+  projectGpuUse: {
+    value: number;
+  };
+  projectCpuUse: {
+    value: number;
+  };
+}
+
 interface Project {
   id: number;
   Name: string;
@@ -42,22 +75,7 @@ type GrafanaPanelProps = {
   facultyName: string;
 };
 
-interface ProjectWithESData extends Project{
-  name: string;
-  ID: string;
-  Department: string;
-  Description: string;
-  FieldOfScience: string;
-  FieldOfScienceID: string;
-  Organization: string;
-  PIName: string;
-  ResourceAllocations: any;
-  Sponsor: {
-    CampusGrid: {
-      ID: number;
-      Name: string;
-    };
-  };
+interface ProjectWithESData extends TopologyProject{
   esData: EsData
 };
 
@@ -76,7 +94,7 @@ interface FacilityInfo {
 
 
 interface Institution{
-  id: number;
+  id: string;
   name: string;
   latitude: number;
   longitude: number;

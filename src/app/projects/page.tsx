@@ -3,26 +3,14 @@ import Head from 'next/head';
 import Box from '@mui/material/Box';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import React, { useMemo } from 'react';
-// @ts-ignore
-import { Institution, Project} from '@/types/mapTypes';
-import esProjects from '@/data/esProjects';
 import Config from './config';
-
-const fetchElasticsearchProjects = async () => {
-  const response = await esProjects();
-  return response.aggregations.projects.buckets;
-};
+import {
+  getInstitutionsWithProjects,
+} from "@/app/projects/util";
 
 const Page= async() => {
-  const institutionsResponse = await fetch('https://topology-institutions.osg-htc.org/api/institution_ids');
-  const institutions: Institution[] = await institutionsResponse.json();
 
-  const projectsResponse = await fetch('https://topology.opensciencegrid.org/miscproject/json');
-  let projects: Project[] = await projectsResponse.json();
-
-  const esProjects = await fetchElasticsearchProjects();
-
-  // console.log(institutions)
+  const institutionsWithProjects = await getInstitutionsWithProjects();
 
   return (
     <>
@@ -35,9 +23,9 @@ const Page= async() => {
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
       <Box height={'100vh'} width={'100vw'}>
-        <Config initialInstitutions={institutions}
-                initialProjects={projects}
-                initialEsProjects={esProjects}/>
+        <Config
+            initialInstitutionsWithProjects={institutionsWithProjects}
+        />
       </Box>
     </>
   );
