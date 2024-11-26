@@ -110,15 +110,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
               <SearchIcon />
             </InputAdornment>
           ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <Tooltip title="Filter" arrow>
-                <IconButton onClick={handleFilterClick}>
-                  <FilterListIcon />
-                </IconButton>
-              </Tooltip>
-            </InputAdornment>
-          ),
+          // endAdornment: (
+          //   <InputAdornment position="end">
+          //     <Tooltip title="Filter" arrow>
+          //       <IconButton onClick={handleFilterClick}>
+          //         <FilterListIcon />
+          //       </IconButton>
+          //     </Tooltip>
+          //   </InputAdornment>
+          // ),
         }}
         sx={{
           width: '350px',
@@ -157,63 +157,63 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
           </Paper>
         </ClickAwayListener>
       )}
-      <Menu
-        anchorEl={filterAnchorEl}
-        open={Boolean(filterAnchorEl)}
-        onClose={handleFilterClose}
-      >
-        <MenuItem>
-          <Box>
-            <strong>Field of Science</strong>
-            {' '}{['Neuroscience', 'Computer Science', 'Physics'].map((field) => (
-              <FormControlLabel
-                key={field}
-                control={
-                  <Checkbox
-                    checked={selectedFilters.fieldOfScience.includes(field)}
-                    onChange={() => handleFilterChange('fieldOfScience', field)}
-                  />
-                }
-                label={field}
-              />
-            ))}
-          </Box>
-        </MenuItem>
-        {/*<MenuItem>*/}
-        {/*  <Box>*/}
-        {/*    <strong>Department</strong>*/}
-        {/*    {' '}{['Department A', 'Department B', 'Department C'].map((department) => (*/}
-        {/*      <FormControlLabel*/}
-        {/*        key={department}*/}
-        {/*        control={*/}
-        {/*          <Checkbox*/}
-        {/*            checked={selectedFilters.department.includes(department)}*/}
-        {/*            onChange={() => handleFilterChange('department', department)}*/}
-        {/*          />*/}
-        {/*        }*/}
-        {/*        label={department}*/}
-        {/*      />*/}
-        {/*    ))}*/}
-        {/*  </Box>*/}
-        {/*</MenuItem>*/}
-        {/*<MenuItem>*/}
-        {/*  <Box>*/}
-        {/*    <strong>PI Name</strong>*/}
-        {/*    {' '}{['PI 1', 'PI 2', 'PI 3'].map((piName) => (*/}
-        {/*      <FormControlLabel*/}
-        {/*        key={piName}*/}
-        {/*        control={*/}
-        {/*          <Checkbox*/}
-        {/*            checked={selectedFilters.piName.includes(piName)}*/}
-        {/*            onChange={() => handleFilterChange('piName', piName)}*/}
-        {/*          />*/}
-        {/*        }*/}
-        {/*        label={piName}*/}
-        {/*      />*/}
-        {/*    ))}*/}
-        {/*  </Box>*/}
-        {/*</MenuItem>*/}
-      </Menu>
+      {/*<Menu*/}
+      {/*  anchorEl={filterAnchorEl}*/}
+      {/*  open={Boolean(filterAnchorEl)}*/}
+      {/*  onClose={handleFilterClose}*/}
+      {/*>*/}
+      {/*  <MenuItem>*/}
+      {/*    <Box>*/}
+      {/*      <strong>Field of Science</strong>*/}
+      {/*      {' '}{['Neuroscience', 'Computer Science', 'Physics'].map((field) => (*/}
+      {/*        <FormControlLabel*/}
+      {/*          key={field}*/}
+      {/*          control={*/}
+      {/*            <Checkbox*/}
+      {/*              checked={selectedFilters.fieldOfScience.includes(field)}*/}
+      {/*              onChange={() => handleFilterChange('fieldOfScience', field)}*/}
+      {/*            />*/}
+      {/*          }*/}
+      {/*          label={field}*/}
+      {/*        />*/}
+      {/*      ))}*/}
+      {/*    </Box>*/}
+      {/*  </MenuItem>*/}
+      {/*  /!*<MenuItem>*!/*/}
+      {/*  /!*  <Box>*!/*/}
+      {/*  /!*    <strong>Department</strong>*!/*/}
+      {/*  /!*    {' '}{['Department A', 'Department B', 'Department C'].map((department) => (*!/*/}
+      {/*  /!*      <FormControlLabel*!/*/}
+      {/*  /!*        key={department}*!/*/}
+      {/*  /!*        control={*!/*/}
+      {/*  /!*          <Checkbox*!/*/}
+      {/*  /!*            checked={selectedFilters.department.includes(department)}*!/*/}
+      {/*  /!*            onChange={() => handleFilterChange('department', department)}*!/*/}
+      {/*  /!*          />*!/*/}
+      {/*  /!*        }*!/*/}
+      {/*  /!*        label={department}*!/*/}
+      {/*  /!*      />*!/*/}
+      {/*  /!*    ))}*!/*/}
+      {/*  /!*  </Box>*!/*/}
+      {/*  /!*</MenuItem>*!/*/}
+      {/*  /!*<MenuItem>*!/*/}
+      {/*  /!*  <Box>*!/*/}
+      {/*  /!*    <strong>PI Name</strong>*!/*/}
+      {/*  /!*    {' '}{['PI 1', 'PI 2', 'PI 3'].map((piName) => (*!/*/}
+      {/*  /!*      <FormControlLabel*!/*/}
+      {/*  /!*        key={piName}*!/*/}
+      {/*  /!*        control={*!/*/}
+      {/*  /!*          <Checkbox*!/*/}
+      {/*  /!*            checked={selectedFilters.piName.includes(piName)}*!/*/}
+      {/*  /!*            onChange={() => handleFilterChange('piName', piName)}*!/*/}
+      {/*  /!*          />*!/*/}
+      {/*  /!*        }*!/*/}
+      {/*  /!*        label={piName}*!/*/}
+      {/*  /!*      />*!/*/}
+      {/*  /!*    ))}*!/*/}
+      {/*  /!*  </Box>*!/*/}
+      {/*  /!*</MenuItem>*!/*/}
+      {/*</Menu>*/}
     </Box>
   );
 };
