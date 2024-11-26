@@ -179,40 +179,40 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
             ))}
           </Box>
         </MenuItem>
-        <MenuItem>
-          <Box>
-            <strong>Department</strong>
-            {' '}{['Department A', 'Department B', 'Department C'].map((department) => (
-              <FormControlLabel
-                key={department}
-                control={
-                  <Checkbox
-                    checked={selectedFilters.department.includes(department)}
-                    onChange={() => handleFilterChange('department', department)}
-                  />
-                }
-                label={department}
-              />
-            ))}
-          </Box>
-        </MenuItem>
-        <MenuItem>
-          <Box>
-            <strong>PI Name</strong>
-            {' '}{['PI 1', 'PI 2', 'PI 3'].map((piName) => (
-              <FormControlLabel
-                key={piName}
-                control={
-                  <Checkbox
-                    checked={selectedFilters.piName.includes(piName)}
-                    onChange={() => handleFilterChange('piName', piName)}
-                  />
-                }
-                label={piName}
-              />
-            ))}
-          </Box>
-        </MenuItem>
+        {/*<MenuItem>*/}
+        {/*  <Box>*/}
+        {/*    <strong>Department</strong>*/}
+        {/*    {' '}{['Department A', 'Department B', 'Department C'].map((department) => (*/}
+        {/*      <FormControlLabel*/}
+        {/*        key={department}*/}
+        {/*        control={*/}
+        {/*          <Checkbox*/}
+        {/*            checked={selectedFilters.department.includes(department)}*/}
+        {/*            onChange={() => handleFilterChange('department', department)}*/}
+        {/*          />*/}
+        {/*        }*/}
+        {/*        label={department}*/}
+        {/*      />*/}
+        {/*    ))}*/}
+        {/*  </Box>*/}
+        {/*</MenuItem>*/}
+        {/*<MenuItem>*/}
+        {/*  <Box>*/}
+        {/*    <strong>PI Name</strong>*/}
+        {/*    {' '}{['PI 1', 'PI 2', 'PI 3'].map((piName) => (*/}
+        {/*      <FormControlLabel*/}
+        {/*        key={piName}*/}
+        {/*        control={*/}
+        {/*          <Checkbox*/}
+        {/*            checked={selectedFilters.piName.includes(piName)}*/}
+        {/*            onChange={() => handleFilterChange('piName', piName)}*/}
+        {/*          />*/}
+        {/*        }*/}
+        {/*        label={piName}*/}
+        {/*      />*/}
+        {/*    ))}*/}
+        {/*  </Box>*/}
+        {/*</MenuItem>*/}
       </Menu>
     </Box>
   );
