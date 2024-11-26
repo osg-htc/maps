@@ -121,7 +121,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ institutions, onSelectInstitution
           // ),
         }}
         sx={{
-          width: '350px',
+          width: {
+            lg: '350px',
+            xs: '290px'
+          },
           '& .MuiOutlinedInput-root': {
             borderRadius: '8px',
             backgroundColor: '#f9f9f9',
