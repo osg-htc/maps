@@ -5,13 +5,12 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { PlayArrow } from '@mui/icons-material';
 
-import UWBanner from "@chtc/web-components/UW/Banner"
-import UWFooter from "@chtc/web-components/UW/Footer"
+
 import theme, {fonts} from "@chtc/web-components/themes/chtc"
 
 import "./globals.css"
-import Header from "@/components/Header";
 import Analytics from "@/components/Analytics";
+import Map from "@/components/Map";
 
 export const metadata: Metadata = {
   title: "Website Template",
@@ -36,12 +35,9 @@ export default function RootLayout({
       <AppRouterCacheProvider>
         <Box component={"body"} sx={{ margin: 0, padding: 0 }}>
           <ThemeProvider theme={theme}>
-            <UWBanner />
-						<Header pages={pages} />
-						{children}
-            <UWFooter
-                accessibilityEmail={"chtc@wisc.edu"}
-            />
+            <Map>
+              {children}
+            </Map>
           </ThemeProvider>
         </Box>
       </AppRouterCacheProvider>
