@@ -3,7 +3,10 @@
 import {ReactNode, useEffect, useState} from "react";
 import Map from "react-map-gl/mapbox"
 import 'mapbox-gl/dist/mapbox-gl.css';
-import {Box} from '@mui/material';
+import { Box } from '@mui/material';
+import { Storage, TripOrigin } from '@mui/icons-material';
+import {Marker as MbMarker} from 'react-map-gl/mapbox';
+
 
 function BaseMap({children}: {children: ReactNode}) {
 
@@ -19,8 +22,8 @@ function BaseMap({children}: {children: ReactNode}) {
         zIndex: 999,
         height: '100%',
         width: '100%',
-        maxHeight: '100vh',
-        maxWidth: '100vw',
+        // maxHeight: '100vh',
+        // maxWidth: '100vw',
       }}>
         <Map
           mapboxAccessToken="pk.eyJ1IjoiY2Fubm9uLWxvY2siLCJhIjoiY21tMTUxbjhqMDVnaDJxcHE2eWp6aGo2ZiJ9.oZFr4GezivM26AkP87Cg-w"
@@ -35,6 +38,22 @@ function BaseMap({children}: {children: ReactNode}) {
           onLoad={() => setMounted(true)}
         >
           {mounted && children}
+          <MbMarker
+            key={`1`}
+            latitude={41.787994}
+            longitude={-87.599539}
+            color="#FF5733"
+            offset={[0, 0]}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <Box zIndex={99999999}>
+              <Box sx={{backgroundColor: "black", borderRadius: "50%", padding: 0.5, display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 1001}}>
+                <Storage color={"primary"} />
+              </Box>
+            </Box>
+          </MbMarker>
         </Map>
       </Box>
     </>
