@@ -31,14 +31,14 @@ function MapData() {
         longitude={bin[0].projectInstitutionLongitude}
         anchor="bottom"
       >
-        <Box zIndex={99999999} sx={{ position: "relative", cursor: "pointer" }}>
+        <Box zIndex={999} sx={{ position: "relative", cursor: "pointer" }}>
           <LocationPin sx={{
             color: '#FF5733',
             fontSize: 40,
           }} />
           <Circle sx={{
             color: '#FF5733',
-            fontSize: 20,
+            fontSize: 25,
             position: "absolute",
             top: "35%",
             left: "50%",

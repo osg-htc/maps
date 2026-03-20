@@ -7,7 +7,7 @@ import MapData from "@/src/components/MapData";
 import Statistics from "@/src/components/Statistics";
 
 
-function SplitView() {
+function SplitViewController() {
 
   return (
     <Grid container sx={{ height: '100vh' }}>
@@ -27,4 +27,4 @@ function SplitView() {
   )
 }
 
-export default SplitView;
+export default SplitViewController;

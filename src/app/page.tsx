@@ -1,10 +1,10 @@
 import { Box, Typography, Container } from "@mui/material";
-import SplitView from "@/src/components/SplitView";
+import SplitViewController from "@/src/components/SplitViewController";
 
 export default async function Home() {
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "background.default" }}>
-      <SplitView></SplitView>
+      <SplitViewController></SplitViewController>
     </Box>
   );
 }
