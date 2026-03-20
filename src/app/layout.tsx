@@ -5,13 +5,12 @@ import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { PlayArrow } from '@mui/icons-material';
 
-
 import theme, {fonts} from "@chtc/web-components/themes/chtc"
 
-import "./globals.css"
-import Analytics from "@/components/Analytics";
-import Map from "@/components/Map";
-import Statistics from "@/components/Statistics";
+import "@/src/app/globals.css"
+import Analytics from "@/src/components/Analytics";
+import Map from "@/src/components/Map";
+import Statistics from "@/src/components/Statistics";
 
 export const metadata: Metadata = {
   title: "Website Template",
