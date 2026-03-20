@@ -1,14 +1,17 @@
 'use client'
 
-import {ReactNode, useEffect, useState} from "react";
-import Map from "react-map-gl/mapbox"
+import { useEffect, useState } from "react";
+import useSWR from 'swr'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography, Stack } from '@mui/material';
-import { Storage, TripOrigin } from '@mui/icons-material';
-import {Marker as MbMarker} from 'react-map-gl/mapbox';
+import { getInstitutionsOverview } from '@/src/utils/adstash.mjs'
 
 
 function StatisticsView() {
+
+  const { data, error, isLoading } = useSWR([getInstitutionsOverview], () => getInstitutionsOverview());
+
+  console.log(data)
 
   return (
     <>
@@ -21,10 +24,15 @@ function StatisticsView() {
         width: '100%'
       }}>
         <Box sx={{ backgroundColor: "blue", margin: 10 }}>
-          <Typography>Hello World</Typography>
+          <Typography>Hello World!</Typography>
         </Box>
         <Box sx={{ backgroundColor: "blue", margin: 10 }}>
-          <Typography>Hello World</Typography>
+          {isLoading
+            ? "Loading..."
+            : error
+            ? "Error loading data"
+            : `Loaded ${data}`
+          }
         </Box>
       </Stack>
     </>
