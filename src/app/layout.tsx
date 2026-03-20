@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import {Box, Grid, Stack} from "@mui/material";
+import { Box } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { PlayArrow } from '@mui/icons-material';
@@ -9,8 +9,6 @@ import theme, {fonts} from "@chtc/web-components/themes/chtc"
 
 import "@/src/app/globals.css"
 import Analytics from "@/src/components/Analytics";
-import Map from "@/src/components/Map";
-import Statistics from "@/src/components/Statistics";
 
 export const metadata: Metadata = {
   title: "Website Template",
@@ -35,20 +33,7 @@ export default function RootLayout({
       <AppRouterCacheProvider>
         <Box component={"body"} sx={{ margin: 0, padding: 0 }}>
           <ThemeProvider theme={theme}> 
-            <Grid container sx={{ height: '100vh' }}>
-              <Grid size={6}>
-                <Box sx={{ height: "100%" }} >
-                  <Statistics></Statistics>
-                </Box>
-              </Grid>
-              <Grid size={6}>
-                <Box sx={{ height: "100%" }} >
-                  <Map>
-                    {children}
-                  </Map>
-                </Box>
-              </Grid>
-            </Grid>
+            {children}
           </ThemeProvider>
         </Box>
       </AppRouterCacheProvider>

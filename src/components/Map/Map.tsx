@@ -8,7 +8,7 @@ import { Storage, TripOrigin } from '@mui/icons-material';
 import {Marker as MbMarker} from 'react-map-gl/mapbox';
 
 
-function BaseMap({children}: {children: ReactNode}) {
+function BaseMap() {
 
   const [mounted, setMounted] = useState(false);
 
@@ -37,7 +37,7 @@ function BaseMap({children}: {children: ReactNode}) {
           mapStyle={"mapbox://styles/mapbox/light-v11"} // "mapbox://styles/cannon-lock/cm9u8lv2400fd01qt9yvj8nyz/draft"
           onLoad={() => setMounted(true)}
         >
-          {mounted && children}
+          {mounted}
           <MbMarker
             key={`1`}
             latitude={41.787994}
