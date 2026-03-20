@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import useSWR from 'swr'
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography, Stack } from '@mui/material';
-import { getInstitutionsOverview } from '@/src/utils/adstash.mjs'
+import { getProjects } from '@/src/utils/adstash.mjs'
 
 
 function StatisticsView() {
 
-  const { data, error, isLoading } = useSWR([getInstitutionsOverview], () => getInstitutionsOverview());
+  const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
 
   console.log(data)
 

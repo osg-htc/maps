@@ -30,7 +30,7 @@ export async function getLatestOSPoolOverview() {
     return json
 }
 
-export const getInstitutionsOverview = async (startTime = DATE_RANGE['oneYearAgo'], endTime = DATE_RANGE['now']) => {
+export const getInstitutionsOverview = async (startTime = ['oneYearAgo'], endTime = DATE_RANGE['now']) => {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
 	let usageQueryResult = await elasticSearch.search({
@@ -38,7 +38,7 @@ export const getInstitutionsOverview = async (startTime = DATE_RANGE['oneYearAgo
 		query: {
 			range: {
 				Date: {
-                    gte: startTime,
+          gte: startTime,
 					lte: endTime
 				}
 			}
@@ -351,7 +351,9 @@ export const getProjects = async (startTime = DATE_RANGE['oneYearAgo'], endTime 
 				projectInstitutionIpedsWebsiteAddress: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'website_address'),
 				projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'historically_black_college_or_university'),
 				projectInstitutionIpedsTribalCollegeOrUniversity: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'tribal_college_or_university'),
-				projectInstitutionState: getFromCommonField(v, 'ProjectInstitution', 'state'),
+        projectInstitutionState: getFromCommonField(v, 'ProjectInstitution', 'state'),
+        projectInstitutionLatitude: getFromCommonField(v, 'ProjectInstitution', 'latitude'),
+        projectInstitutionLongitude: getFromCommonField(v, 'ProjectInstitution', 'longitude'),
 				projectEpscorState: EPSCOR_STATES.includes(getFromCommonField(v, 'ProjectInstitution', 'state'))
 			}
 			return p
@@ -618,7 +620,7 @@ const PROJECT_COMMON_FIELDS = [
 	"ProjectInstitution.name",
   "ProjectInstitution.state",
   "ProjectInstitution.latitude",
-  "ProjectInsitution.longitude",
+  "ProjectInstitution.longitude",
 	"ProjectInstitution.ipeds_metadata.website_address",
 	"ProjectInstitution.ipeds_metadata.historically_black_college_or_university",
 	"ProjectInstitution.ipeds_metadata.tribal_college_or_university",

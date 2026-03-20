@@ -33,3 +33,6 @@ On click:
 - All the other markers hide themselves
 - Stats panel switches to showing the stats of that project
 - "back" button appears in the top left of the stats pannel to un select the active project
+
+Data fetching:
+- 
