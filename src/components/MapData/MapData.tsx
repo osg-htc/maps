@@ -12,6 +12,8 @@ function MapData({pinClickHandler}: {pinClickHandler: () => void}) {
   const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
   const bins: Record<string, any[]> = {};
 
+  if (!data) return <></>
+
   Object.values(data).forEach((project: any) => {
     if (project.projectInstitutionLatitude === undefined) {
       console.log(project);

@@ -9,9 +9,7 @@ import { useRef, useState } from 'react';
 
 
 function SplitViewController() {
-  const [leftPanelVisible, setLeftPanelVisible] = useState(false);
-
-  const mapRef = useRef<any>(null);
+  const [leftPanelVisible, setLeftPanelVisible] = useState(true);
 
   const handlePinClick = () => {
     setLeftPanelVisible(!leftPanelVisible);
