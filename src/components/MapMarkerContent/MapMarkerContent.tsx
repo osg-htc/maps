@@ -7,11 +7,13 @@ import { Box, Typography } from '@mui/material';
 function MapData() {
   return (
     <Box zIndex={999} sx={{ position: "relative", cursor: "pointer" }}>
-      <LocationPin sx={{
+      
+      
+      <LocationPin sx={{ // location pin has a hole in the top that we dont want...
         color: '#FF5733',
         fontSize: 40,
       }} />
-      <Circle sx={{
+      <Circle sx={{ // ...so we just fill it with a circle
         color: '#FF5733',
         fontSize: 25,
         position: "absolute",
@@ -19,6 +21,8 @@ function MapData() {
         left: "50%",
         transform: "translate(-50%, -50%)"
       }} />
+
+
       <Typography sx={{
         color: "white",
         fontSize: 15,

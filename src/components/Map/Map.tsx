@@ -6,7 +6,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import {Box} from '@mui/material';
 
 function BaseMap({children}: {children: ReactNode}) {
-
   const [mounted, setMounted] = useState(true);
 
   return (

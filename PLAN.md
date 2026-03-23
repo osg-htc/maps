@@ -1,5 +1,11 @@
 ## Strcuture
 
+- Layout always owns map to prevent flickering on page switch
+- Children passed into layout go directly into the Map
+- Each page gets its own component
+- Map needs to stay generalized in the layout, children get if via useMap
+
+```
 Layout {
   Grid {
     left: Statistics {
@@ -18,6 +24,7 @@ Layout {
     }
   }
 }
+```
 
 ## Behavior
 
