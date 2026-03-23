@@ -7,7 +7,7 @@ import { Box, Typography, Stack } from '@mui/material';
 import { getProjects } from '@/src/utils/adstash.mjs'
 
 
-function StatisticsView() {
+function ProjectStatistics() {
   return (
     <>
       <Stack component={'div'} spacing={2} sx={{
@@ -34,4 +34,4 @@ function StatisticsView() {
   )
 }
 
-export default StatisticsView;
+export default ProjectStatistics;

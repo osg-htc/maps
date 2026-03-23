@@ -4,7 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Grid } from '@mui/material';
 import Map from "@/src/components/Map";
 import MapData from "@/src/components/MapData";
-import Statistics from "@/src/components/Statistics";
+import ProjectStatistics from "@/src/components/ProjectStatistics";
 import { useRef, useState } from 'react';
 
 
@@ -19,7 +19,7 @@ function SplitViewController() {
     <Grid container sx={{ height: '100vh' }}>
       <Grid size={leftPanelVisible ? 4 : 0}>
         <Box sx={{ height: "100%" }} >
-          <Statistics></Statistics>
+          <ProjectStatistics />
         </Box>
       </Grid>
       <Grid size={leftPanelVisible ? 8 : 12}>
