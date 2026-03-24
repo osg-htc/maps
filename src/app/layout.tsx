@@ -9,9 +9,7 @@ import theme, {fonts} from "@chtc/web-components/themes/chtc"
 
 import "@/src/app/globals.css"
 import Analytics from "@/src/components/Analytics";
-import SplitViewController from "@/src/components/SplitViewController";
-
-import Map from "@/src/components/Map";
+import BaseMap from "@/src/components/BaseMap";
 
 export const metadata: Metadata = {
   title: "Website Template",
@@ -37,9 +35,9 @@ export default function RootLayout({
         <Box component={"body"} sx={{ margin: 0, padding: 0 }}>
           <ThemeProvider theme={theme}> 
             <Box sx={{ position: 'relative', width: '100vw', height: '100vh', bgcolor: "background.default" }}>
-              <Map>
+              <BaseMap>
                 {children}
-              </Map>
+              </BaseMap>
             </Box>
           </ThemeProvider>
         </Box>

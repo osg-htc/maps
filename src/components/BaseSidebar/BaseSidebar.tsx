@@ -1,13 +1,12 @@
 'use client'
 
-import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Grid, Paper } from '@mui/material';
-import MapData from "@/src/components/MapData";
-import ProjectStatistics from "@/src/components/ProjectStatistics";
-import { useRef, useState } from 'react';
+import MapData from "@/src/components/ProjectMap/ProjectMapData";
+import ProjectStatistics from "@/src/components/ProjectMap/ProjectMapStatistics";
+import { ReactNode, useState } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 
-function SplitViewController() {
+function BaseSidebar({children}: {children: ReactNode}) {
   const [leftPanelVisible, setLeftPanelVisible] = useState(true);
   const { current: map } = useMap();
   const PANEL_WIDTH = 360;
@@ -17,12 +16,6 @@ function SplitViewController() {
       padding: { left: PANEL_WIDTH, top: 0, right: 0, bottom: 0 },
       duration: 0,
   });
-
-
-  const handlePinClick = () => {
-    setLeftPanelVisible(!leftPanelVisible);
-  }
-
 
   return (
     <>
@@ -40,11 +33,10 @@ function SplitViewController() {
           m: 1,
         }}
       >
-        <ProjectStatistics />
+        { children }
       </Paper>
-      <MapData pinClickHandler={handlePinClick} />
     </>
   )
 }
 
-export default SplitViewController;
+export default BaseSidebar;

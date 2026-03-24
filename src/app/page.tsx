@@ -1,7 +1,7 @@
-import SplitViewController from "@/src/components/SplitViewController";
+import ProjectMapController from "@/src/components/ProjectMap/ProjectMapController";
 
 export default async function Home() {
   return (
-    <SplitViewController></SplitViewController>
+    <ProjectMapController></ProjectMapController>
   );
 }
