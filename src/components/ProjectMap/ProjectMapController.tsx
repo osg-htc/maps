@@ -1,11 +1,11 @@
 'use client'
 
 import { Box, Grid, Paper } from '@mui/material';
-import MapData from "@/src/components/ProjectMap/ProjectMapData";
-import ProjectStatistics from "@/src/components/ProjectMap/ProjectMapStatistics";
+import ProjectMapData from "./ProjectMapData";
+import ProjectStatistics from "./ProjectMapStatistics";
 import { useState } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
-import BaseSidebar from '../../BaseSidebar';
+import BaseSidebar from '../BaseSidebar';
 
 function ProjectMapController() {
   const [leftPanelVisible, setLeftPanelVisible] = useState(true);
@@ -29,7 +29,7 @@ function ProjectMapController() {
       <BaseSidebar>
         <ProjectStatistics />
       </BaseSidebar>
-      <MapData pinClickHandler={handlePinClick} />
+      <ProjectMapData pinClickHandler={handlePinClick} />
     </>
   )
 }

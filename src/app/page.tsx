@@ -1,7 +1,7 @@
-import ProjectMapController from "@/src/components/ProjectMap/ProjectMapController";
+import ProjectMap from "@/src/components/ProjectMap";
 
 export default async function Home() {
   return (
-    <ProjectMapController></ProjectMapController>
+    <ProjectMap></ProjectMap>
   );
 }
