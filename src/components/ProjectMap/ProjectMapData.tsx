@@ -7,7 +7,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography } from '@mui/material';
 import { getProjects } from '@/src/utils/adstash.mjs'
 
-function ProjectMapData({pinClickHandler}: {pinClickHandler: () => void}) {
+function ProjectMapData() {
   const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
   const bins: Record<string, any[]> = {};
 
@@ -32,7 +32,6 @@ function ProjectMapData({pinClickHandler}: {pinClickHandler: () => void}) {
           latitude={bin[0].projectInstitutionLatitude}
           longitude={bin[0].projectInstitutionLongitude}
           anchor="bottom"
-          onClick={pinClickHandler}
         >
           <Box zIndex={999} sx={{ position: "relative", cursor: "pointer" }}>
             <LocationPin sx={{ // location pin has a hole in the top that we dont want...
