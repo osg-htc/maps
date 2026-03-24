@@ -1,6 +1,5 @@
 'use client'
 
-import ProjectMapData, { ProjectMapMarkerProps } from "./ProjectMapData";
 import ProjectStatistics from "./ProjectMapStatistics";
 import { useEffect, useState } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
@@ -17,7 +16,6 @@ function ProjectMapController() {
 
   const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
   const bins: Record<string, any[]> = {};
-  const pinData: ProjectMapMarkerProps[] = [];
 
 
   useEffect(() => {
@@ -42,27 +40,13 @@ function ProjectMapController() {
     console.log(bins)
   }, [data])
 
-  
-  useEffect(() => {
-    if (data) {
-      console.log(data)
-
-      Object.values(data).forEach((project: any) => {
-        if (project.projectInstitutionLatitude === undefined) return
-        if (!bins[project.projectInstitutionName]) bins[project.projectInstitutionName] = []
-        bins[project.projectInstitutionName].push(project)
-      })
-    }
-
-  }, [bins])
-
 
   return (
     <>
       <Sidebar width={leftPanelVisible ? 360 : 0}>
         <ProjectStatistics />
       </Sidebar>
-      {pinData && <ProjectMapData pinBins={pinData} />}
+      {/* {pinData && <ProjectMapData pinBins={pinData} />} */}
     </>
   )
 }
