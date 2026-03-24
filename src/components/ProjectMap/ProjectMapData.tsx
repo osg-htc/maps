@@ -1,46 +1,37 @@
-'use client'
-
-import useSWR from 'swr';
 import { LocationPin, Circle } from '@mui/icons-material';
 import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography } from '@mui/material';
-import { getProjects } from '@/src/utils/adstash.mjs'
 
-function ProjectMapData() {
-  const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
-  const bins: Record<string, any[]> = {};
+export type ProjectMapMarkerProps = {
+  key: string,
+  text: string,
+  color: string,
+  size: number,
+  lat: number,
+  lon: number,
+  onClick: () => void,
+}
 
-  if (!data) return <></>
-
-  Object.values(data).forEach((project: any) => {
-    if (project.projectInstitutionLatitude === undefined) {
-      console.log(project);
-      return
-    }
-    if (!bins[project.projectInstitutionName]) bins[project.projectInstitutionName] = []
-    bins[project.projectInstitutionName].push(project)
-  })
-
-  console.log(bins)
-
-  return (
+function ProjectMapData({ pinBins }: { pinBins: ProjectMapMarkerProps[] }) {
+  return !pinBins ? <></> : (
     <>
-      {Object.values(bins).map((bin) => (
+      {pinBins.map((props) => (
         <Marker
-          key={bin[0].projectInstitutionName}
-          latitude={bin[0].projectInstitutionLatitude}
-          longitude={bin[0].projectInstitutionLongitude}
+          key={props.key}
+          latitude={props.lat}
+          longitude={props.lon}
           anchor="bottom"
+          onClick={props.onClick}
         >
           <Box zIndex={999} sx={{ position: "relative", cursor: "pointer" }}>
             <LocationPin sx={{ // location pin has a hole in the top that we dont want...
-              color: '#FF5733',
-              fontSize: 40,
+              color: props.color,
+              fontSize: props.size,
             }} />
             <Circle sx={{ // ...so we just fill it with a circle
-              color: '#FF5733',
-              fontSize: 25,
+              color: props.color,
+              fontSize: props.size / 2,
               position: "absolute",
               top: "35%",
               left: "50%",
@@ -48,12 +39,14 @@ function ProjectMapData() {
             }} />
             <Typography sx={{
               color: "white",
-              fontSize: 15,
+              fontSize: props.size / 2,
               position: "absolute",
               top: "35%",
               left: "50%",
               transform: "translate(-50%, -50%)"
-            }}>{bin.length}</Typography>
+            }}>
+              {props.text}
+            </Typography>
           </Box>
         </Marker>
       ))}

@@ -1,6 +1,5 @@
 import { Typography, Stack, Paper } from '@mui/material';
 
-
 function ProjectMapStatistics() {
   return (
     <>
