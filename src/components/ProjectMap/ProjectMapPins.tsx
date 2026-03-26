@@ -12,10 +12,10 @@ export type ProjectMapPinsProps = {
   onClick: () => void,
 }
 
-function ProjectMapData({ pinBins }: { pinBins: ProjectMapPinsProps[] }) {
-  return !pinBins ? <></> : (
+function ProjectMapData({ pins }: { pins: ProjectMapPinsProps[] }) {
+  return !pins ? <></> : (
     <>
-      {pinBins.map((props) => (
+      {pins.map((props) => (
         <ProjectMapPin
           key={props.key}
           text={props.num}

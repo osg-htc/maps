@@ -19,27 +19,6 @@ function ProjectList() {
         <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1}}>
           <Typography>Hello World!</Typography>
         </Paper>
-        <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1}}>
-          <Typography>Hello World!</Typography>
-        </Paper>
-        <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1}}>
-          <Typography>Hello World!</Typography>
-        </Paper>
-        <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1}}>
-          <Typography>Hello World!</Typography>
-        </Paper>
-        <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1}}>
-          <Typography>Hello World!</Typography>
-        </Paper>
-        <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1}}>
-          <Typography>Hello World!</Typography>
-        </Paper>
-        <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1}}>
-          <Typography>Hello World!</Typography>
-        </Paper>
-        <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1}}>
-          <Typography>Hello World!</Typography>
-        </Paper>
       </Stack>
     </>
   )

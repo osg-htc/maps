@@ -13,7 +13,7 @@ export type MapPinProps = {
   onClick: () => void,
 }
 
-function MapPin(props: MapPinProps ) {
+function MapPin(props: MapPinProps) {
   
   return (
     <Marker
