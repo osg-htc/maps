@@ -3,7 +3,7 @@ import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography } from '@mui/material';
 
-export type ProjectMapMarkerProps = {
+export type MapPinProps = {
   key: string,
   text: string,
   color: string,
@@ -13,7 +13,7 @@ export type ProjectMapMarkerProps = {
   onClick: () => void,
 }
 
-function ProjectMapData(props: ProjectMapMarkerProps ) {
+function MapPin(props: MapPinProps ) {
   
   return (
     <Marker
@@ -51,4 +51,4 @@ function ProjectMapData(props: ProjectMapMarkerProps ) {
   )
 }
 
-export default ProjectMapData;
+export default MapPin;
