@@ -1,11 +1,11 @@
 /**
  * A collection of functions for uniform queries to the adstash ES endpoint
  */
-import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch-v1.js";
+import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch-ts";
 
-export const getDateOfLatestData = async () => {
+export async function getDateOfLatestData(): Promise<Date> {
     const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
-    let usageQueryResult = await elasticSearch.search({
+    let usageQueryResult: any = await elasticSearch.search({
         size: 1,
         sort: [
             {
@@ -18,19 +18,38 @@ export const getDateOfLatestData = async () => {
     return new Date(usageQueryResult.hits.hits[0]._source.Date)
 }
 
-export async function getLatestOSPoolOverview() {
-    let json = undefined
-    let d = new Date()
-    d.setUTCHours(0,0,0,0)
-    while (!json || json['numJobs'] == 0) {
-        d.setUTCDate(d.getUTCDate() - 1)
-        json = await getInstitutionsOverview(d.getTime(), d.getTime())
-        json['date'] = d
-    }
-    return json
+type InstututionsOverviewData = {
+  byteTransferCount: number
+  cpuHours: number
+  fileTransferCount: number
+  gpuHours: number
+  numBroadFieldOfScience: number
+  numDetailedFieldOfScience: number
+  numInstitutions: number
+  numJobs: number
+  numMajorFieldOfScience: number
+  numProjects: number
+  osdfByteTransferCount: number
+  osdfFileTransferCount: number
 }
 
-export const getInstitutionsOverview = async (startTime = ['oneYearAgo'], endTime = DATE_RANGE['now']) => {
+type OSPoolOverviewData = InstututionsOverviewData & {
+  date: Date
+}
+
+export async function getLatestOSPoolOverview(): Promise<OSPoolOverviewData> {
+    let overview: InstututionsOverviewData | null = null
+    let d: Date = new Date()
+    d.setUTCHours(0,0,0,0)
+    while (!overview || overview['numJobs'] == 0) {
+        d.setUTCDate(d.getUTCDate() - 1)
+        overview = await getInstitutionsOverview(d.getTime(), d.getTime())
+    }
+  return { ...overview, date: d}
+}
+
+
+export async function getInstitutionsOverview(startTime = DATE_RANGE['oneYearAgo'], endTime = DATE_RANGE['now']): Promise<InstututionsOverviewData> {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
 	let usageQueryResult = await elasticSearch.search({

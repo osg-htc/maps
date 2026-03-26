@@ -30,7 +30,7 @@ export async function getLatestOSPoolOverview() {
     return json
 }
 
-export const getInstitutionsOverview = async (startTime = ['oneYearAgo'], endTime = DATE_RANGE['now']) => {
+export const getInstitutionsOverview = async (startTime = DATE_RANGE['oneYearAgo'], endTime = DATE_RANGE['now']) => {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
 	let usageQueryResult = await elasticSearch.search({

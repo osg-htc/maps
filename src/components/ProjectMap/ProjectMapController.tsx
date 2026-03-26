@@ -4,7 +4,7 @@ import { Typography, Stack, Paper } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import useSWR from 'swr';
-import { getProjects } from '@/src/utils/adstash.mjs';
+import { getProjects, getInstitutionsOverview } from '@/src/utils/adstash.mjs';
 import Sidebar from '../Sidebar';
 import ProjectList, { ProjectListItemProps } from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
@@ -26,6 +26,7 @@ function ProjectMapController() {
 
   console.log(data)
 
+  console.log(getInstitutionsOverview())
 
   const projectBinsByInstitution = useMemo(() => {
     return Object.groupBy(
@@ -38,7 +39,7 @@ function ProjectMapController() {
     )
   }, [data]);
 
-  
+
 
   const mapPinData: ProjectMapPinProps[] = useMemo(() => {
     return Object.values(projectBinsByInstitution).map((bin) => ({

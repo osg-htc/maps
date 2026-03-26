@@ -60,7 +60,7 @@ class ElasticSearchQuery {
      * @param options - Any additional fetch options
      * @returns Object - A JSON object
      */
-    async search(body: object, options?: object) : Promise<unknown>{
+    async search<T = unknown>(body: object, options?: object) : Promise<T>{
 
         let url = `${this.endpoint}/${this.index}/_search`
         let method = "POST"
