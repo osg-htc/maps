@@ -9,31 +9,18 @@ import Sidebar from '../Sidebar';
 import ProjectList, { ProjectListItemProps } from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
 
-
 type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-selected'
 
-
 function ProjectMapController() {
-  const { current: map } = useMap();
-  const [currentStep, setCurrentStep] = useState<MapStep>('loading')
-  const [leftPanelVisible, setLeftPanelVisible] = useState(true);
-  const [selectedInstitution, setSelectedInstitution] = useState<string>("")
-  const [selectedProject, setSelectedProject] = useState<string>("")
-
-  // move the map center over if the side bar is open
-  map?.easeTo({
-    padding: { left: leftPanelVisible ? 360 : 0, top: 0, right: 0, bottom: 0 },
-    duration: 0,
-  });
-
-
-  // MATT: getProjects is not defined in TS so we can't handle the types cleanly,
+   // MATT: getProjects is not defined in TS so we can't handle the types cleanly,
   //       we should either define the strcutre of this data here (bad) or convert
   //       adstash and the elastic search files to TS (hard), for now this is just
   //       a bunch of gymnastics to satisfy the type checker
   const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
-
-  console.log(data)
+  const { current: map } = useMap();
+  const [leftPanelVisible, setLeftPanelVisible] = useState(true);
+  const [selectedInstitution, setSelectedInstitution] = useState<string>("")
+  const [selectedProject, setSelectedProject] = useState<string>("")
 
 
 
@@ -45,8 +32,7 @@ function ProjectMapController() {
         project?.projectInstitutionName
       ),
       (project: any) => project.projectInstitutionName
-    ),
-  [data]);
+  ), [data]);
 
 
 
@@ -56,8 +42,7 @@ function ProjectMapController() {
       lat: bin?.[0].projectInstitutionLatitude,
       lon: bin?.[0].projectInstitutionLongitude,
       onClick: () => setSelectedInstitution(bin?.[0].projectInstitutionName),
-    })),
-  [projectBinsByInstitution]);
+  })), [projectBinsByInstitution]);
 
 
 
@@ -67,9 +52,16 @@ function ProjectMapController() {
       field: project.detailedFieldOfScience,
       institution: project.projectInstitutionName,
       onClick: () => { setSelectedProject(project.projectName) },
-    })) ?? [],
-  [projectBinsByInstitution, selectedInstitution]);
-
+    })) ?? [], [projectBinsByInstitution, selectedInstitution]);
+  
+  
+  const selectedProjectStats: ProjectListItemProps[] = useMemo(() =>
+    projectBinsByInstitution[selectedInstitution]?.map((project) => ({
+      name: project.projectName,
+      field: project.detailedFieldOfScience,
+      institution: project.projectInstitutionName,
+      onClick: () => { setSelectedProject(project.projectName) },
+    })) ?? [], [projectBinsByInstitution, selectedInstitution]);
 
 
   useEffect(() => {
@@ -86,14 +78,44 @@ function ProjectMapController() {
     });
   }, [selectedInstitution, selectedInstitutionProjects]);
 
-  return (
-    <>
-      <Sidebar width={leftPanelVisible ? 360 : 0}>
-        <ProjectList projects={ selectedInstitutionProjects } />
-      </Sidebar>
-      <ProjectMapPins pins={mapPinData} />
-    </>
+
+  const currentStep: MapStep = (
+    isLoading ? 'loading' :
+    selectedInstitution ? 'institution-selected' :
+    selectedProject ? 'project-selected' :
+    'no-selection'
   )
+
+  // move the map center over if the side bar is open
+  useEffect(() => {
+    map?.easeTo({
+      padding: { left: currentStep == 'loading' || currentStep == 'no-selection' ? 0 : 360, top: 0, right: 0, bottom: 0 },
+      duration: 0,
+    })
+  }, [currentStep]);
+
+  switch (currentStep) {
+    case 'loading':
+      return <></>
+    case 'no-selection':
+      return <>
+        <ProjectMapPins pins={mapPinData} />
+      </>
+    case 'institution-selected':
+      return <>
+        <Sidebar width={360}>
+          <ProjectList projects={selectedInstitutionProjects} /> 
+        </Sidebar>
+        <ProjectMapPins pins={mapPinData} />
+      </>
+    case 'project-selected':
+      return <>
+        <Sidebar width={360}>
+          <ProjectList projects={selectedInstitutionProjects} /> 
+        </Sidebar>
+        <ProjectMapPins pins={mapPinData} />
+      </>
+  }
 }
 
 export default ProjectMapController;
