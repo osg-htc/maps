@@ -1,11 +1,17 @@
 'use client'
 
-import ProjectStatistics from "./ProjectList";
 import { useEffect, useState } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
-import Sidebar from '../Sidebar';
 import useSWR from 'swr';
+
 import { getProjects } from '@/src/utils/adstash.mjs';
+
+import Sidebar from '../Sidebar';
+
+import ProjectList from "./ProjectList";
+import ProjectMapPins, { ProjectMapPinsProps } from "./ProjectMapPins"
+
+
 
 function ProjectMapController() {
   const { current: map } = useMap();
@@ -14,39 +20,44 @@ function ProjectMapController() {
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProject, setSelectedProject] = useState<string>("")
 
+  // MATT: getProjects is not defined in TS so we can't handle the types cleanly,
+  //       we should either define the strcutre of this data here (bad) or convert
+  //       adstash and the elastic search files to TS (hard), for now this is just
+  //       a bunch of gymnastics to satisfy the type checker
   const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
-  const bins: Record<string, any[]> = {};
 
+  const projectBinsByInstitution = Object.groupBy(
+    Object.values(data ?? {}).filter((p: any) =>
+      p?.projectInstitutionLatitude !== undefined &&
+      p?.projectInstitutionLongitude !== undefined &&
+      p?.projectInstitutionName
+    ),
+    (project: any) => project.projectInstitutionName
+  );
 
-  useEffect(() => {
-    map?.easeTo({
-      padding: { left: leftPanelVisible ? 360 : 0, top: 0, right: 0, bottom: 0 },
-      duration: 0,
-    });
-  }, [map, leftPanelVisible])
-
-
-  useEffect(() => {
-    if (data) {
-      console.log(data)
-
-      Object.values(data).forEach((project: any) => {
-        if (project.projectInstitutionLatitude === undefined) return
-        if (!bins[project.projectInstitutionName]) bins[project.projectInstitutionName] = []
-        bins[project.projectInstitutionName].push(project)
-      })
+  const mapPinData: ProjectMapPinsProps[] = Object.values(projectBinsByInstitution).map((bin) => {
+    return {
+      key: bin && bin[0].projectInstitutionName,
+      num: (bin && bin.length.toString()) ?? "",
+      lat: bin && bin[0].projectInstitutionLatitude,
+      lon: bin && bin[0].projectInstitutionLongitude,
+      onClick: () => {},
     }
+  });
 
-    console.log(bins)
-  }, [data])
+  // move the map center over if the side bar is open
+  map?.easeTo({
+    padding: { left: leftPanelVisible ? 360 : 0, top: 0, right: 0, bottom: 0 },
+    duration: 0,
+  });
 
 
   return (
     <>
       <Sidebar width={leftPanelVisible ? 360 : 0}>
-        <ProjectStatistics />
+        <ProjectList />
       </Sidebar>
-      {/* {pinData && <ProjectMapData pinBins={pinData} />} */}
+      <ProjectMapPins pinBins={mapPinData} />
     </>
   )
 }

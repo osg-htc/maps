@@ -6,7 +6,7 @@ import ProjectMapPin from '../MapPin'
 
 export type ProjectMapPinsProps = {
   key: string,
-  text: string,
+  num: string,
   lat: number,
   lon: number,
   onClick: () => void,
@@ -18,7 +18,7 @@ function ProjectMapData({ pinBins }: { pinBins: ProjectMapPinsProps[] }) {
       {pinBins.map((props) => (
         <ProjectMapPin
           key={props.key}
-          text={props.text}
+          text={props.num}
           color={'#FF5733'}
           size={40}
           lat={props.lat}
