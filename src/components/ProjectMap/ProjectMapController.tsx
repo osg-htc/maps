@@ -1,6 +1,6 @@
 'use client'
 
-import ProjectStatistics from "./ProjectMapStatistics";
+import ProjectStatistics from "./ProjectList";
 import { useEffect, useState } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import Sidebar from '../Sidebar';

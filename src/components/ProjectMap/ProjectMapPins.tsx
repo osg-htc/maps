@@ -4,7 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography } from '@mui/material';
 import ProjectMapPin from '../MapPin'
 
-export type ProjectMapDataProps = {
+export type ProjectMapPinsProps = {
   key: string,
   text: string,
   lat: number,
@@ -12,7 +12,7 @@ export type ProjectMapDataProps = {
   onClick: () => void,
 }
 
-function ProjectMapData({ pinBins }: { pinBins: ProjectMapDataProps[] }) {
+function ProjectMapData({ pinBins }: { pinBins: ProjectMapPinsProps[] }) {
   return !pinBins ? <></> : (
     <>
       {pinBins.map((props) => (

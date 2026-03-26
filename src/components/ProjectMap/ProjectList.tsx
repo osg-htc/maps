@@ -1,6 +1,6 @@
 import { Typography, Stack, Paper } from '@mui/material';
 
-function ProjectMapStatistics() {
+function ProjectList() {
   return (
     <>
       <Stack component={'div'} spacing={2} sx={{
@@ -45,4 +45,4 @@ function ProjectMapStatistics() {
   )
 }
 
-export default ProjectMapStatistics;
+export default ProjectList;
