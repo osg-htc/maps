@@ -14,14 +14,15 @@ export type ProjectMapPinProps = {
 function ProjectMapData({ pins }: { pins: ProjectMapPinProps[] }) {
   return !pins ? <></> : (
     <>
-      {pins.map((props) => (
+      {pins.map((pin) => (
         <ProjectMapPin
-          text={props.num}
+          key={`(${pin.lat}, ${pin.lon})`}
+          text={pin.num}
           color={'#FF5733'}
           size={40}
-          lat={props.lat}
-          lon={props.lon}
-          onClick={props.onClick}
+          lat={pin.lat}
+          lon={pin.lon}
+          onClick={pin.onClick}
         />
       ))}
     </>

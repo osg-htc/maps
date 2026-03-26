@@ -8,6 +8,7 @@ import { getProjects } from '@/src/utils/adstash.mjs';
 import Sidebar from '../Sidebar';
 import ProjectList, { ProjectListItemProps } from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
+import ProjectStats, { ProjectStatsProps } from "./ProjectStats"
 
 type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-selected'
 
@@ -23,45 +24,64 @@ function ProjectMapController() {
   const [selectedProject, setSelectedProject] = useState<string>("")
 
 
+  console.log(data)
 
-  const projectBinsByInstitution = useMemo(() =>
-    Object.groupBy(
+
+  const projectBinsByInstitution = useMemo(() => {
+    return Object.groupBy(
       Object.values(data ?? {}).filter((project: any) =>
         project?.projectInstitutionLatitude !== undefined &&
         project?.projectInstitutionLongitude !== undefined &&
         project?.projectInstitutionName
       ),
       (project: any) => project.projectInstitutionName
-  ), [data]);
+    )
+  }, [data]);
 
+  
 
-
-  const mapPinData: ProjectMapPinProps[] = useMemo(() =>
-    Object.values(projectBinsByInstitution).map((bin) => ({
+  const mapPinData: ProjectMapPinProps[] = useMemo(() => {
+    return Object.values(projectBinsByInstitution).map((bin) => ({
       num: bin?.length.toString() ?? "",
       lat: bin?.[0].projectInstitutionLatitude,
       lon: bin?.[0].projectInstitutionLongitude,
       onClick: () => setSelectedInstitution(bin?.[0].projectInstitutionName),
-  })), [projectBinsByInstitution]);
+    }))
+  }, [projectBinsByInstitution]);
 
 
 
-  const selectedInstitutionProjects: ProjectListItemProps[] = useMemo(() =>
-    projectBinsByInstitution[selectedInstitution]?.map((project) => ({
+  const selectedInstitutionProjects: ProjectListItemProps[] = useMemo(() => {
+    return projectBinsByInstitution[selectedInstitution]?.map((project) => ({
       name: project.projectName,
       field: project.detailedFieldOfScience,
       institution: project.projectInstitutionName,
       onClick: () => { setSelectedProject(project.projectName) },
-    })) ?? [], [projectBinsByInstitution, selectedInstitution]);
+    })) ?? []
+  }, [projectBinsByInstitution, selectedInstitution]);
   
   
-  const selectedProjectStats: ProjectListItemProps[] = useMemo(() =>
-    projectBinsByInstitution[selectedInstitution]?.map((project) => ({
-      name: project.projectName,
-      field: project.detailedFieldOfScience,
-      institution: project.projectInstitutionName,
-      onClick: () => { setSelectedProject(project.projectName) },
-    })) ?? [], [projectBinsByInstitution, selectedInstitution]);
+  const selectedProjectStats: ProjectStatsProps = useMemo(() => {
+    if (!data || !selectedProject) return {
+        numJobs: 0,
+        cpuHours: 0,
+        gpuHours: 0,
+        byteTransferCount: 0,
+        fileTransferCount: 0,
+        osdfByteTransferCount: 0,
+        osdfFileTransferCount: 0,
+    }
+    const p: any = data[selectedProject]
+    return {
+        numJobs: p.numJobs,
+        cpuHours: p.cpuHours,
+        gpuHours: p.gpuHours,
+        byteTransferCount: p.byteTransferCount,
+        fileTransferCount: p.fileTransferCount,
+        osdfByteTransferCount: p.osdfByteTransferCount,
+        osdfFileTransferCount: p.osdfFileTransferCount,
+    }
+  }, [selectedProject]);
 
 
   useEffect(() => {
@@ -81,10 +101,12 @@ function ProjectMapController() {
 
   const currentStep: MapStep = (
     isLoading ? 'loading' :
-    selectedInstitution ? 'institution-selected' :
     selectedProject ? 'project-selected' :
+    selectedInstitution ? 'institution-selected' :
     'no-selection'
   )
+
+  console.log('state: ' + currentStep)
 
   // move the map center over if the side bar is open
   useEffect(() => {
@@ -111,7 +133,7 @@ function ProjectMapController() {
     case 'project-selected':
       return <>
         <Sidebar width={360}>
-          <ProjectList projects={selectedInstitutionProjects} /> 
+          <ProjectStats stats={ selectedProjectStats } /> 
         </Sidebar>
         <ProjectMapPins pins={mapPinData} />
       </>

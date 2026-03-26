@@ -20,10 +20,11 @@ function ProjectList({ projects }: {projects: ProjectListItemProps[]} ) {
       minWidth: '100%'
     }}>
       {projects.map((project: ProjectListItemProps) => 
-        <Paper elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1 }}>
+        <Paper key={ project.name } elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1 }}>
           <Typography>{project.name}</Typography>
           <Typography>{project.field}</Typography>
           <Typography>{project.institution}</Typography>
+          <button onClick={project.onClick}>click</button>
         </Paper>
       )}
     </Stack >
