@@ -34,17 +34,15 @@ function ProjectMapController() {
     )
   }, [data]);
 
-
-
   const mapPinData: ProjectMapPinProps[] = useMemo(() => {
     return Object.values(projectBinsByInstitution).map((bin) => ({
+      name: bin?.[0].projectInstitutionName,
       num: bin?.length.toString() ?? "",
       lat: bin?.[0].projectInstitutionLatitude,
       lon: bin?.[0].projectInstitutionLongitude,
       onClick: () => setSelectedInstitution(bin?.[0].projectInstitutionName),
     }))
   }, [projectBinsByInstitution]);
-
 
 
   const selectedInstitutionProjects: ProjectListItemProps[] = useMemo(() => {

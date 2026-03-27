@@ -5,6 +5,7 @@ import { Box, Typography } from '@mui/material';
 import ProjectMapPin from '../MapPin'
 
 export type ProjectMapPinProps = {
+  name: string
   num: string,
   lat: number,
   lon: number,
@@ -16,7 +17,7 @@ function ProjectMapData({ pins }: { pins: ProjectMapPinProps[] }) {
     <>
       {pins.map((pin) => (
         <ProjectMapPin
-          key={`(${pin.lat}, ${pin.lon})`}
+          key={pin.name}
           text={pin.num}
           color={'#FF5733'}
           size={40}
