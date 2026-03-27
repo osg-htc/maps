@@ -4,7 +4,7 @@ import { Typography, Stack, Paper } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import useSWR from 'swr';
-import { getProjects, getInstitutionOverview } from '@/src/utils/adstash';
+import { getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import ProjectList, { ProjectListItemProps } from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
@@ -23,25 +23,21 @@ function ProjectMapController() {
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProject, setSelectedProject] = useState<string>("")
 
-  const projectBinsByInstitution = useMemo(() => {
+  const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
     return Object.groupBy(
-      Object.values(data ?? {}).filter((project: any) =>
-        project?.projectInstitutionLatitude !== undefined &&
-        project?.projectInstitutionLongitude !== undefined &&
-        project?.projectInstitutionName
-      ),
-      (project: any) => project.projectInstitutionName
-    )
+      Object.values(data ?? {}),
+      (project: ProjectData) => project.projectInstitutionName
+    ) as Record<string, ProjectData[]>;
   }, [data]);
 
   const mapPinData: ProjectMapPinProps[] = useMemo(() => {
     return Object.values(projectBinsByInstitution).map((bin) => ({
-      name: bin?.[0].projectInstitutionName,
-      num: bin?.length.toString() ?? "",
-      lat: bin?.[0].projectInstitutionLatitude,
-      lon: bin?.[0].projectInstitutionLongitude,
-      onClick: () => setSelectedInstitution(bin?.[0].projectInstitutionName),
-    }))
+      name: bin[0].projectInstitutionName,
+      num: bin.length.toString(),
+      lat: bin[0].projectInstitutionLatitude,
+      lon: bin[0].projectInstitutionLongitude,
+      onClick: () => setSelectedInstitution(bin[0].projectInstitutionName),
+    }));
   }, [projectBinsByInstitution]);
 
 
@@ -54,28 +50,11 @@ function ProjectMapController() {
     })) ?? []
   }, [projectBinsByInstitution, selectedInstitution]);
   
-  
-  const selectedProjectStats: ProjectStatsProps = useMemo(() => {
-    if (!data || !selectedProject) return {
-        numJobs: 0,
-        cpuHours: 0,
-        gpuHours: 0,
-        byteTransferCount: 0,
-        fileTransferCount: 0,
-        osdfByteTransferCount: 0,
-        osdfFileTransferCount: 0,
-    }
-    const p: any = data[selectedProject]
-    return {
-        numJobs: p.numJobs,
-        cpuHours: p.cpuHours,
-        gpuHours: p.gpuHours,
-        byteTransferCount: p.byteTransferCount,
-        fileTransferCount: p.fileTransferCount,
-        osdfByteTransferCount: p.osdfByteTransferCount,
-        osdfFileTransferCount: p.osdfFileTransferCount,
-    }
-  }, [selectedProject]);
+  // TODO: the undefined can go away once we move this to a brnach where data is garunteed
+  const selectedProjectStats: ProjectStatsProps | undefined = useMemo(() => {
+    if (!data || !selectedProject) return undefined;
+    return data[selectedProject];
+  }, [data, selectedProject]);
 
 
   useEffect(() => {

@@ -14,7 +14,10 @@ export type ProjectStatsProps = {
   osdfFileTransferCount: number,
 }
 
-function ProjectStats({ stats }: { stats: ProjectStatsProps }) {
+function ProjectStats({ stats }: { stats: ProjectStatsProps | undefined}) {
+
+  if (stats == undefined) return <>Undefined</>
+
   return (
     <>
       <Typography>numJobs: { stats.numJobs }</Typography>

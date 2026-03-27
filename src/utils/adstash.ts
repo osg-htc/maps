@@ -3,7 +3,7 @@
  */
 import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch";
 
-type ComputeStats = {
+export type ComputeStats = {
   byteTransferCount: number
   cpuHours: number
   fileTransferCount: number
@@ -13,7 +13,7 @@ type ComputeStats = {
   osdfFileTransferCount: number
 }
 
-type OverviewStats = ComputeStats & {
+export type OverviewStats = ComputeStats & {
   numBroadFieldOfScience: number
   numDetailedFieldOfScience: number
   numInstitutions: number
@@ -21,7 +21,7 @@ type OverviewStats = ComputeStats & {
   numProjects: number
 }
 
-type InstitutionData = OverviewStats & {
+export type InstitutionData = OverviewStats & {
   institutionCarnegieClassification2025: string
   institutionIpedsHistoricallyBlackCollegeOrUniversity: boolean
   institutionIpedsTribalCollegeOrUniversity: boolean
@@ -30,11 +30,11 @@ type InstitutionData = OverviewStats & {
   institutionState: string
 }
 
-type OSPoolOverviewStats = OverviewStats & {
+export type OSPoolOverviewStats = OverviewStats & {
   date: Date
 }
 
-type ProjectData = ComputeStats & {
+export type ProjectData = ComputeStats & {
   broadFieldOfScience: string
   detailedFieldOfScience: string
   majorFieldOfScience: string
