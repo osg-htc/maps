@@ -4,6 +4,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography } from '@mui/material';
 
 export type MapPinProps = {
+  name: string
   text: string,
   color: string,
   size: number,
@@ -16,6 +17,7 @@ function MapPin(props: MapPinProps) {
   
   return (
     <Marker
+      key={ props.name }
       latitude={props.lat}
       longitude={props.lon}
       anchor="bottom"

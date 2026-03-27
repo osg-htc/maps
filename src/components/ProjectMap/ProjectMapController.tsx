@@ -22,13 +22,32 @@ function ProjectMapController() {
   const [leftPanelVisible, setLeftPanelVisible] = useState(true);
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProject, setSelectedProject] = useState<string>("")
+  
+  const filteredProjects: Record<string, ProjectData> = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(data ?? {}).filter(([_, p]) =>
+        Object.values(p).every((v) => v !== null && v !== undefined)
+      )
+    ) as Record<string, ProjectData>;
+  }, [data])
 
   const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
-    return Object.groupBy(
-      Object.values(data ?? {}),
-      (project: ProjectData) => project.projectInstitutionName
-    ) as Record<string, ProjectData[]>;
-  }, [data]);
+    return Object.values(filteredProjects ?? {}).reduce<Record<string, ProjectData[]>>(
+      (bins, project) => {
+        if (
+          project.projectInstitutionName &&
+          project.projectName &&
+          project.projectInstitutionLatitude &&
+          project.projectInstitutionLongitude
+        ) {
+          bins[project.projectInstitutionName] ??= [];
+          bins[project.projectInstitutionName].push(project as ProjectData);
+        }
+        return bins;
+      },
+      {}
+    );
+  }, [filteredProjects]);
 
   const mapPinData: ProjectMapPinProps[] = useMemo(() => {
     return Object.values(projectBinsByInstitution).map((bin) => ({
@@ -36,7 +55,15 @@ function ProjectMapController() {
       num: bin.length.toString(),
       lat: bin[0].projectInstitutionLatitude,
       lon: bin[0].projectInstitutionLongitude,
-      onClick: () => setSelectedInstitution(bin[0].projectInstitutionName),
+      onClick: () => {
+        setSelectedInstitution(bin[0].projectInstitutionName) 
+        map?.flyTo({
+          center: [bin[0].projectInstitutionLongitude, bin[0].projectInstitutionLatitude],
+          zoom: 12,
+          duration: 2000,
+          essential: true,
+        });
+      },
     }));
   }, [projectBinsByInstitution]);
 
@@ -52,23 +79,15 @@ function ProjectMapController() {
   
   // TODO: the undefined can go away once we move this to a brnach where data is garunteed
   const selectedProjectStats: ProjectStatsProps | undefined = useMemo(() => {
-    if (!data || !selectedProject) return undefined;
-    return data[selectedProject];
-  }, [data, selectedProject]);
+    if (!filteredProjects || !selectedProject) return undefined;
+    return filteredProjects[selectedProject];
+  }, [filteredProjects, selectedProject]);
 
 
   useEffect(() => {
     if (!selectedInstitution || !map) return;
-
     const bin = projectBinsByInstitution[selectedInstitution];
-    if (!bin) return;
 
-    map.flyTo({
-      center: [bin[0].projectInstitutionLongitude, bin[0].projectInstitutionLatitude],
-      zoom: 12,
-      duration: 2000,
-      essential: true,
-    });
   }, [selectedInstitution, selectedInstitutionProjects]);
 
 
@@ -82,12 +101,12 @@ function ProjectMapController() {
   console.log('state: ' + currentStep)
 
   // move the map center over if the side bar is open
-  useEffect(() => {
-    map?.easeTo({
-      padding: { left: currentStep == 'loading' || currentStep == 'no-selection' ? 0 : 360, top: 0, right: 0, bottom: 0 },
-      duration: 0,
-    })
-  }, [currentStep]);
+  // useEffect(() => {
+  //   map?.easeTo({
+  //     padding: { left: currentStep == 'loading' || currentStep == 'no-selection' ? 0 : 360, top: 0, right: 0, bottom: 0 },
+  //     duration: 0,
+  //   })
+  // }, [currentStep]);
 
   switch (currentStep) {
     case 'loading':

@@ -12,12 +12,16 @@ export type ProjectMapPinProps = {
   onClick: () => void,
 }
 
-function ProjectMapData({ pins }: { pins: ProjectMapPinProps[] }) {
+export default function ProjectMapPins({ pins }: { pins: ProjectMapPinProps[] }) {
+  console.log('pin names:', pins.map(p => p.name))
+  console.log(pins)
+
   return !pins ? <></> : (
     <>
-      {pins.map((pin) => (
+      {pins.map((pin, i) => (
         <ProjectMapPin
-          key={pin.name}
+          key={i}
+          name={ pin.name }
           text={pin.num}
           color={'#FF5733'}
           size={40}
@@ -29,5 +33,3 @@ function ProjectMapData({ pins }: { pins: ProjectMapPinProps[] }) {
     </>
   )
 }
-
-export default ProjectMapData;

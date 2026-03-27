@@ -4,30 +4,30 @@
 import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch";
 
 export type ComputeStats = {
-  byteTransferCount: number
-  cpuHours: number
-  fileTransferCount: number
-  gpuHours: number
-  numJobs: number
-  osdfByteTransferCount: number
-  osdfFileTransferCount: number
+  byteTransferCount: number 
+  cpuHours: number 
+  fileTransferCount: number 
+  gpuHours: number 
+  numJobs: number 
+  osdfByteTransferCount: number 
+  osdfFileTransferCount: number 
 }
 
 export type OverviewStats = ComputeStats & {
-  numBroadFieldOfScience: number
-  numDetailedFieldOfScience: number
-  numInstitutions: number
-  numMajorFieldOfScience: number
-  numProjects: number
+  numBroadFieldOfScience: number 
+  numDetailedFieldOfScience: number 
+  numInstitutions: number 
+  numMajorFieldOfScience: number 
+  numProjects: number 
 }
 
 export type InstitutionData = OverviewStats & {
-  institutionCarnegieClassification2025: string
-  institutionIpedsHistoricallyBlackCollegeOrUniversity: boolean
-  institutionIpedsTribalCollegeOrUniversity: boolean
-  institutionIpedsWebsiteAddress: string
-  institutionName: string
-  institutionState: string
+  institutionCarnegieClassification2025: string 
+  institutionIpedsHistoricallyBlackCollegeOrUniversity: boolean 
+  institutionIpedsTribalCollegeOrUniversity: boolean 
+  institutionIpedsWebsiteAddress: string 
+  institutionName: string 
+  institutionState: string 
 }
 
 export type OSPoolOverviewStats = OverviewStats & {
@@ -35,11 +35,11 @@ export type OSPoolOverviewStats = OverviewStats & {
 }
 
 export type ProjectData = ComputeStats & {
-  broadFieldOfScience: string
-  detailedFieldOfScience: string
-  majorFieldOfScience: string
-  projectEpscorState: boolean
-  projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: boolean
+  broadFieldOfScience: string 
+  detailedFieldOfScience: string 
+  majorFieldOfScience: string 
+  projectEpscorState: boolean 
+  projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: boolean 
   projectInstitutionIpedsTribalCollegeOrUniversity: boolean
   projectInstitutionIpedsWebsiteAddress: string
   projectInstitutionLatitude: number
@@ -49,7 +49,7 @@ export type ProjectData = ComputeStats & {
   projectName: string
 }
 
-export async function getDateOfLatestData(): Promise<Date> {
+export async function getDateOfLatestData(): Promise<Date | undefined> {
     const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
     let usageQueryResult: any = await elasticSearch.search({
         size: 1,
@@ -64,8 +64,8 @@ export async function getDateOfLatestData(): Promise<Date> {
     return new Date(usageQueryResult.hits.hits[0]._source.Date)
 }
 
-export async function getLatestOSPoolOverview(): Promise<OSPoolOverviewStats> {
-    let overview: OverviewStats | null = null
+export async function getLatestOSPoolOverview(): Promise<Partial<OSPoolOverviewStats>> {
+    let overview: Partial<OverviewStats> | null = null
     let d: Date = new Date()
     d.setUTCHours(0,0,0,0)
     while (!overview || overview['numJobs'] == 0) {
@@ -77,7 +77,7 @@ export async function getLatestOSPoolOverview(): Promise<OSPoolOverviewStats> {
 
 export async function getInstitutionsOverview(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
-): Promise<OverviewStats> {
+): Promise<Partial<OverviewStats>> {
   const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
   let usageQueryResult: any = await elasticSearch.search({
@@ -179,7 +179,7 @@ export async function getInstitutionsOverview(
 
 export async function getInstitutions(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
-): Promise<Record<string, InstitutionData>> {
+): Promise<Record<string, Partial<InstitutionData>>> {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
 	let usageQueryResult: any = await elasticSearch.search({
@@ -299,7 +299,7 @@ export async function getInstitutions(
 
 export async function getProjects(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
-): Promise<Record<string, ProjectData>> {
+): Promise<Record<string, Partial<ProjectData>>> {
   const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
   let usageQueryResult: any = await elasticSearch.search({
@@ -395,7 +395,7 @@ export async function getProjects(
   }, {})
 }
 
-export async function getInstitutionOverview(institutionName: string): Promise<Record<string, ProjectData>> {
+export async function getInstitutionOverview(institutionName: string): Promise<Record<string, Partial<ProjectData>>> {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
 	let usageQueryResult: any = await elasticSearch.search({
@@ -501,7 +501,7 @@ export async function getInstitutionOverview(institutionName: string): Promise<R
 
 }
 
-export async function getProjectOverview(projectName: string): Promise<Record<string, InstitutionData>> {
+export async function getProjectOverview(projectName: string): Promise<Record<string, Partial<InstitutionData>>> {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
 	let usageQueryResult: any = await elasticSearch.search({
