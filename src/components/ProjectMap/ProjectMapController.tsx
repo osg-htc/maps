@@ -23,9 +23,6 @@ function ProjectMapController() {
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProject, setSelectedProject] = useState<string>("")
 
-
-  console.log(data)
-
   const projectBinsByInstitution = useMemo(() => {
     return Object.groupBy(
       Object.values(data ?? {}).filter((project: any) =>

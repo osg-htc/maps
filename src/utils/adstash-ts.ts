@@ -3,8 +3,6 @@
  */
 import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch-ts";
 
-
-
 type ComputeStats = {
   byteTransferCount: number
   cpuHours: number
@@ -51,10 +49,6 @@ type ProjectData = ComputeStats & {
   projectName: string
 }
 
-
-
-
-
 export async function getDateOfLatestData(): Promise<Date> {
     const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
     let usageQueryResult: any = await elasticSearch.search({
@@ -70,9 +64,6 @@ export async function getDateOfLatestData(): Promise<Date> {
     return new Date(usageQueryResult.hits.hits[0]._source.Date)
 }
 
-
-
-
 export async function getLatestOSPoolOverview(): Promise<OSPoolOverviewStats> {
     let overview: OverviewStats | null = null
     let d: Date = new Date()
@@ -83,9 +74,6 @@ export async function getLatestOSPoolOverview(): Promise<OSPoolOverviewStats> {
     }
   return { ...overview, date: d}
 }
-
-
-
 
 export async function getInstitutionsOverview(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
@@ -188,9 +176,6 @@ export async function getInstitutionsOverview(
     numDetailedFieldOfScience: data['NumDetailedFieldOfScience']['buckets'].length,
   }
 }
-
-
-
 
 export async function getInstitutions(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
@@ -312,10 +297,6 @@ export async function getInstitutions(
   }, {})
 }
 
-
-
-
-
 export async function getProjects(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Record<string, ProjectData>> {
@@ -388,7 +369,6 @@ export async function getProjects(
 
   let buckets = usageQueryResult.aggregations.bucket.buckets
 
-
   return buckets.reduce((p: any, v: any) => {
     p[v['key']] = {
       projectName: v['key'],
@@ -409,14 +389,11 @@ export async function getProjects(
       projectInstitutionState: getFromCommonField<string>(v, 'ProjectInstitution', 'state'),
       projectInstitutionLatitude: getFromCommonField<number>(v, 'ProjectInstitution', 'latitude'),
       projectInstitutionLongitude: getFromCommonField<number>(v, 'ProjectInstitution', 'longitude'),
-      projectEpscorState: EPSCOR_STATES.includes(getFromCommonField<string>(v, 'ProjectInstitution', 'state'))
+      projectEpscorState: EPSCOR_STATES.includes(getFromCommonField<string>(v, 'ProjectInstitution', 'state') ?? '')
     }
     return p
   }, {})
 }
-
-
-
 
 export async function getInstitutionOverview(institutionName: string): Promise<Record<string, ProjectData>> {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
@@ -625,12 +602,7 @@ export async function getProjectOverview(projectName: string): Promise<Record<st
   }, {})
 }
 
-
-
-
-
-
-function recurseObject<T>(obj: (object | object[]), ...path: (string | number)[]): T {
+function recurseObject<T>(obj: (object | object[]), ...path: (string | number)[]): T | undefined {
   return path.reduce((o: unknown, key: (string | number)) => {
     if (
       o !== null && o !== undefined && typeof o === 'object' &&
@@ -638,20 +610,14 @@ function recurseObject<T>(obj: (object | object[]), ...path: (string | number)[]
     ) {
       return (o as Record<(string | number), unknown>)[key]
     }
-    throw new Error(`Couldnt find path: ${path} \nKey does not exist: ${key}`)
+    return undefined
   }, obj) as T
 }
 
-function getFromCommonField<T>(data: object, ...field: (string | number)[]): T {
+function getFromCommonField<T>(data: object, ...field: (string | number)[]): T | undefined {
     const commonKeys: (string | number)[] = ['CommonFields', 'hits', 'hits', 0, '_source']
     return recurseObject<T>(data, ...commonKeys, ...field)
 }
-
- 
-
-
-
-
 
 const PROJECT_COMMON_FIELDS: string[] = [
 	"MajorFieldOfScience",
