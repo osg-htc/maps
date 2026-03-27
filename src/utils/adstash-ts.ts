@@ -3,6 +3,58 @@
  */
 import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch-ts";
 
+
+
+type ComputeStats = {
+  byteTransferCount: number
+  cpuHours: number
+  fileTransferCount: number
+  gpuHours: number
+  numJobs: number
+  osdfByteTransferCount: number
+  osdfFileTransferCount: number
+}
+
+type OverviewStats = ComputeStats & {
+  numBroadFieldOfScience: number
+  numDetailedFieldOfScience: number
+  numInstitutions: number
+  numMajorFieldOfScience: number
+  numProjects: number
+}
+
+type InstitutionData = OverviewStats & {
+  institutionCarnegieClassification2025: string
+  institutionIpedsHistoricallyBlackCollegeOrUniversity: boolean
+  institutionIpedsTribalCollegeOrUniversity: boolean
+  institutionIpedsWebsiteAddress: string
+  institutionName: string
+  institutionState: string
+}
+
+type OSPoolOverviewStats = OverviewStats & {
+  date: Date
+}
+
+type ProjectData = ComputeStats & {
+  broadFieldOfScience: string
+  detailedFieldOfScience: string
+  majorFieldOfScience: string
+  projectEpscorState: boolean
+  projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: boolean
+  projectInstitutionIpedsTribalCollegeOrUniversity: boolean
+  projectInstitutionIpedsWebsiteAddress: string
+  projectInstitutionLatitude: number
+  projectInstitutionLongitude: number
+  projectInstitutionName: string
+  projectInstitutionState: string
+  projectName: string
+}
+
+
+
+
+
 export async function getDateOfLatestData(): Promise<Date> {
     const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
     let usageQueryResult: any = await elasticSearch.search({
@@ -18,27 +70,11 @@ export async function getDateOfLatestData(): Promise<Date> {
     return new Date(usageQueryResult.hits.hits[0]._source.Date)
 }
 
-type InstututionsOverviewData = {
-  byteTransferCount: number
-  cpuHours: number
-  fileTransferCount: number
-  gpuHours: number
-  numBroadFieldOfScience: number
-  numDetailedFieldOfScience: number
-  numInstitutions: number
-  numJobs: number
-  numMajorFieldOfScience: number
-  numProjects: number
-  osdfByteTransferCount: number
-  osdfFileTransferCount: number
-}
 
-type OSPoolOverviewData = InstututionsOverviewData & {
-  date: Date
-}
 
-export async function getLatestOSPoolOverview(): Promise<OSPoolOverviewData> {
-    let overview: InstututionsOverviewData | null = null
+
+export async function getLatestOSPoolOverview(): Promise<OSPoolOverviewStats> {
+    let overview: OverviewStats | null = null
     let d: Date = new Date()
     d.setUTCHours(0,0,0,0)
     while (!overview || overview['numJobs'] == 0) {
@@ -49,117 +85,119 @@ export async function getLatestOSPoolOverview(): Promise<OSPoolOverviewData> {
 }
 
 
-export async function getInstitutionsOverview(startTime = DATE_RANGE['oneYearAgo'], endTime = DATE_RANGE['now']): Promise<InstututionsOverviewData> {
-	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
-	let usageQueryResult = await elasticSearch.search({
-		size: 0,
-		query: {
-			range: {
-				Date: {
+
+export async function getInstitutionsOverview(
+  startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
+): Promise<OverviewStats> {
+  const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
+
+  let usageQueryResult: any = await elasticSearch.search({
+    size: 0,
+    query: {
+      range: {
+        Date: {
           gte: startTime,
-					lte: endTime
-				}
-			}
-		},
-		"aggs": {
-			"NumInstitutions": {
-				"terms": {
-					"field": "ResourceInstitution.name.keyword",
-					"size": 10000
-				}
-			},
-			"NumProjects": {
-				"terms": {
-					"field": "ProjectName.keyword",
-					"size": 10000
-				}
-			},
-			"NumMajorFieldOfScience": {
-				"terms": {
-					"field": "MajorFieldOfScience.keyword",
-					"size": 10000
-				}
-			},
-			"NumBroadFieldOfScience": {
-				"terms": {
-					"field": "BroadFieldOfScience.keyword",
-					"size": 10000
-				}
-			},
-			"NumDetailedFieldOfScience": {
-				"terms": {
-					"field": "DetailedFieldOfScience.keyword",
-					"size": 10000
-				}
-			},
-			"NumJobs": {
-				"sum": {
-					"field": "NumJobs"
-				}
-			},
-			"FileTransferCount": {
-				"sum": {
-					"field": "FileTransferCount"
-				}
-			},
-			"ByteTransferCount": {
-				"sum": {
-					"field": "ByteTransferCount"
-				}
-			},
-			"CpuHours": {
-				"sum": {
-					"field": "CpuHours"
-				}
-			},
-			"GpuHours": {
-				"sum": {
-					"field": "GpuHours"
-				}
-			},
-			"OSDFFileTransferCount": {
-				"sum": {
-					"field": "OSDFFileTransferCount"
-				}
-			},
-			"OSDFByteTransferCount": {
-				"sum": {
-					"field": "OSDFByteTransferCount"
-				}
-			}
-		}
-	})
+          lte: endTime
+        }
+      }
+    },
+    "aggs": {
+      "NumInstitutions": {
+        "terms": {
+          "field": "ResourceInstitution.name.keyword",
+          "size": 10000
+        }
+      },
+      "NumProjects": {
+        "terms": {
+          "field": "ProjectName.keyword",
+          "size": 10000
+        }
+      },
+      "NumMajorFieldOfScience": {
+        "terms": {
+          "field": "MajorFieldOfScience.keyword",
+          "size": 10000
+        }
+      },
+      "NumBroadFieldOfScience": {
+        "terms": {
+          "field": "BroadFieldOfScience.keyword",
+          "size": 10000
+        }
+      },
+      "NumDetailedFieldOfScience": {
+        "terms": {
+          "field": "DetailedFieldOfScience.keyword",
+          "size": 10000
+        }
+      },
+      "NumJobs": {
+        "sum": {
+          "field": "NumJobs"
+        }
+      },
+      "FileTransferCount": {
+        "sum": {
+          "field": "FileTransferCount"
+        }
+      },
+      "ByteTransferCount": {
+        "sum": {
+          "field": "ByteTransferCount"
+        }
+      },
+      "CpuHours": {
+        "sum": {
+          "field": "CpuHours"
+        }
+      },
+      "GpuHours": {
+        "sum": {
+          "field": "GpuHours"
+        }
+      },
+      "OSDFFileTransferCount": {
+        "sum": {
+          "field": "OSDFFileTransferCount"
+        }
+      },
+      "OSDFByteTransferCount": {
+        "sum": {
+          "field": "OSDFByteTransferCount"
+        }
+      }
+    }
+  })
 
-	let data = usageQueryResult.aggregations
+  let data = usageQueryResult.aggregations
 
-	try {
-		// Simplify the data keys
-		return {
-			numInstitutions: data['NumInstitutions']['buckets'].length,
-			numJobs: data['NumJobs']['value'],
-			cpuHours: data['CpuHours']['value'],
-			gpuHours: data['GpuHours']['value'],
-			fileTransferCount: data['FileTransferCount']['value'],
-			byteTransferCount: data['ByteTransferCount']['value'],
-			osdfFileTransferCount: data['OSDFFileTransferCount']['value'],
-			osdfByteTransferCount: data['OSDFByteTransferCount']['value'],
-			numProjects: data['NumProjects']['buckets'].length,
-			numMajorFieldOfScience: data['NumMajorFieldOfScience']['buckets'].length,
-			numBroadFieldOfScience: data['NumBroadFieldOfScience']['buckets'].length,
-			numDetailedFieldOfScience: data['NumDetailedFieldOfScience']['buckets'].length,
-		}
-	} catch(e){
-		console.log(e)
-	}
-
-	return {}
+  return {
+    numInstitutions: data['NumInstitutions']['buckets'].length,
+    numJobs: data['NumJobs']['value'],
+    cpuHours: data['CpuHours']['value'],
+    gpuHours: data['GpuHours']['value'],
+    fileTransferCount: data['FileTransferCount']['value'],
+    byteTransferCount: data['ByteTransferCount']['value'],
+    osdfFileTransferCount: data['OSDFFileTransferCount']['value'],
+    osdfByteTransferCount: data['OSDFByteTransferCount']['value'],
+    numProjects: data['NumProjects']['buckets'].length,
+    numMajorFieldOfScience: data['NumMajorFieldOfScience']['buckets'].length,
+    numBroadFieldOfScience: data['NumBroadFieldOfScience']['buckets'].length,
+    numDetailedFieldOfScience: data['NumDetailedFieldOfScience']['buckets'].length,
+  }
 }
 
-export const getInstitutions = async (startTime = DATE_RANGE['oneYearAgo'], endTime = DATE_RANGE['now']) => {
+
+
+
+export async function getInstitutions(
+  startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
+): Promise<Record<string, InstitutionData>> {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
-	let usageQueryResult = await elasticSearch.search({
+	let usageQueryResult: any = await elasticSearch.search({
 		size: 0,
 		query: {
 			range: {
@@ -250,143 +288,140 @@ export const getInstitutions = async (startTime = DATE_RANGE['oneYearAgo'], endT
 
 	let buckets = usageQueryResult.aggregations.bucket.buckets
 
-	try {
-		// Simplify the data keys
-		return buckets.reduce((p, v) => {
-			p[v['key']] = {
-				institutionName: v['key'],
-				numJobs: v['NumJobs']['value'],
-				cpuHours: v['CpuHours']['value'],
-				gpuHours: v['GpuHours']['value'],
-				fileTransferCount: v['FileTransferCount']['value'],
-				byteTransferCount: v['ByteTransferCount']['value'],
-				osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
-				osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
-				numProjects: v['NumProjects']['buckets'].length,
-				numMajorFieldOfScience: v['NumMajorFieldOfScience']['buckets'].length,
-				numBroadFieldOfScience: v['NumBroadFieldOfScience']['buckets'].length,
-				numDetailedFieldOfScience: v['NumDetailedFieldOfScience']['buckets'].length,
-				institutionState: getFromCommonField(v, "ResourceInstitution", "state"),
-				institutionIpedsWebsiteAddress: getFromCommonField(v, "ResourceInstitution", "ipeds_metadata", "website_address"),
-				institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
-				institutionIpedsTribalCollegeOrUniversity: getFromCommonField(v, "ResourceInstitution", "ipeds_metadata", "tribal_college_or_university"),
-				institutionCarnegieClassification2025: getFromCommonField(v, "ResourceInstitution", "carnegie_metadata", "classification2025"),
-			}
-			return p
-		}, {})
-	} catch(e){
-		console.log(e)
-	}
-
-	return {}
+  return buckets.reduce((p: any, v: any) => {
+    p[v['key']] = {
+      institutionName: v['key'],
+      numJobs: v['NumJobs']['value'],
+      cpuHours: v['CpuHours']['value'],
+      gpuHours: v['GpuHours']['value'],
+      fileTransferCount: v['FileTransferCount']['value'],
+      byteTransferCount: v['ByteTransferCount']['value'],
+      osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
+      osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
+      numProjects: v['NumProjects']['buckets'].length,
+      numMajorFieldOfScience: v['NumMajorFieldOfScience']['buckets'].length,
+      numBroadFieldOfScience: v['NumBroadFieldOfScience']['buckets'].length,
+      numDetailedFieldOfScience: v['NumDetailedFieldOfScience']['buckets'].length,
+      institutionState: getFromCommonField<string>(v, "ResourceInstitution", "state"),
+      institutionIpedsWebsiteAddress: getFromCommonField<string>(v, "ResourceInstitution", "ipeds_metadata", "website_address"),
+      institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
+      institutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "tribal_college_or_university"),
+      institutionCarnegieClassification2025: getFromCommonField<string>(v, "ResourceInstitution", "carnegie_metadata", "classification2025"),
+    }
+    return p
+  }, {})
 }
 
-export const getProjects = async (startTime = DATE_RANGE['oneYearAgo'], endTime = DATE_RANGE['now']) => {
-	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
-	let usageQueryResult = await elasticSearch.search({
-		size: 0,
-		query: {
-			range: {
-				Date: {
+
+
+
+export async function getProjects(
+  startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
+): Promise<Record<string, ProjectData>> {
+  const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
+
+  let usageQueryResult: any = await elasticSearch.search({
+    size: 0,
+    query: {
+      range: {
+        Date: {
           gte: startTime,
           lte: endTime
-				}
-			}
-		},
-		"aggs": {
-			"bucket": {
-				"terms": {
-					"field": "ProjectName.keyword",
-					"size": 10000
-				},
-				"aggs": {
-					"NumJobs": {
-						"sum": {
-							"field": "NumJobs"
-						}
-					},
-					"FileTransferCount": {
-						"sum": {
-							"field": "FileTransferCount"
-						}
-					},
-					"ByteTransferCount": {
-						"sum": {
-							"field": "ByteTransferCount"
-						}
-					},
-					"CpuHours": {
-						"sum": {
-							"field": "CpuHours"
-						}
-					},
-					"GpuHours": {
-						"sum": {
-							"field": "GpuHours"
-						}
-					},
-					"OSDFFileTransferCount": {
-						"sum": {
-							"field": "OSDFFileTransferCount"
-						}
-					},
-					"OSDFByteTransferCount": {
-						"sum": {
-							"field": "OSDFByteTransferCount"
-						}
-					},
-					"CommonFields": {
-						"top_hits": {
-							"_source": {
-								"includes": PROJECT_COMMON_FIELDS
-							},
-							"size": 1
-						}
-					}
-				}
-			}
-		}
-	})
+        }
+      }
+    },
+    "aggs": {
+      "bucket": {
+        "terms": {
+          "field": "ProjectName.keyword",
+          "size": 10000
+        },
+        "aggs": {
+          "NumJobs": {
+            "sum": {
+              "field": "NumJobs"
+            }
+          },
+          "FileTransferCount": {
+            "sum": {
+              "field": "FileTransferCount"
+            }
+          },
+          "ByteTransferCount": {
+            "sum": {
+              "field": "ByteTransferCount"
+            }
+          },
+          "CpuHours": {
+            "sum": {
+              "field": "CpuHours"
+            }
+          },
+          "GpuHours": {
+            "sum": {
+              "field": "GpuHours"
+            }
+          },
+          "OSDFFileTransferCount": {
+            "sum": {
+              "field": "OSDFFileTransferCount"
+            }
+          },
+          "OSDFByteTransferCount": {
+            "sum": {
+              "field": "OSDFByteTransferCount"
+            }
+          },
+          "CommonFields": {
+            "top_hits": {
+              "_source": {
+                "includes": PROJECT_COMMON_FIELDS
+              },
+              "size": 1
+            }
+          }
+        }
+      }
+    }
+  })
 
-	let buckets = usageQueryResult.aggregations.bucket.buckets
+  let buckets = usageQueryResult.aggregations.bucket.buckets
 
-	try {
-		// Simplify the data keys
-		return buckets.reduce((p, v) => {
-			p[v['key']] = {
-				projectName: v['key'],
-				numJobs: v['NumJobs']['value'],
-				cpuHours: v['CpuHours']['value'],
-				gpuHours: v['GpuHours']['value'],
-				fileTransferCount: v['FileTransferCount']['value'],
-				byteTransferCount: v['ByteTransferCount']['value'],
-				osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
-				osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
-				broadFieldOfScience: getFromCommonField(v, 'BroadFieldOfScience'),
-				majorFieldOfScience: getFromCommonField(v, 'MajorFieldOfScience'),
-				detailedFieldOfScience: getFromCommonField(v, 'DetailedFieldOfScience'),
-				projectInstitutionName: getFromCommonField(v, 'ProjectInstitution', 'name'),
-				projectInstitutionIpedsWebsiteAddress: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'website_address'),
-				projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'historically_black_college_or_university'),
-				projectInstitutionIpedsTribalCollegeOrUniversity: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'tribal_college_or_university'),
-        projectInstitutionState: getFromCommonField(v, 'ProjectInstitution', 'state'),
-        projectInstitutionLatitude: getFromCommonField(v, 'ProjectInstitution', 'latitude'),
-        projectInstitutionLongitude: getFromCommonField(v, 'ProjectInstitution', 'longitude'),
-				projectEpscorState: EPSCOR_STATES.includes(getFromCommonField(v, 'ProjectInstitution', 'state'))
-			}
-			return p
-		}, {})
-	} catch(e){
-		console.log(e)
-	}
 
-	return {}
+  return buckets.reduce((p: any, v: any) => {
+    p[v['key']] = {
+      projectName: v['key'],
+      numJobs: v['NumJobs']['value'],
+      cpuHours: v['CpuHours']['value'],
+      gpuHours: v['GpuHours']['value'],
+      fileTransferCount: v['FileTransferCount']['value'],
+      byteTransferCount: v['ByteTransferCount']['value'],
+      osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
+      osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
+      broadFieldOfScience: getFromCommonField<string>(v, 'BroadFieldOfScience'),
+      majorFieldOfScience: getFromCommonField<string>(v, 'MajorFieldOfScience'),
+      detailedFieldOfScience: getFromCommonField<string>(v, 'DetailedFieldOfScience'),
+      projectInstitutionName: getFromCommonField<string>(v, 'ProjectInstitution', 'name'),
+      projectInstitutionIpedsWebsiteAddress: getFromCommonField<string>(v, 'ProjectInstitution', 'ipeds_metadata', 'website_address'),
+      projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, 'ProjectInstitution', 'ipeds_metadata', 'historically_black_college_or_university'),
+      projectInstitutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, 'ProjectInstitution', 'ipeds_metadata', 'tribal_college_or_university'),
+      projectInstitutionState: getFromCommonField<string>(v, 'ProjectInstitution', 'state'),
+      projectInstitutionLatitude: getFromCommonField<number>(v, 'ProjectInstitution', 'latitude'),
+      projectInstitutionLongitude: getFromCommonField<number>(v, 'ProjectInstitution', 'longitude'),
+      projectEpscorState: EPSCOR_STATES.includes(getFromCommonField<string>(v, 'ProjectInstitution', 'state'))
+    }
+    return p
+  }, {})
 }
-export const getInstitutionOverview = async (institutionName) => {
+
+
+
+
+export async function getInstitutionOverview(institutionName: string): Promise<Record<string, ProjectData>> {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
-	let usageQueryResult = await elasticSearch.search({
+	let usageQueryResult: any = await elasticSearch.search({
 		size: 0,
 		query: {
 			bool: {
@@ -464,40 +499,35 @@ export const getInstitutionOverview = async (institutionName) => {
 
 	let buckets = usageQueryResult.aggregations.agg.buckets
 
-	try {
-		return buckets.reduce((p, v) => {
-			p[v['key']] = {
-				projectName: v['key'],
-				numJobs: v['NumJobs']['value'],
-				cpuHours: v['CpuHours']['value'],
-				gpuHours: v['GpuHours']['value'],
-				fileTransferCount: v['FileTransferCount']['value'],
-				byteTransferCount: v['ByteTransferCount']['value'],
-				osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
-				osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
-				broadFieldOfScience: getFromCommonField(v, 'BroadFieldOfScience'),
-				majorFieldOfScience: getFromCommonField(v, 'MajorFieldOfScience'),
-				detailedFieldOfScience: getFromCommonField(v, 'DetailedFieldOfScience'),
-				projectInstitutionName: getFromCommonField(v, 'ProjectInstitution', 'name'),
-				projectInstitutionIpedsWebsiteAddress: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'website_address'),
-				projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'historically_black_college_or_university'),
-				projectInstitutionIpedsTribalCollegeOrUniversity: getFromCommonField(v, 'ProjectInstitution', 'ipeds_metadata', 'tribal_college_or_university'),
-				projectInstitutionState: getFromCommonField(v, 'ProjectInstitution', 'state'),
-				projectEpscorState: EPSCOR_STATES.includes(getFromCommonField(v, 'ProjectInstitution', 'state'))
-			}
-			return p
-		}, {})
-	} catch(e){
-		console.log(e)
-	}
+  return buckets.reduce((p: any, v: any) => {
+    p[v['key']] = {
+      projectName: v['key'],
+      numJobs: v['NumJobs']['value'],
+      cpuHours: v['CpuHours']['value'],
+      gpuHours: v['GpuHours']['value'],
+      fileTransferCount: v['FileTransferCount']['value'],
+      byteTransferCount: v['ByteTransferCount']['value'],
+      osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
+      osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
+      broadFieldOfScience: getFromCommonField<string>(v, 'BroadFieldOfScience'),
+      majorFieldOfScience: getFromCommonField<string>(v, 'MajorFieldOfScience'),
+      detailedFieldOfScience: getFromCommonField<string>(v, 'DetailedFieldOfScience'),
+      projectInstitutionName: getFromCommonField<string>(v, 'ProjectInstitution', 'name'),
+      projectInstitutionIpedsWebsiteAddress: getFromCommonField<string>(v, 'ProjectInstitution', 'ipeds_metadata', 'website_address'),
+      projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, 'ProjectInstitution', 'ipeds_metadata', 'historically_black_college_or_university'),
+      projectInstitutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, 'ProjectInstitution', 'ipeds_metadata', 'tribal_college_or_university'),
+      projectInstitutionState: getFromCommonField<string>(v, 'ProjectInstitution', 'state'),
+      projectEpscorState: EPSCOR_STATES.includes(getFromCommonField<string>(v, 'ProjectInstitution', 'state') ?? '')
+    }
+    return p
+  }, {})
 
-	return {}
 }
 
-export const getProjectOverview = async (projectName) => {
+export async function getProjectOverview(projectName: string): Promise<Record<string, InstitutionData>> {
 	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
-	let usageQueryResult = await elasticSearch.search({
+	let usageQueryResult: any = await elasticSearch.search({
 		size: 0,
 		query: {
 			bool: {
@@ -575,33 +605,80 @@ export const getProjectOverview = async (projectName) => {
 
 	let buckets = usageQueryResult.aggregations.agg.buckets
 
-	try {
-		return buckets.reduce((p, v) => {
-			p[v['key']] = {
-				projectName: v['key'],
-				numJobs: v['NumJobs']['value'],
-				cpuHours: v['CpuHours']['value'],
-				gpuHours: v['GpuHours']['value'],
-				fileTransferCount: v['FileTransferCount']['value'],
-				byteTransferCount: v['ByteTransferCount']['value'],
-				osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
-				osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
-				institutionState: getFromCommonField(v, "ResourceInstitution", "state"),
-				institutionIpedsWebsiteAddress: getFromCommonField(v, "ResourceInstitution", "ipeds_metadata", "website_address"),
-				institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
-				institutionIpedsTribalCollegeOrUniversity: getFromCommonField(v, "ResourceInstitution", "ipeds_metadata", "tribal_college_or_university"),
-				institutionCarnegieClassification2025: getFromCommonField(v, "ResourceInstitution", "carnegie_metadata", "classification2025"),
-			}
-			return p
-		}, {})
-	} catch(e){
-		console.log(e)
-	}
-
-	return {}
+  return buckets.reduce((p: any, v: any) => {
+    p[v['key']] = {
+      projectName: v['key'],
+      numJobs: v['NumJobs']['value'],
+      cpuHours: v['CpuHours']['value'],
+      gpuHours: v['GpuHours']['value'],
+      fileTransferCount: v['FileTransferCount']['value'],
+      byteTransferCount: v['ByteTransferCount']['value'],
+      osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
+      osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
+      institutionState: getFromCommonField<string>(v, "ResourceInstitution", "state"),
+      institutionIpedsWebsiteAddress: getFromCommonField<string>(v, "ResourceInstitution", "ipeds_metadata", "website_address"),
+      institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
+      institutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "tribal_college_or_university"),
+      institutionCarnegieClassification2025: getFromCommonField<string>(v, "ResourceInstitution", "carnegie_metadata", "classification2025"),
+    }
+    return p
+  }, {})
 }
 
-const EPSCOR_STATES = [
+
+
+
+
+
+function recurseObject<T>(obj: (object | object[]), ...path: (string | number)[]): T {
+  return path.reduce((o: unknown, key: (string | number)) => {
+    if (
+      o !== null && o !== undefined && typeof o === 'object' &&
+      Object.prototype.hasOwnProperty.call(o, key)
+    ) {
+      return (o as Record<(string | number), unknown>)[key]
+    }
+    throw new Error(`Couldnt find path: ${path} \nKey does not exist: ${key}`)
+  }, obj) as T
+}
+
+function getFromCommonField<T>(data: object, ...field: (string | number)[]): T {
+    const commonKeys: (string | number)[] = ['CommonFields', 'hits', 'hits', 0, '_source']
+    return recurseObject<T>(data, ...commonKeys, ...field)
+}
+
+ 
+
+
+
+
+
+const PROJECT_COMMON_FIELDS: string[] = [
+	"MajorFieldOfScience",
+	"BroadFieldOfScience",
+	"DetailedFieldOfScience",
+	"ProjectInstitution.name",
+  "ProjectInstitution.state",
+  "ProjectInstitution.latitude",
+  "ProjectInstitution.longitude",
+	"ProjectInstitution.ipeds_metadata.website_address",
+	"ProjectInstitution.ipeds_metadata.historically_black_college_or_university",
+	"ProjectInstitution.ipeds_metadata.tribal_college_or_university",
+]
+
+const RESOURCE_COMMON_FIELDS: string[] = [
+	"ResourceInstitution.name",
+  "ResourceInstitution.state",
+  "ResourceInstitution.latitude",
+  "ResourceInstitution.longitude",
+	"ResourceInstitution.ipeds_metadata.website_address",
+	"ResourceInstitution.ipeds_metadata.historically_black_college_or_university",
+	"ResourceInstitution.ipeds_metadata.tribal_college_or_university",
+  "ResourceInstitution.ipeds_metadata.website_address",
+	"ResourceInstitution.carnegie_metadata.classification2025"
+]
+
+const EPSCOR_STATES: string[] = [
 	"AL", // Alabama
 	"AK", // Alaska
 	"AR", // Arkansas
@@ -631,140 +708,3 @@ const EPSCOR_STATES = [
 	"WV", // West Virginia
 	"WY"  // Wyoming
 ];
-
-const PROJECT_COMMON_FIELDS = [
-	"MajorFieldOfScience",
-	"BroadFieldOfScience",
-	"DetailedFieldOfScience",
-	"ProjectInstitution.name",
-  "ProjectInstitution.state",
-  "ProjectInstitution.latitude",
-  "ProjectInstitution.longitude",
-	"ProjectInstitution.ipeds_metadata.website_address",
-	"ProjectInstitution.ipeds_metadata.historically_black_college_or_university",
-	"ProjectInstitution.ipeds_metadata.tribal_college_or_university",
-]
-
-const RESOURCE_COMMON_FIELDS = [
-	"ResourceInstitution.name",
-  "ResourceInstitution.state",
-  "ResourceInstitution.latitude",
-  "ResourceInstitution.longitude",
-	"ResourceInstitution.ipeds_metadata.website_address",
-	"ResourceInstitution.ipeds_metadata.historically_black_college_or_university",
-	"ResourceInstitution.ipeds_metadata.tribal_college_or_university",
-  "ResourceInstitution.ipeds_metadata.website_address",
-	"ResourceInstitution.carnegie_metadata.classification2025"
-]
-
-const getFromCommonField = (data, ...field) => {
-	const commonKeys = ['CommonFields', 'hits', 'hits', 0, '_source']
-	return recurseObject(data, ...commonKeys, ...field);
-}
-
-const recurseObject = (obj, ...path) => {
-	return path.reduce((o, key) => {
-		if (o && o.hasOwnProperty(key)) {
-			return o[key];
-		}
-		return undefined;
-	}, obj);
-}
-
-[
-	"American Museum of Natural History",
-	"Arizona State University",
-	"California Institute of Technology",
-	"California State University, San Bernardino",
-	"Carleton College",
-	"Center for Research and Advanced Studies of the National Polytechnic Institute",
-	"Clemson University",
-	"Colgate University",
-	"College of New Jersey",
-	"Duke University",
-	"Fermi National Accelerator Laboratory",
-	"Florida Agricultural and Mechanical University",
-	"Florida International University",
-	"Florida State University",
-	"Franklin & Marshall College",
-	"Fullerton College",
-	"George Washington University",
-	"Georgia Institute of Technology",
-	"Georgia State University",
-	"Great Plains Network",
-	"Harrisburg University of Science and Technology",
-	"Humboldt State University",
-	"Indiana University",
-	"Jackson State University",
-	"Kansas State University",
-	"Kent State University",
-	"Lafayette College",
-	"Langston University",
-	"Lehigh University",
-	"Louisiana State University",
-	"Louisiana State University Health Sciences Center New Orleans",
-	"Massachusetts Green High Performance Computing Center",
-	"Michigan State University",
-	"Montana State University",
-	"Nevada System of Higher Education",
-	"New Mexico State University",
-	"New York University",
-	"North Carolina State University",
-	"Old Dominion University",
-	"Oral Roberts University",
-	"Pennsylvania State University",
-	"Portland State University",
-	"Purdue University West Lafayette",
-	"Rhodes College",
-	"San Diego State University",
-	"Southern Illinois University Edwardsville",
-	"Swarthmore College",
-	"Syracuse University",
-	"São Paulo State University",
-	"Tennessee Technological University",
-	"Texas Advanced Computing Center",
-	"Tufts University",
-	"Universidade Estadual Paulista (Unesp)",
-	"University of Alabama",
-	"University of Alabama in Huntsville",
-	"University of Arkansas at Little Rock",
-	"University of California, Merced",
-	"University of California, Riverside",
-	"University of California, San Diego",
-	"University of Chicago",
-	"University of Cincinnati",
-	"University of Colorado Boulder",
-	"University of Colorado Denver",
-	"University of Connecticut",
-	"University of Hawaii System",
-	"University of Illinois Chicago",
-	"University of Illinois Urbana-Champaign",
-	"University of Illinois at Chicago",
-	"University of Maine System",
-	"University of Michigan",
-	"University of Michigan–Ann Arbor",
-	"University of Missouri",
-	"University of Montana",
-	"University of Nebraska System",
-	"University of Nebraska–Lincoln",
-	"University of North Dakota",
-	"University of Notre Dame",
-	"University of Puerto Rico-Mayaguez",
-	"University of South Dakota",
-	"University of Southern California",
-	"University of Tennessee at Chattanooga",
-	"University of Utah",
-	"University of Washington",
-	"University of Wisconsin-Eau Claire",
-	"University of Wisconsin-La Crosse",
-	"University of Wisconsin-Madison",
-	"University of Wisconsin-Milwaukee",
-	"University of Wisconsin–Eau Claire",
-	"University of Wisconsin–La Crosse",
-	"University of Wisconsin–Madison",
-	"University of Wisconsin–Milwaukee",
-	"University of Wyoming",
-	"Villanova University",
-	"Wayne State University",
-	"Wichita State University"
-]
