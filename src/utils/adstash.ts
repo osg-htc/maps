@@ -1,7 +1,7 @@
 /**
  * A collection of functions for uniform queries to the adstash ES endpoint
  */
-import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch-ts";
+import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch";
 
 type ComputeStats = {
   byteTransferCount: number

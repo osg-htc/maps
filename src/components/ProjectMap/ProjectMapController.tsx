@@ -4,7 +4,7 @@ import { Typography, Stack, Paper } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import useSWR from 'swr';
-import { getProjects, getInstitutionOverview } from '@/src/utils/adstash-ts';
+import { getProjects, getInstitutionOverview } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import ProjectList, { ProjectListItemProps } from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
