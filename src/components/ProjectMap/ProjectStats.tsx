@@ -1,33 +1,34 @@
 import { LocationPin, Circle } from '@mui/icons-material';
 import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Box, Typography } from '@mui/material';
+import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import ProjectMapPin from '../MapPin'
+import { ProjectData } from '@/src/utils/adstash';
 
-export type ProjectStatsProps = {
-  numJobs: number,
-  cpuHours: number,
-  gpuHours: number,
-  byteTransferCount: number,
-  fileTransferCount: number,
-  osdfByteTransferCount: number,
-  osdfFileTransferCount: number,
-}
-
-function ProjectStats({ stats }: { stats: ProjectStatsProps | undefined}) {
-
-  if (stats == undefined) return <>Undefined</>
-
+function ProjectStats({ stats }: { stats: ProjectData}) {
   return (
-    <>
-      <Typography>numJobs: { stats.numJobs }</Typography>
-      <Typography>cpuHours: { stats.cpuHours }</Typography>
-      <Typography>gpuHours: { stats.gpuHours }</Typography>
-      <Typography>byteTransferCount: { stats.byteTransferCount }</Typography>
-      <Typography>fileTransferCount: { stats.fileTransferCount }</Typography>
-      <Typography>osdfByteTransferCount: { stats.osdfByteTransferCount }</Typography>
-      <Typography>osdfFileTransferCount: { stats.osdfFileTransferCount }</Typography>
-    </>
+    <Stack component={'div'} spacing={2} sx={{
+      p: 2,
+      top: 0,
+      left: 0,
+      zIndex: 999,
+      backgroundColor: "#fff",
+      boxSizing: 'border-box',
+      minHeight: '100%',
+      minWidth: '100%'
+    }}>
+      <Card key={ 1 } sx={{ maxWidth: 345 }}>
+        <CardContent>
+          <Typography>numJobs: { stats.numJobs }</Typography>
+          <Typography>cpuHours: { stats.cpuHours }</Typography>
+          <Typography>gpuHours: { stats.gpuHours }</Typography>
+          <Typography>byteTransferCount: { stats.byteTransferCount }</Typography>
+          <Typography>fileTransferCount: { stats.fileTransferCount }</Typography>
+          <Typography>osdfByteTransferCount: { stats.osdfByteTransferCount }</Typography>
+          <Typography>osdfFileTransferCount: { stats.osdfFileTransferCount }</Typography>
+        </CardContent>
+      </Card>
+    </Stack >
   )
 }
 

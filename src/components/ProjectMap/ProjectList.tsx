@@ -1,13 +1,7 @@
-import { Typography, Stack, Paper } from '@mui/material';
+import { ProjectData } from '@/src/utils/adstash';
+import { Typography, Stack, Paper, Card, CardContent, CardActionArea } from '@mui/material';
 
-export type ProjectListItemProps = {
-  name: string,
-  field: string,
-  institution: string,
-  onClick: () => void,
-}
-
-function ProjectList({ projects }: {projects: ProjectListItemProps[]} ) {
+function ProjectList({ projects, click }: { projects: ProjectData[], click: (arg0: string) => void } ) {
   return (
     <Stack component={'div'} spacing={2} sx={{
       p: 2,
@@ -19,13 +13,16 @@ function ProjectList({ projects }: {projects: ProjectListItemProps[]} ) {
       minHeight: '100%',
       minWidth: '100%'
     }}>
-      {projects.map((project: ProjectListItemProps) => 
-        <Paper key={ project.name } elevation={2} sx={{ backgroundColor: "#fff", height: 100, borderRadius: 5, p: 1 }}>
-          <Typography>{project.name}</Typography>
-          <Typography>{project.field}</Typography>
-          <Typography>{project.institution}</Typography>
-          <button onClick={project.onClick}>click</button>
-        </Paper>
+      {projects.map((project: ProjectData, i) => 
+        <Card key={ i } sx={{ maxWidth: 345 }}>
+          <CardActionArea onClick={() => { click(project.projectName) }}>
+            <CardContent>
+              <Typography>{project.projectName}</Typography>
+              <Typography>{project.detailedFieldOfScience}</Typography>
+              <Typography>{project.projectInstitutionName}</Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
       )}
     </Stack >
   )   

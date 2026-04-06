@@ -1,32 +1,32 @@
 'use client'
 
-import { Typography, Stack, Paper } from '@mui/material';
+import { Button } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import useSWR from 'swr';
 import { getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
-import ProjectList, { ProjectListItemProps } from "./ProjectList";
+import ProjectList from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
-import ProjectStats, { ProjectStatsProps } from "./ProjectStats"
+import ProjectStats from "./ProjectStats"
 
 type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-selected'
 
 function ProjectMapController() {
-   // MATT: getProjects is not defined in TS so we can't handle the types cleanly,
-  //       we should either define the strcutre of this data here (bad) or convert
-  //       adstash and the elastic search files to TS (hard), for now this is just
-  //       a bunch of gymnastics to satisfy the type checker
   const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
   const { current: map } = useMap();
   const [leftPanelVisible, setLeftPanelVisible] = useState(true);
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
-  const [selectedProject, setSelectedProject] = useState<string>("")
+  const [selectedProjectName, setSelectedProject] = useState<string>("")
   
+  // remove all projects that are falsy in specific fields that we need
   const filteredProjects: Record<string, ProjectData> = useMemo(() => {
     return Object.fromEntries(
       Object.entries(data ?? {}).filter(([_, p]) =>
-        Object.values(p).every((v) => v !== null && v !== undefined)
+        p.projectInstitutionName &&
+        p.projectName &&
+        p.projectInstitutionLatitude &&
+        p.projectInstitutionLongitude
       )
     ) as Record<string, ProjectData>;
   }, [data])
@@ -34,15 +34,8 @@ function ProjectMapController() {
   const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
     return Object.values(filteredProjects ?? {}).reduce<Record<string, ProjectData[]>>(
       (bins, project) => {
-        if (
-          project.projectInstitutionName &&
-          project.projectName &&
-          project.projectInstitutionLatitude &&
-          project.projectInstitutionLongitude
-        ) {
-          bins[project.projectInstitutionName] ??= [];
-          bins[project.projectInstitutionName].push(project as ProjectData);
-        }
+        bins[project.projectInstitutionName] ??= [];
+        bins[project.projectInstitutionName].push(project as ProjectData);
         return bins;
       },
       {}
@@ -57,6 +50,7 @@ function ProjectMapController() {
       lon: bin[0].projectInstitutionLongitude,
       onClick: () => {
         setSelectedInstitution(bin[0].projectInstitutionName) 
+        setSelectedProject("") 
         map?.flyTo({
           center: [bin[0].projectInstitutionLongitude, bin[0].projectInstitutionLatitude],
           zoom: 12,
@@ -68,64 +62,38 @@ function ProjectMapController() {
   }, [projectBinsByInstitution]);
 
 
-  const selectedInstitutionProjects: ProjectListItemProps[] = useMemo(() => {
-    return projectBinsByInstitution[selectedInstitution]?.map((project) => ({
-      name: project.projectName,
-      field: project.detailedFieldOfScience,
-      institution: project.projectInstitutionName,
-      onClick: () => { setSelectedProject(project.projectName) },
-    })) ?? []
-  }, [projectBinsByInstitution, selectedInstitution]);
-  
-  // TODO: the undefined can go away once we move this to a brnach where data is garunteed
-  const selectedProjectStats: ProjectStatsProps | undefined = useMemo(() => {
-    if (!filteredProjects || !selectedProject) return undefined;
-    return filteredProjects[selectedProject];
-  }, [filteredProjects, selectedProject]);
-
-
-  useEffect(() => {
-    if (!selectedInstitution || !map) return;
-    const bin = projectBinsByInstitution[selectedInstitution];
-
-  }, [selectedInstitution, selectedInstitutionProjects]);
-
-
   const currentStep: MapStep = (
     isLoading ? 'loading' :
-    selectedProject ? 'project-selected' :
+    selectedProjectName ? 'project-selected' :
     selectedInstitution ? 'institution-selected' :
     'no-selection'
   )
 
   console.log('state: ' + currentStep)
 
-  // move the map center over if the side bar is open
-  // useEffect(() => {
-  //   map?.easeTo({
-  //     padding: { left: currentStep == 'loading' || currentStep == 'no-selection' ? 0 : 360, top: 0, right: 0, bottom: 0 },
-  //     duration: 0,
-  //   })
-  // }, [currentStep]);
-
   switch (currentStep) {
     case 'loading':
       return <></>
+    
     case 'no-selection':
       return <>
         <ProjectMapPins pins={mapPinData} />
       </>
-    case 'institution-selected':
+    
+    case 'institution-selected':      
       return <>
         <Sidebar width={360}>
-          <ProjectList projects={selectedInstitutionProjects} /> 
+          <Button variant="contained" onClick={() => { setSelectedInstitution("") }}>Back</Button>
+          <ProjectList projects={projectBinsByInstitution[selectedInstitution]} click={ setSelectedProject } /> 
         </Sidebar>
         <ProjectMapPins pins={mapPinData} />
       </>
+    
     case 'project-selected':
       return <>
         <Sidebar width={360}>
-          <ProjectStats stats={ selectedProjectStats } /> 
+          <Button variant="contained" onClick={() => { setSelectedProject("") }}>Back</Button>
+          <ProjectStats stats={filteredProjects[selectedProjectName]} /> 
         </Sidebar>
         <ProjectMapPins pins={mapPinData} />
       </>
