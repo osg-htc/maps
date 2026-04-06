@@ -4,7 +4,7 @@ import { Button } from '@mui/material';
 import { useEffect, useState, useMemo } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import useSWR from 'swr';
-import { getProjects, ProjectData } from '@/src/utils/adstash';
+import { getProjects, getProjectOverview, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import ProjectList from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
@@ -19,7 +19,7 @@ function ProjectMapController() {
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProjectName, setSelectedProject] = useState<string>("")
   
-
+  console.log(getProjectOverview("Washington_Savage"))
 
   // remove all projects that are falsy in specific fields that we need
   const filteredProjects: Record<string, ProjectData> = useMemo(() => {

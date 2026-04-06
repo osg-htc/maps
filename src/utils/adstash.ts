@@ -1,7 +1,43 @@
 /**
- * A collection of functions for uniform queries to the adstash ES endpoint
+ * A collection of functions for uniform queries to the adstash Elasticsearch endpoint
  */
-import ElasticSearchQuery, {ADSTASH_ENDPOINT, ADSTASH_SUMMARY_INDEX, DATE_RANGE} from "./elasticsearch";
+
+
+
+const DATE_RANGE: Record<string, number> = {
+    oneYearAgo: new Date(new Date().setDate(new Date().getDate()-365)).getTime(), // Gets last years timestamp
+    threeMonthsAgo: new Date(new Date().setDate(new Date().getDate()-90)).getTime(), // Gets date object 90 days in advance
+    now: new Date().getTime(),
+    yesterday: new Date(new Date().setDate(new Date().getDate()-1)).getTime(),
+}
+
+const ADSTASH_SUMMARY_INDEX: string = "ospool-summary-*"
+const ADSTASH_ENDPOINT: string = "https://elastic.osg.chtc.io/q"
+
+
+
+async function elasticSearch<T = unknown>(body: object = {}): Promise<T> {
+  let url = `${ADSTASH_ENDPOINT}/${ADSTASH_SUMMARY_INDEX}/_search`
+
+  let response = await Promise.race([
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify(body),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }),
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Request timed out')), 15000))
+  ])
+
+  if( !response.ok ){
+    console.error(await response.json())
+    throw Error(`Invalid Response from ${url}`)
+  }
+
+  return await response.json()
+}
+
 
 export type ComputeStats = {
   byteTransferCount: number 
@@ -50,8 +86,7 @@ export type ProjectData = ComputeStats & {
 }
 
 export async function getDateOfLatestData(): Promise<Date | undefined> {
-    const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
-    let usageQueryResult: any = await elasticSearch.search({
+    let usageQueryResult: any = await elasticSearch({
         size: 1,
         sort: [
             {
@@ -78,9 +113,8 @@ export async function getLatestOSPoolOverview(): Promise<Partial<OSPoolOverviewS
 export async function getInstitutionsOverview(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Partial<OverviewStats>> {
-  const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
-
-  let usageQueryResult: any = await elasticSearch.search({
+  
+  let usageQueryResult: any = await elasticSearch({
     size: 0,
     query: {
       range: {
@@ -180,9 +214,8 @@ export async function getInstitutionsOverview(
 export async function getInstitutions(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Record<string, Partial<InstitutionData>>> {
-	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
-
-	let usageQueryResult: any = await elasticSearch.search({
+	
+	let usageQueryResult: any = await elasticSearch({
 		size: 0,
 		query: {
 			range: {
@@ -300,9 +333,8 @@ export async function getInstitutions(
 export async function getProjects(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Record<string, Partial<ProjectData>>> {
-  const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
-
-  let usageQueryResult: any = await elasticSearch.search({
+  
+  let usageQueryResult: any = await elasticSearch({
     size: 0,
     query: {
       range: {
@@ -396,9 +428,8 @@ export async function getProjects(
 }
 
 export async function getInstitutionOverview(institutionName: string): Promise<Record<string, Partial<ProjectData>>> {
-	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
 
-	let usageQueryResult: any = await elasticSearch.search({
+	let usageQueryResult: any = await elasticSearch({
 		size: 0,
 		query: {
 			bool: {
@@ -502,9 +533,8 @@ export async function getInstitutionOverview(institutionName: string): Promise<R
 }
 
 export async function getProjectOverview(projectName: string): Promise<Record<string, Partial<InstitutionData>>> {
-	const elasticSearch = new ElasticSearchQuery(ADSTASH_SUMMARY_INDEX, ADSTASH_ENDPOINT)
-
-	let usageQueryResult: any = await elasticSearch.search({
+	
+	let usageQueryResult: any = await elasticSearch({
 		size: 0,
 		query: {
 			bool: {
@@ -584,7 +614,7 @@ export async function getProjectOverview(projectName: string): Promise<Record<st
 
   return buckets.reduce((p: any, v: any) => {
     p[v['key']] = {
-      projectName: v['key'],
+      institutionName: v['key'],
       numJobs: v['NumJobs']['value'],
       cpuHours: v['CpuHours']['value'],
       gpuHours: v['GpuHours']['value'],
