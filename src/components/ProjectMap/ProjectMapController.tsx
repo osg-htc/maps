@@ -8,7 +8,7 @@ import { getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import ProjectList from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
-import ProjectMapContributorPins, { ProjectMapContributorPinProps } from "./ProjectMapContributorPins"
+import ProjectMapContributorPins from "./ProjectMapContributorPins"
 import ProjectStats from "./ProjectStats"
 
 type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-selected'
@@ -114,12 +114,15 @@ function ProjectMapController() {
 
 
     case 'project-selected': {
+
+
+
       return <>
         <Sidebar width={360}>
           <Button variant="contained" onClick={() => { setSelectedProject("") }}>Back</Button>
           <ProjectStats stats={filteredProjects[selectedProjectName]} />
         </Sidebar>
-        <ProjectMapPins pins={mapPinData} />
+        <ProjectMapContributorPins mainPin={ filteredProjects[selectedProjectName] } contributorPins={ [] } />
       </>
     }
   }

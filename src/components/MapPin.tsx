@@ -23,7 +23,7 @@ function MapPin(props: MapPinProps) {
       anchor="bottom"
       onClick={props.onClick}
     >
-      <Box zIndex={999} sx={{ position: "relative", cursor: "pointer" }}>
+      <Box zIndex={999} sx={props.onClick ? { position: "relative", cursor: "pointer" } : { position: "relative" }}>
         <LocationPin sx={{ // location pin has a hole in the top that we dont want...
           color: props.color,
           fontSize: props.size,

@@ -1,6 +1,5 @@
 import { Paper } from '@mui/material';
 import { ReactNode } from 'react';
-import { useMap } from 'react-map-gl/mapbox';
 
 function Sidebar({width, children}: {width: number, children: ReactNode}) {
   return width > 0 ? (
