@@ -4,17 +4,10 @@
 
 
 
-const DATE_RANGE: Record<string, number> = {
-    oneYearAgo: new Date(new Date().setDate(new Date().getDate()-365)).getTime(), // Gets last years timestamp
-    threeMonthsAgo: new Date(new Date().setDate(new Date().getDate()-90)).getTime(), // Gets date object 90 days in advance
-    now: new Date().getTime(),
-    yesterday: new Date(new Date().setDate(new Date().getDate()-1)).getTime(),
-}
+
 
 const ADSTASH_SUMMARY_INDEX: string = "ospool-summary-*"
 const ADSTASH_ENDPOINT: string = "https://elastic.osg.chtc.io/q"
-
-
 
 async function elasticSearch<T = unknown>(body: object = {}): Promise<T> {
   let url = `${ADSTASH_ENDPOINT}/${ADSTASH_SUMMARY_INDEX}/_search`
@@ -83,6 +76,13 @@ export type ProjectData = ComputeStats & {
   projectInstitutionName: string
   projectInstitutionState: string
   projectName: string
+}
+
+const DATE_RANGE: Record<string, number> = {
+    oneYearAgo: new Date(new Date().setDate(new Date().getDate()-365)).getTime(), // Gets last years timestamp
+    threeMonthsAgo: new Date(new Date().setDate(new Date().getDate()-90)).getTime(), // Gets date object 90 days in advance
+    now: new Date().getTime(),
+    yesterday: new Date(new Date().setDate(new Date().getDate()-1)).getTime(),
 }
 
 export async function getDateOfLatestData(): Promise<Date | undefined> {
@@ -627,6 +627,8 @@ export async function getProjectOverview(projectName: string): Promise<Record<st
       institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
       institutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "tribal_college_or_university"),
       institutionCarnegieClassification2025: getFromCommonField<string>(v, "ResourceInstitution", "carnegie_metadata", "classification2025"),
+      institutionLatitude: getFromCommonField<number>(v, 'ResourceInstitution', 'latitude'),
+      institutionLongitude: getFromCommonField<number>(v, 'ResourceInstitution', 'longitude'),
     }
     return p
   }, {})
