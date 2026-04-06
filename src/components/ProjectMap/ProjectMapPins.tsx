@@ -13,9 +13,6 @@ export type ProjectMapPinProps = {
 }
 
 export default function ProjectMapPins({ pins }: { pins: ProjectMapPinProps[] }) {
-  console.log('pin names:', pins.map(p => p.name))
-  console.log(pins)
-
   return !pins ? <></> : (
     <>
       {pins.map((pin, i) => (

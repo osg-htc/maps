@@ -15,7 +15,6 @@ type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-se
 function ProjectMapController() {
   const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
   const { current: map } = useMap();
-  const [leftPanelVisible, setLeftPanelVisible] = useState(true);
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProjectName, setSelectedProject] = useState<string>("")
   
@@ -68,9 +67,7 @@ function ProjectMapController() {
     selectedInstitution ? 'institution-selected' :
     'no-selection'
   )
-
-  console.log('state: ' + currentStep)
-
+  
   switch (currentStep) {
     case 'loading':
       return <></>
@@ -84,7 +81,14 @@ function ProjectMapController() {
       return <>
         <Sidebar width={360}>
           <Button variant="contained" onClick={() => { setSelectedInstitution("") }}>Back</Button>
-          <ProjectList projects={projectBinsByInstitution[selectedInstitution]} click={ setSelectedProject } /> 
+          <ProjectList projects={projectBinsByInstitution[selectedInstitution]} click={(x) => {
+            setSelectedProject(x);
+            map?.flyTo({
+              zoom: 3,
+              duration: 1500,
+              essential: true,
+            });
+          }} /> 
         </Sidebar>
         <ProjectMapPins pins={mapPinData} />
       </>
