@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 
 export type MapPinProps = {
   name: string
-  text: string,
+  text?: string,
   color: string,
   size: number,
   lat: number,

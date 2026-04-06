@@ -1,38 +1,45 @@
-import { LocationPin, Circle } from '@mui/icons-material';
-import { Marker } from 'react-map-gl/mapbox';
+'use client'
+
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Box, Typography } from '@mui/material';
 import ProjectMapPin from '../MapPin'
-import { ProjectData } from '@/src/utils/adstash';
+import { InstitutionData, ProjectData, getProjectOverview } from '@/src/utils/adstash';
+import useSWR from 'swr';
+import { useMemo } from 'react';
 
-export type ProjectMapContributorPinProps = {
-  name: string
-  num: string,
-  lat: number,
-  lon: number,
-}
+export default function ProjectMapContributorPins({ mainPin }: { mainPin: ProjectData }) {
+  const { data: projectData, error: errorLoadingProject, isLoading: isProjectLoading } = useSWR([getProjectOverview], () => getProjectOverview(mainPin.projectName));
 
-export default function ProjectMapContributorPins({ mainPin, contributorPins }: { mainPin: ProjectData, contributorPins: ProjectMapContributorPinProps[] }) {
-  return (
+    const filteredProjectContributors: Record<string, InstitutionData> = useMemo(() => {
+      return Object.fromEntries(
+        Object.entries(projectData ?? {}).filter(([_, p]) =>
+          p.institutionName &&
+          p.institutionLatitude &&
+          p.institutionLongitude
+        )
+      ) as Record<string, InstitutionData>;
+    }, [projectData])
+
+
+  console.log(projectData)
+
+  return (isProjectLoading || !projectData) ? <></> : (
     <>
       <ProjectMapPin
         key={-1}
         name={ mainPin.projectName }
-        text={""}
         color={'#FF5733'}
         size={40}
         lat={mainPin.projectInstitutionLatitude}
         lon={mainPin.projectInstitutionLongitude}
       />
-      {contributorPins.map((pin, i) => (
+      {Object.values(filteredProjectContributors).map((pin, i) => (
         <ProjectMapPin
           key={i}
-          name={ pin.name }
-          text={pin.num}
+          name={ pin.institutionName }
           color={'#33cfff'}
           size={30}
-          lat={pin.lat}
-          lon={pin.lon}
+          lat={pin.institutionLatitude}
+          lon={pin.institutionLongitude}
         />
       ))}
     </>

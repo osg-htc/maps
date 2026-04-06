@@ -2,10 +2,6 @@
  * A collection of functions for uniform queries to the adstash Elasticsearch endpoint
  */
 
-
-
-
-
 const ADSTASH_SUMMARY_INDEX: string = "ospool-summary-*"
 const ADSTASH_ENDPOINT: string = "https://elastic.osg.chtc.io/q"
 
@@ -57,6 +53,8 @@ export type InstitutionData = OverviewStats & {
   institutionIpedsWebsiteAddress: string 
   institutionName: string 
   institutionState: string 
+  institutionLatitude: number
+  institutionLongitude: number
 }
 
 export type OSPoolOverviewStats = OverviewStats & {

@@ -14,29 +14,26 @@ import ProjectStats from "./ProjectStats"
 type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-selected'
 
 function ProjectMapController() {
-  const { data, error, isLoading } = useSWR([getProjects], () => getProjects());
+  const { data: projectsData, error: errorLoadingProjects, isLoading: areProjectsLoading } = useSWR([getProjects], () => getProjects());
   const { current: map } = useMap();
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProjectName, setSelectedProject] = useState<string>("")
   
-  console.log(getProjectOverview("Washington_Savage"))
-
   // remove all projects that are falsy in specific fields that we need
-  const filteredProjects: Record<string, ProjectData> = useMemo(() => {
+  const filteredProjectsData: Record<string, ProjectData> = useMemo(() => {
     return Object.fromEntries(
-      Object.entries(data ?? {}).filter(([_, p]) =>
+      Object.entries(projectsData ?? {}).filter(([_, p]) =>
         p.projectInstitutionName &&
         p.projectName &&
         p.projectInstitutionLatitude &&
         p.projectInstitutionLongitude
       )
     ) as Record<string, ProjectData>;
-  }, [data])
-
+  }, [projectsData])
 
 
   const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
-    return Object.values(filteredProjects ?? {}).reduce<Record<string, ProjectData[]>>(
+    return Object.values(filteredProjectsData ?? {}).reduce<Record<string, ProjectData[]>>(
       (bins, project) => {
         bins[project.projectInstitutionName] ??= [];
         bins[project.projectInstitutionName].push(project as ProjectData);
@@ -44,7 +41,7 @@ function ProjectMapController() {
       },
       {}
     );
-  }, [filteredProjects]);
+  }, [filteredProjectsData]);
 
 
 
@@ -71,7 +68,7 @@ function ProjectMapController() {
 
 
   const currentStep: MapStep = (
-    isLoading ? 'loading' :
+    areProjectsLoading ? 'loading' :
     selectedProjectName ? 'project-selected' :
     selectedInstitution ? 'institution-selected' :
     'no-selection'
@@ -85,20 +82,17 @@ function ProjectMapController() {
       return <></>
     }
     
-    
     case 'no-selection': {
       return <>
         <ProjectMapPins pins={mapPinData} />
       </>
     }
 
-
-
     case 'institution-selected': {
       return <>
         <Sidebar width={360}>
-          <Button variant="contained" onClick={() => { setSelectedInstitution("") }}>Back</Button>
-          <ProjectList projects={projectBinsByInstitution[selectedInstitution]} click={(x) => {
+          <Button variant="contained" onClick={ () => { setSelectedInstitution("") } }>Back</Button>
+          <ProjectList projects={ projectBinsByInstitution[selectedInstitution] } click={(x) => {
             setSelectedProject(x);
             map?.flyTo({
               zoom: 3,
@@ -111,18 +105,13 @@ function ProjectMapController() {
       </>
     }
 
-
-
     case 'project-selected': {
-
-
-
       return <>
         <Sidebar width={360}>
-          <Button variant="contained" onClick={() => { setSelectedProject("") }}>Back</Button>
-          <ProjectStats stats={filteredProjects[selectedProjectName]} />
+          <Button variant="contained" onClick={ () => { setSelectedProject("") } }>Back</Button>
+          <ProjectStats stats={ filteredProjectsData[selectedProjectName] } />
         </Sidebar>
-        <ProjectMapContributorPins mainPin={ filteredProjects[selectedProjectName] } contributorPins={ [] } />
+        <ProjectMapContributorPins mainPin={ filteredProjectsData[selectedProjectName] } />
       </>
     }
   }
