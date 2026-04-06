@@ -10,7 +10,7 @@ export type MapPinProps = {
   size: number,
   lat: number,
   lon: number,
-  onClick: () => void,
+  onClick?: () => void,
 }
 
 function MapPin(props: MapPinProps) {

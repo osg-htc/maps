@@ -8,6 +8,7 @@ import { getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import ProjectList from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
+import ProjectMapContributorPins, { ProjectMapContributorPinProps } from "./ProjectMapContributorPins"
 import ProjectStats from "./ProjectStats"
 
 type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-selected'
@@ -18,6 +19,8 @@ function ProjectMapController() {
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProjectName, setSelectedProject] = useState<string>("")
   
+
+
   // remove all projects that are falsy in specific fields that we need
   const filteredProjects: Record<string, ProjectData> = useMemo(() => {
     return Object.fromEntries(
@@ -30,6 +33,8 @@ function ProjectMapController() {
     ) as Record<string, ProjectData>;
   }, [data])
 
+
+
   const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
     return Object.values(filteredProjects ?? {}).reduce<Record<string, ProjectData[]>>(
       (bins, project) => {
@@ -40,6 +45,8 @@ function ProjectMapController() {
       {}
     );
   }, [filteredProjects]);
+
+
 
   const mapPinData: ProjectMapPinProps[] = useMemo(() => {
     return Object.values(projectBinsByInstitution).map((bin) => ({
@@ -61,23 +68,33 @@ function ProjectMapController() {
   }, [projectBinsByInstitution]);
 
 
+
+
   const currentStep: MapStep = (
     isLoading ? 'loading' :
     selectedProjectName ? 'project-selected' :
     selectedInstitution ? 'institution-selected' :
     'no-selection'
   )
-  
+
+
+
+
   switch (currentStep) {
-    case 'loading':
+    case 'loading': {
       return <></>
+    }
     
-    case 'no-selection':
+    
+    case 'no-selection': {
       return <>
         <ProjectMapPins pins={mapPinData} />
       </>
-    
-    case 'institution-selected':      
+    }
+
+
+
+    case 'institution-selected': {
       return <>
         <Sidebar width={360}>
           <Button variant="contained" onClick={() => { setSelectedInstitution("") }}>Back</Button>
@@ -88,19 +105,23 @@ function ProjectMapController() {
               duration: 1500,
               essential: true,
             });
-          }} /> 
+          }} />
         </Sidebar>
         <ProjectMapPins pins={mapPinData} />
       </>
-    
-    case 'project-selected':
+    }
+
+
+
+    case 'project-selected': {
       return <>
         <Sidebar width={360}>
           <Button variant="contained" onClick={() => { setSelectedProject("") }}>Back</Button>
-          <ProjectStats stats={filteredProjects[selectedProjectName]} /> 
+          <ProjectStats stats={filteredProjects[selectedProjectName]} />
         </Sidebar>
         <ProjectMapPins pins={mapPinData} />
       </>
+    }
   }
 }
 
