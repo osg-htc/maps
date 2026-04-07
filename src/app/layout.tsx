@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 
-import {Box} from "@mui/material";
+import { Box } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { PlayArrow } from '@mui/icons-material';
 
-
 import theme, {fonts} from "@chtc/web-components/themes/chtc"
 
-import "./globals.css"
-import Analytics from "@/components/Analytics";
-import Map from "@/components/Map";
+import "@/src/app/globals.css"
+import Analytics from "@/src/components/Analytics";
+import BaseMap from "@/src/components/BaseMap";
 
 export const metadata: Metadata = {
   title: "Website Template",
@@ -34,10 +33,12 @@ export default function RootLayout({
 			}
       <AppRouterCacheProvider>
         <Box component={"body"} sx={{ margin: 0, padding: 0 }}>
-          <ThemeProvider theme={theme}>
-            <Map>
-              {children}
-            </Map>
+          <ThemeProvider theme={theme}> 
+            <Box sx={{ position: 'relative', width: '100vw', height: '100vh', bgcolor: "background.default" }}>
+              <BaseMap>
+                {children}
+              </BaseMap>
+            </Box>
           </ThemeProvider>
         </Box>
       </AppRouterCacheProvider>
