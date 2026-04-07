@@ -1,7 +1,15 @@
-import ProjectMap from "@/src/components/ProjectMap";
+import CenterOverlay from "@/src/components/CenterOverlay";
+import DisableMapControls from "@/src/components/DisableMapControls";
+import { Link } from "@mui/material";
 
 export default async function Home() {
+
   return (
-    <ProjectMap></ProjectMap>
+    <>
+      <DisableMapControls />
+      <CenterOverlay>
+        <Link href="./projects">Projects</Link>
+      </CenterOverlay>
+    </>
   );
 }
