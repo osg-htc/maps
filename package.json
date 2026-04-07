@@ -7,8 +7,9 @@
     "build": "next build",
     "postbuild": "next-image-export-optimizer && next-sitemap",
     "start": "next start",
-    "lint": "next lint",
-    "analyze": "ANALYZE=true next build"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "analyze": "ANALYZE=true next build --webpack"
   },
   "dependencies": {
     "@chtc/web-components": "^1.0.20",

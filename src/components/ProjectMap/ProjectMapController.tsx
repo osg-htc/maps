@@ -1,10 +1,10 @@
 'use client'
 
 import { Button } from '@mui/material';
-import { useEffect, useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import useSWR from 'swr';
-import { getProjects, getProjectOverview, ProjectData } from '@/src/utils/adstash';
+import { getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import ProjectList from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"

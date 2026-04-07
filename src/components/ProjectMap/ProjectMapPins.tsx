@@ -1,7 +1,3 @@
-import { LocationPin, Circle } from '@mui/icons-material';
-import { Marker } from 'react-map-gl/mapbox';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { Box, Typography } from '@mui/material';
 import ProjectMapPin from '../MapPin'
 
 export type ProjectMapPinProps = {

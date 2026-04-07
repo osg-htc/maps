@@ -6,9 +6,9 @@ const ADSTASH_SUMMARY_INDEX: string = "ospool-summary-*"
 const ADSTASH_ENDPOINT: string = "https://elastic.osg.chtc.io/q"
 
 async function elasticSearch<T = unknown>(body: object = {}): Promise<T> {
-  let url = `${ADSTASH_ENDPOINT}/${ADSTASH_SUMMARY_INDEX}/_search`
+  const url = `${ADSTASH_ENDPOINT}/${ADSTASH_SUMMARY_INDEX}/_search`
 
-  let response = await Promise.race([
+  const response = await Promise.race([
     fetch(url, {
       method: "POST",
       body: JSON.stringify(body),
@@ -84,7 +84,7 @@ const DATE_RANGE: Record<string, number> = {
 }
 
 export async function getDateOfLatestData(): Promise<Date | undefined> {
-    let usageQueryResult: any = await elasticSearch({
+    const usageQueryResult: any = await elasticSearch({
         size: 1,
         sort: [
             {
@@ -99,7 +99,7 @@ export async function getDateOfLatestData(): Promise<Date | undefined> {
 
 export async function getLatestOSPoolOverview(): Promise<Partial<OSPoolOverviewStats>> {
     let overview: Partial<OverviewStats> | null = null
-    let d: Date = new Date()
+    const d: Date = new Date()
     d.setUTCHours(0,0,0,0)
     while (!overview || overview['numJobs'] == 0) {
         d.setUTCDate(d.getUTCDate() - 1)
@@ -112,7 +112,7 @@ export async function getInstitutionsOverview(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Partial<OverviewStats>> {
   
-  let usageQueryResult: any = await elasticSearch({
+  const usageQueryResult: any = await elasticSearch({
     size: 0,
     query: {
       range: {
@@ -191,7 +191,7 @@ export async function getInstitutionsOverview(
     }
   })
 
-  let data = usageQueryResult.aggregations
+  const data = usageQueryResult.aggregations
 
   return {
     numInstitutions: data['NumInstitutions']['buckets'].length,
@@ -213,7 +213,7 @@ export async function getInstitutions(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Record<string, Partial<InstitutionData>>> {
 	
-	let usageQueryResult: any = await elasticSearch({
+	const usageQueryResult: any = await elasticSearch({
 		size: 0,
 		query: {
 			range: {
@@ -302,7 +302,7 @@ export async function getInstitutions(
 		}
 	})
 
-	let buckets = usageQueryResult.aggregations.bucket.buckets
+	const buckets = usageQueryResult.aggregations.bucket.buckets
 
   return buckets.reduce((p: any, v: any) => {
     p[v['key']] = {
@@ -332,7 +332,7 @@ export async function getProjects(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Record<string, Partial<ProjectData>>> {
   
-  let usageQueryResult: any = await elasticSearch({
+  const usageQueryResult: any = await elasticSearch({
     size: 0,
     query: {
       range: {
@@ -397,7 +397,7 @@ export async function getProjects(
     }
   })
 
-  let buckets = usageQueryResult.aggregations.bucket.buckets
+  const buckets = usageQueryResult.aggregations.bucket.buckets
 
   return buckets.reduce((p: any, v: any) => {
     p[v['key']] = {
@@ -427,7 +427,7 @@ export async function getProjects(
 
 export async function getInstitutionOverview(institutionName: string): Promise<Record<string, Partial<ProjectData>>> {
 
-	let usageQueryResult: any = await elasticSearch({
+	const usageQueryResult: any = await elasticSearch({
 		size: 0,
 		query: {
 			bool: {
@@ -503,7 +503,7 @@ export async function getInstitutionOverview(institutionName: string): Promise<R
 		}
 	})
 
-	let buckets = usageQueryResult.aggregations.agg.buckets
+	const buckets = usageQueryResult.aggregations.agg.buckets
 
   return buckets.reduce((p: any, v: any) => {
     p[v['key']] = {
@@ -532,7 +532,7 @@ export async function getInstitutionOverview(institutionName: string): Promise<R
 
 export async function getProjectOverview(projectName: string): Promise<Record<string, Partial<InstitutionData>>> {
 	
-	let usageQueryResult: any = await elasticSearch({
+	const usageQueryResult: any = await elasticSearch({
 		size: 0,
 		query: {
 			bool: {
@@ -608,7 +608,7 @@ export async function getProjectOverview(projectName: string): Promise<Record<st
 		}
 	})
 
-	let buckets = usageQueryResult.aggregations.agg.buckets
+	const buckets = usageQueryResult.aggregations.agg.buckets
 
   return buckets.reduce((p: any, v: any) => {
     p[v['key']] = {

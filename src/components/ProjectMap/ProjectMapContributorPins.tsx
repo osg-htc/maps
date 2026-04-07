@@ -1,6 +1,5 @@
 'use client'
 
-import 'mapbox-gl/dist/mapbox-gl.css';
 import ProjectMapPin from '../MapPin'
 import { InstitutionData, ProjectData, getProjectOverview } from '@/src/utils/adstash';
 import useSWR from 'swr';

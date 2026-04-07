@@ -1,6 +1,6 @@
 'use client'
 
-import {ReactNode, useEffect, useState} from "react";
+import {ReactNode, useState} from "react";
 import Map from "react-map-gl/mapbox"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {Box} from '@mui/material';

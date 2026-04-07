@@ -1,5 +1,5 @@
 import { ProjectData } from '@/src/utils/adstash';
-import { Typography, Stack, Paper, Card, CardContent, CardActionArea } from '@mui/material';
+import { Typography, Stack, Card, CardContent, CardActionArea } from '@mui/material';
 
 function ProjectList({ projects, click }: { projects: ProjectData[], click: (arg0: string) => void } ) {
   return (

@@ -1,8 +1,5 @@
-import { LocationPin, Circle } from '@mui/icons-material';
-import { Marker } from 'react-map-gl/mapbox';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
-import ProjectMapPin from '../MapPin'
+
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { ProjectData } from '@/src/utils/adstash';
 
 function ProjectStats({ stats }: { stats: ProjectData}) {
