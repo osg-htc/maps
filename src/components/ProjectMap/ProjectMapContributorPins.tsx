@@ -27,7 +27,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
       <ProjectMapPin
         key={-1}
         name={ mainPin.projectName }
-        color={'#FF5733'}
+        color={'primary.main'}
         size={40}
         lat={mainPin.projectInstitutionLatitude}
         lon={mainPin.projectInstitutionLongitude}
@@ -36,7 +36,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
         <ProjectMapPin
           key={i}
           name={ pin.institutionName }
-          color={'#33cfff'}
+          color={'secondary.main'}
           size={30}
           lat={pin.institutionLatitude}
           lon={pin.institutionLongitude}

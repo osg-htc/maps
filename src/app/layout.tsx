@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 
-import theme, {fonts} from "@chtc/web-components/themes/chtc"
+import theme, {fonts} from "@chtc/web-components/themes/osg"
 
 import "@/src/app/globals.css"
 import Analytics from "@/src/components/Analytics";

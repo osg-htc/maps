@@ -16,7 +16,7 @@ export default function ProjectMapPins({ pins }: { pins: ProjectMapPinProps[] })
           key={i}
           name={ pin.name }
           text={pin.num}
-          color={'#FF5733'}
+          color={'primary.main'}
           size={40}
           lat={pin.lat}
           lon={pin.lon}
