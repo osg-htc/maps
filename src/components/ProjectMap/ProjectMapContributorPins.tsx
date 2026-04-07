@@ -13,6 +13,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
       return Object.fromEntries(
         Object.entries(projectData ?? {}).filter(([_, p]) =>
           p.institutionName &&
+          p.institutionName !== mainPin.projectInstitutionName &&
           p.institutionLatitude &&
           p.institutionLongitude
         )

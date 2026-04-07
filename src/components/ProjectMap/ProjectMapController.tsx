@@ -91,7 +91,7 @@ function ProjectMapController() {
     case 'institution-selected': {
       return <>
         <Sidebar width={360}>
-          <Button variant="contained" onClick={ () => { setSelectedInstitution("") } }>Back</Button>
+          <Button variant="contained" onClick={ () => { setSelectedInstitution("") } }>Close</Button>
           <ProjectList projects={ projectBinsByInstitution[selectedInstitution] } click={(x) => {
             setSelectedProject(x);
             map?.flyTo({
