@@ -14,7 +14,7 @@ import ProjectStats from "./ProjectStats"
 type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-selected'
 
 function ProjectMapController() {
-  const { data: projectsData, error: errorLoadingProjects, isLoading: areProjectsLoading } = useSWR([getProjects], () => getProjects());
+  const { data: projectsData, isLoading: areProjectsLoading } = useSWR([getProjects], () => getProjects());
   const { current: map } = useMap();
   const [selectedInstitution, setSelectedInstitution] = useState<string>("")
   const [selectedProjectName, setSelectedProject] = useState<string>("")
@@ -62,7 +62,7 @@ function ProjectMapController() {
         });
       },
     }));
-  }, [projectBinsByInstitution]);
+  }, [projectBinsByInstitution, map]);
 
 
 

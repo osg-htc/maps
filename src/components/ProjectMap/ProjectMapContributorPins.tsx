@@ -6,7 +6,7 @@ import useSWR from 'swr';
 import { useMemo } from 'react';
 
 export default function ProjectMapContributorPins({ mainPin }: { mainPin: ProjectData }) {
-  const { data: projectData, error: errorLoadingProject, isLoading: isProjectLoading } = useSWR([getProjectOverview], () => getProjectOverview(mainPin.projectName));
+  const { data: projectData, isLoading: isProjectLoading } = useSWR([getProjectOverview], () => getProjectOverview(mainPin.projectName));
 
     const filteredProjectContributors: Record<string, InstitutionData> = useMemo(() => {
       return Object.fromEntries(
@@ -17,7 +17,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
           p.institutionLongitude
         )
       ) as Record<string, InstitutionData>;
-    }, [projectData])
+    }, [projectData, mainPin])
 
 
   console.log(projectData)

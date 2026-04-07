@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Box } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { PlayArrow } from '@mui/icons-material';
 
 import theme, {fonts} from "@chtc/web-components/themes/chtc"
 
@@ -16,10 +15,6 @@ export const metadata: Metadata = {
   description: "Website template for CHTC projects",
 	metadataBase: new URL(`https://${process.env.HOSTNAME}`),
 };
-
-const pages = [
-	{ label: 'Home Page', path: '/', icon: <PlayArrow /> },
-]
 
 export default function RootLayout({
   children,
