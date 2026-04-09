@@ -6,6 +6,7 @@ import { useMap } from 'react-map-gl/mapbox';
 import useSWR from 'swr';
 import { getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
+import SidebarStack from '../SidebarStack';
 import ProjectList from "./ProjectList";
 import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
 import ProjectMapContributorPins from "./ProjectMapContributorPins"
@@ -64,9 +65,6 @@ function ProjectMapController() {
     }));
   }, [projectBinsByInstitution, map]);
 
-
-
-
   const currentStep: MapStep = (
     areProjectsLoading ? 'loading' :
     selectedProjectName ? 'project-selected' :
@@ -74,20 +72,19 @@ function ProjectMapController() {
     'no-selection'
   )
 
-
-
-
   switch (currentStep) {
     case 'loading': {
       return <></>
     }
     
+      
     case 'no-selection': {
       return <>
         <ProjectMapPins pins={mapPinData} />
       </>
     }
 
+      
     case 'institution-selected': {
       return <>
         <Sidebar width={360}>
@@ -100,14 +97,16 @@ function ProjectMapController() {
           >
             Close
           </Button>
-          <ProjectList projects={ projectBinsByInstitution[selectedInstitution] } click={(x) => {
-            setSelectedProject(x);
-            map?.flyTo({
-              zoom: 3,
-              duration: 1500,
-              essential: true,
-            });
-          }} />
+          <SidebarStack>
+            <ProjectList projects={ projectBinsByInstitution[selectedInstitution] } click={(x) => {
+              setSelectedProject(x);
+              map?.flyTo({
+                zoom: 3,
+                duration: 1500,
+                essential: true,
+              });
+              }} />
+          </SidebarStack>
         </Sidebar>
         <ProjectMapPins pins={mapPinData} />
       </>
@@ -125,7 +124,9 @@ function ProjectMapController() {
           >
             Back
           </Button>
-          <ProjectStats stats={ filteredProjectsData[selectedProjectName] } />
+          <SidebarStack>
+            <ProjectStats stats={filteredProjectsData[selectedProjectName]} />
+          </SidebarStack>
         </Sidebar>
         <ProjectMapContributorPins mainPin={ filteredProjectsData[selectedProjectName] } />
       </>

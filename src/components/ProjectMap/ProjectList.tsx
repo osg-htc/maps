@@ -3,16 +3,9 @@ import { Typography, Stack, Card, CardContent, CardActionArea } from '@mui/mater
 
 function ProjectList({ projects, click }: { projects: ProjectData[], click: (arg0: string) => void } ) {
   return (
-    <Stack component={'div'} spacing={2} sx={{
-      p: 2,
-      top: 0,
-      left: 0,
-      zIndex: 999,
-      backgroundColor: "#fff",
-      boxSizing: 'border-box',
-    }}>
+    <>
       {projects.map((project: ProjectData, i) => 
-        <Card key={ i } sx={{ maxWidth: 345 }}>
+        <Card key={ i }>
           <CardActionArea onClick={() => { click(project.projectName) }}>
             <CardContent>
               <Typography>{project.projectName}</Typography>
@@ -22,7 +15,7 @@ function ProjectList({ projects, click }: { projects: ProjectData[], click: (arg
           </CardActionArea>
         </Card>
       )}
-    </Stack >
+    </>
   )   
 }
 

@@ -4,15 +4,8 @@ import { ProjectData } from '@/src/utils/adstash';
 
 function ProjectStats({ stats }: { stats: ProjectData}) {
   return (
-    <Stack component={'div'} spacing={2} sx={{
-      p: 2,
-      top: 0,
-      left: 0,
-      zIndex: 999,
-      backgroundColor: "#fff",
-      boxSizing: 'border-box'
-    }}>
-      <Card key={ 1 } sx={{ maxWidth: 345 }}>
+    <>
+      <Card key={ 1 }>
         <CardContent>
           <Typography>numJobs: { stats.numJobs }</Typography>
           <Typography>cpuHours: { stats.cpuHours }</Typography>
@@ -23,7 +16,7 @@ function ProjectStats({ stats }: { stats: ProjectData}) {
           <Typography>osdfFileTransferCount: { stats.osdfFileTransferCount }</Typography>
         </CardContent>
       </Card>
-    </Stack >
+    </>
   )
 }
 
