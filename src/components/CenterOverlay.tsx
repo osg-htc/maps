@@ -11,7 +11,6 @@ export default function CenterOverlay({ children}: {children: ReactNode}) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        zIndex: 1300,
       }}
     >
       <Paper
@@ -21,7 +20,6 @@ export default function CenterOverlay({ children}: {children: ReactNode}) {
           m: 1,
           p: 4,
           borderRadius: 3,
-          zIndex: 1,
           minWidth: "50vw",
           minHeight: "50vh",
           maxWidth: "90vw",

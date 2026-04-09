@@ -1,8 +1,8 @@
 import { Paper } from '@mui/material';
 import { ReactNode } from 'react';
 
-function Sidebar({width, children}: {width: number, children: ReactNode}) {
-  return width > 0 ? (
+export default function Sidebar({children}: {children: ReactNode}) {
+  return (
     <>
       <Paper
         elevation={2}
@@ -11,8 +11,7 @@ function Sidebar({width, children}: {width: number, children: ReactNode}) {
           top: 8,
           left: 8,
           bottom: 8,
-          width: width - 16,
-          zIndex: 1,
+          width: 360 - 16,
           borderRadius: 3,
           overflowY: 'auto',
           m: 1,
@@ -21,7 +20,7 @@ function Sidebar({width, children}: {width: number, children: ReactNode}) {
         { children }
       </Paper>
     </>
-  ) : (<></>)
+  )
 }
 
-export default Sidebar;
+

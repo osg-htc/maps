@@ -15,7 +15,6 @@ function BaseMap({children}: {children: ReactNode}) {
         left: 0,
         backgroundColor: "white",
         borderRadius: 1,
-        zIndex: 999,
         height: '100%',
         width: '100%',
         maxHeight: '100vh',
@@ -26,7 +25,7 @@ function BaseMap({children}: {children: ReactNode}) {
           initialViewState={{
             longitude: -92.4,
             latitude: 37.8,
-            zoom: 3
+            zoom: 3.5
           }}
           projection={'globe'}
           style={{width: "100%", height: "100%"}}
