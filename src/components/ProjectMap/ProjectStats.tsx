@@ -10,9 +10,7 @@ function ProjectStats({ stats }: { stats: ProjectData}) {
       left: 0,
       zIndex: 999,
       backgroundColor: "#fff",
-      boxSizing: 'border-box',
-      minHeight: '100%',
-      minWidth: '100%'
+      boxSizing: 'border-box'
     }}>
       <Card key={ 1 } sx={{ maxWidth: 345 }}>
         <CardContent>

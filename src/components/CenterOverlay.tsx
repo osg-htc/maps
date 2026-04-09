@@ -1,7 +1,7 @@
 import { Paper, Box } from '@mui/material';
 import { ReactNode } from 'react';
 
-export default function Sidebar({ children}: {children: ReactNode}) {
+export default function CenterOverlay({ children}: {children: ReactNode}) {
   return (
     <Box
       sx={{

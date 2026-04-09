@@ -10,8 +10,6 @@ function ProjectList({ projects, click }: { projects: ProjectData[], click: (arg
       zIndex: 999,
       backgroundColor: "#fff",
       boxSizing: 'border-box',
-      minHeight: '100%',
-      minWidth: '100%'
     }}>
       {projects.map((project: ProjectData, i) => 
         <Card key={ i } sx={{ maxWidth: 345 }}>
