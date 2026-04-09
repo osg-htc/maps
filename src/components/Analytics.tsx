@@ -1,6 +1,6 @@
 'use client'
 
-import { init, push } from '@socialgouv/matomo-next';
+import { trackAppRouter, push } from '@socialgouv/matomo-next';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef  } from 'react';
 
@@ -12,7 +12,7 @@ const Analytics = ({url, siteId}: {url: string, siteId: string}) => {
 	useEffect(() => {
 		try {
 			console.log('Matomo initializing');
-			init({ url, siteId, disableCookies: true });
+			trackAppRouter({ url, siteId, disableCookies: true });
 			return () => push(['HeatmapSessionRecording::disable']);
 		} catch {
 			console.error('Matomo failed to initialize');
