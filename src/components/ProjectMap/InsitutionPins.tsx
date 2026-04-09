@@ -4,9 +4,10 @@ import ProjectMapPin from '../MapPin'
 import { InstitutionData, ProjectData, getProjectOverview } from '@/src/utils/adstash';
 import useSWR from 'swr';
 import { useMemo } from 'react';
+import LoadingScreen from '../LoadingScreen';
 
 export default function ProjectMapContributorPins({ mainPin }: { mainPin: ProjectData }) {
-  const { data: projectData, isLoading: isProjectLoading } = useSWR([getProjectOverview], () => getProjectOverview(mainPin.projectName));
+  const { data: projectData, isLoading: isProjectLoading } = useSWR([mainPin, getProjectOverview], () => getProjectOverview(mainPin.projectName));
 
     const filteredProjectContributors: Record<string, InstitutionData> = useMemo(() => {
       return Object.fromEntries(
@@ -22,7 +23,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
 
   console.log(projectData)
 
-  return (isProjectLoading || !projectData) ? <></> : (
+  return (isProjectLoading || !projectData) ? <LoadingScreen></LoadingScreen> : (
     <>
       <ProjectMapPin
         key={-1}

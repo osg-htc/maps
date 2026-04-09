@@ -8,7 +8,7 @@ import LoadingScreen from '../LoadingScreen';
 export default function ProjectDataLoader() {
   const { data, isLoading} = useSWR([getProjects], () => getProjects());
 
-  if (isLoading) {
+  if (isLoading || !data) {
     return <LoadingScreen></LoadingScreen>   
   } else {
     return <ViewController rawProjectsData={data}></ViewController>

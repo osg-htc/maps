@@ -10,10 +10,11 @@ export type MapPinProps = {
   size: number,
   lat: number,
   lon: number,
+  hidden?: boolean,
   onClick?: () => void,
 }
 
-function MapPin(props: MapPinProps) {
+export default function MapPin(props: MapPinProps) {
   
   return (
     <Marker
@@ -23,50 +24,34 @@ function MapPin(props: MapPinProps) {
       anchor="bottom"
       onClick={props.onClick}
     >
-      {/* <Tooltip
-        title={props.name}
-        arrow
-        slotProps={{
-          popper: {
-            modifiers: [
-              {
-                name: 'offset',
-                options: {
-                  offset: [0, -14]
-                }
-              }
-            ]
-          }
-        }}
-      > */}
-        <Box sx={props.onClick ? { position: "relative", cursor: "pointer" } : { position: "relative" }}>
-          <LocationPin sx={{ // location pin has a hole in the top that we dont want...
-            color: props.color,
-            fontSize: props.size,
-          }} />
-          <Circle sx={{ // ...so we just fill it with a circle
-            color: props.color,
-            fontSize: props.size / 2,
-            position: "absolute",
-            top: "35%",
-            left: "50%",
-            transform: "translate(-50%, -50%)"
-          }} />
-          <Typography sx={{
-            color: "white",
-            fontSize: props.size / 2,
-            position: "absolute",
-            top: "35%",
-            left: "50%",
-            transform: "translate(-50%, -50%)"
-          }}>
-            {props.text}
-          </Typography>
-        </Box>
-      {/* </Tooltip> */}
+      <Box sx={{
+        position: "relative",
+        cursor: props.onClick ? "pointer" : "",
+        display: props.hidden ? "none" : "block"
+      }}>
+        <LocationPin sx={{ // location pin has a hole in the top that we dont want...
+          color: props.color,
+          fontSize: props.size,
+        }} />
+        <Circle sx={{ // ...so we just fill it with a circle
+          color: props.color,
+          fontSize: props.size / 2,
+          position: "absolute",
+          top: "35%",
+          left: "50%",
+          transform: "translate(-50%, -50%)"
+        }} />
+        <Typography sx={{
+          color: "white",
+          fontSize: props.size / 2,
+          position: "absolute",
+          top: "35%",
+          left: "50%",
+          transform: "translate(-50%, -50%)"
+        }}>
+          {props.text}
+        </Typography>
+      </Box>
     </Marker>
   )
 }
-
-
-export default MapPin;

@@ -17,11 +17,10 @@ enum MapSteps {
   ViewingProject,
 }
 
-type MapStates = {
-  step: MapSteps,
-  institution: string,
-  project: string,
-}
+type MapStates =
+  | { step: MapSteps.SelectingInstitution, institution: "", project: "" }
+  | { step: MapSteps.SelectingProject, institution: string, project: "" }
+  | { step: MapSteps.ViewingProject, institution: string, project: string }
 
 type MapActions =
   | { type: "institution-select", institution: string }
@@ -29,13 +28,13 @@ type MapActions =
   | { type: "project-select", project: string }
   | { type: "project-deselect" }
 
-const initialState = {
+const initialState: MapStates = {
   step: MapSteps.SelectingInstitution, 
   institution: "",
   project: ""
 }
 
-function reducer(state: MapStates, action: MapActions) {
+function reducer(state: MapStates, action: MapActions): MapStates {
   console.log(state, action);
   switch (action.type) {
     case "institution-select": {
@@ -53,7 +52,7 @@ function reducer(state: MapStates, action: MapActions) {
   }
 }
 
-export default function ViewController({ rawProjectsData }: {rawProjectsData: Record<string, Partial<ProjectData>> | undefined }) {
+export default function ViewController({ rawProjectsData }: {rawProjectsData: Record<string, Partial<ProjectData>>  }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { current: map } = useMap();
 
@@ -92,59 +91,32 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
   }, [projectBinsByInstitution]);
 
 
+  return (
+    <>
+      <ProjectPins pins={mapPinData} hidden={ state.step == MapSteps.ViewingProject } />
 
+      { state.step != MapSteps.ViewingProject ? <></> : <InsitutionPins mainPin={filteredProjectsData[state.project]}/> }
 
-
-
-  switch (state.step) {
-    case MapSteps.SelectingInstitution: {
-      return <>
-        <ProjectPins pins={mapPinData} />
-      </>
-    }
-
-      
-    case MapSteps.SelectingProject: {
-      return <>
+      { state.step == MapSteps.SelectingInstitution ? <></> :
         <Sidebar>
           <Button
             variant="outlined"
-            onClick={() => { dispatch({ type: "institution-deselect" }) }}
-            sx={{
-              m: 1
-            }}
+            onClick={() => { dispatch({ type: state.step == MapSteps.SelectingProject ? "institution-deselect" : "project-deselect" }) }}
+            sx={{ m: 1 }}
           >
-            Close
+            {state.step == MapSteps.SelectingProject ? "Close" : "Back"}
           </Button>
           <SidebarStack>
-            <ProjectList
-              projects={projectBinsByInstitution[state.institution]}
-              click={(p) => { dispatch({ type: "project-select", project: p }) }}
-            />
+            { state.step == MapSteps.SelectingProject
+              ? <ProjectList
+                  projects={projectBinsByInstitution[state.institution]}
+                  click={(p) => { dispatch({ type: "project-select", project: p }) }}
+                />
+              : <ProjectStats stats={filteredProjectsData[state.project]} />
+            }
           </SidebarStack>
         </Sidebar>
-        <ProjectPins pins={mapPinData} />
-      </>
-    }
-
-    case MapSteps.ViewingProject: {
-      return <>
-        <Sidebar>
-          <Button
-            variant="outlined"
-            onClick={() => { dispatch({ type: "project-deselect" }) }}
-            sx={{
-              m: 1
-            }}
-          >
-            Back
-          </Button>
-          <SidebarStack>
-            <ProjectStats stats={filteredProjectsData[state.project]} />
-          </SidebarStack>
-        </Sidebar>
-        <InsitutionPins mainPin={ filteredProjectsData[state.project] } />
-      </>
-    }
-  }
+      }
+    </>
+  )
 }

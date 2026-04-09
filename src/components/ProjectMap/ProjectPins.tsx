@@ -1,4 +1,4 @@
-import ProjectMapPin from '../MapPin'
+import MapPin from '../MapPin'
 
 export type ProjectPinProps = {
   name: string
@@ -8,11 +8,11 @@ export type ProjectPinProps = {
   onClick: () => void,
 }
 
-export default function ProjectMapPins({ pins }: { pins: ProjectPinProps[] }) {
+export default function ProjectMapPins({ pins, hidden = false }: { pins: ProjectPinProps[], hidden?: boolean }) {
   return !pins ? <></> : (
-    <>
+    <div>
       {pins.map((pin, i) => (
-        <ProjectMapPin
+        <MapPin
           key={i}
           name={ pin.name }
           text={pin.num}
@@ -20,9 +20,10 @@ export default function ProjectMapPins({ pins }: { pins: ProjectPinProps[] }) {
           size={40}
           lat={pin.lat}
           lon={pin.lon}
+          hidden={hidden}
           onClick={pin.onClick}
         />
       ))}
-    </>
+    </div>
   )
 }
