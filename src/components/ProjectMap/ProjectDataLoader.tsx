@@ -1,7 +1,18 @@
-import { ProjectData } from '@/src/utils/adstash';
-import useSWR from 'swr';
+'use client'
 
-export default function ProjectDataLoader({ projects, click }: { projects: ProjectData[], click: (arg0: string) => void } ) {
-  return ( <></> )   
+import { getProjects } from '@/src/utils/adstash';
+import useSWR from 'swr';
+import ViewController from './ViewController';
+import LoadingScreen from '../LoadingScreen';
+
+export default function ProjectDataLoader() {
+  const { data, isLoading} = useSWR([getProjects], () => getProjects());
+
+  if (isLoading) {
+    return <LoadingScreen></LoadingScreen>   
+  } else {
+    return <ViewController rawProjectsData={data}></ViewController>
+  }
+   
 }
 
