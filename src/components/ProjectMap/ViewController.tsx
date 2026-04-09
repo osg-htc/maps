@@ -8,8 +8,8 @@ import { getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
 import ProjectList from "./ProjectList";
-import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
-import ProjectMapContributorPins from "./ProjectMapContributorPins"
+import ProjectPins, { ProjectPinProps } from "./ProjectPins"
+import InsitutionPins from "./InsitutionPins"
 import ProjectStats from "./ProjectStats"
 
 enum MapSteps {
@@ -42,13 +42,13 @@ function reducer(state: MapStates, action: MapActions) {
   console.log(state, action);
   switch (action.type) {
     case "data-loaded": {
-      return { ...state, step: MapSteps.SelectingInstitution };
+      return { ...state, step: MapSteps.SelectingInstitution, institution: "", project: "" };
     }
     case "institution-select": {
-      return { ...state, step: MapSteps.SelectingProject, institution: action.institution };
+      return { ...state, step: MapSteps.SelectingProject, institution: action.institution, project: "" };
     }
     case "institution-deselect":{
-      return { ...state, step: MapSteps.SelectingInstitution, institution: "" };
+      return { ...state, step: MapSteps.SelectingInstitution, institution: "", project: "" };
     }
     case "project-select":{
       return { ...state, step: MapSteps.ViewingProject, project: action.project };
@@ -59,15 +59,13 @@ function reducer(state: MapStates, action: MapActions) {
   }
 }
 
-
 export default function ProjectMapController() {
-  const { data: projectsData, isLoading: areProjectsLoading } = useSWR([getProjects], () => getProjects());
   const { current: map } = useMap();
+  const { data: projectsData, isLoading: areProjectsLoading } = useSWR([getProjects], () => getProjects());
   const [selectedInstitutionName, setSelectedInstitution] = useState<string>("")
   const [selectedProjectName, setSelectedProject] = useState<string>("")
-
   const [state, dispatch] = useReducer(reducer, initialState);
-  
+
   // remove all projects that are falsy in specific fields that we need
   const filteredProjectsData: Record<string, ProjectData> = useMemo(() => {
     return Object.fromEntries(
@@ -94,22 +92,13 @@ export default function ProjectMapController() {
 
 
 
-  const mapPinData: ProjectMapPinProps[] = useMemo(() => {
+  const mapPinData: ProjectPinProps[] = useMemo(() => {
     return Object.values(projectBinsByInstitution).map((bin) => ({
       name: bin[0].projectInstitutionName,
       num: bin.length.toString(),
       lat: bin[0].projectInstitutionLatitude,
       lon: bin[0].projectInstitutionLongitude,
-      onClick: () => {
-        setSelectedInstitution(bin[0].projectInstitutionName) 
-        setSelectedProject("") 
-        map?.flyTo({
-          center: [bin[0].projectInstitutionLongitude, bin[0].projectInstitutionLatitude],
-          zoom: 12,
-          duration: 2000,
-          essential: true,
-        });
-      },
+      onClick: () => { dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName }) },
     }));
   }, [projectBinsByInstitution, map]);
 
@@ -123,7 +112,7 @@ export default function ProjectMapController() {
       
     case MapSteps.SelectingInstitution: {
       return <>
-        <ProjectMapPins pins={mapPinData} />
+        <ProjectPins pins={mapPinData} />
       </>
     }
 
@@ -151,7 +140,7 @@ export default function ProjectMapController() {
               }} />
           </SidebarStack>
         </Sidebar>
-        <ProjectMapPins pins={mapPinData} />
+        <ProjectPins pins={mapPinData} />
       </>
     }
 
@@ -171,7 +160,7 @@ export default function ProjectMapController() {
             <ProjectStats stats={filteredProjectsData[selectedProjectName]} />
           </SidebarStack>
         </Sidebar>
-        <ProjectMapContributorPins mainPin={ filteredProjectsData[selectedProjectName] } />
+        <InsitutionPins mainPin={ filteredProjectsData[selectedProjectName] } />
       </>
     }
   }
