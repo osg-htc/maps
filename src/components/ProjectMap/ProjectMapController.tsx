@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@mui/material';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useReducer } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import useSWR from 'swr';
 import { getProjects, ProjectData } from '@/src/utils/adstash';
@@ -12,13 +12,61 @@ import ProjectMapPins, { ProjectMapPinProps } from "./ProjectMapPins"
 import ProjectMapContributorPins from "./ProjectMapContributorPins"
 import ProjectStats from "./ProjectStats"
 
-type MapStep = 'loading' | 'no-selection' | 'institution-selected' | 'project-selected'
+enum MapSteps {
+  Loading,
+  SelectingInstitution,
+  SelectingProject,
+  ViewingProject,
+}
 
-function ProjectMapController() {
+type MapStates = {
+  step: MapSteps,
+  institution: string,
+  project: string,
+}
+
+type MapActions =
+  | { type: "data-loaded" }
+  | { type: "institution-select", institution: string }
+  | { type: "institution-deselect" }
+  | { type: "project-select", project: string }
+  | { type: "project-deselect" }
+
+const initialState = {
+  step: MapSteps.Loading, 
+  institution: "",
+  project: ""
+}
+
+function reducer(state: MapStates, action: MapActions) {
+  console.log(state, action);
+  switch (action.type) {
+    case "data-loaded": {
+      return { ...state, step: MapSteps.SelectingInstitution };
+    }
+    case "institution-select": {
+      return { ...state, step: MapSteps.SelectingProject, institution: action.institution };
+    }
+    case "institution-deselect":{
+      return { ...state, step: MapSteps.SelectingInstitution, institution: "" };
+    }
+    case "project-select":{
+      return { ...state, step: MapSteps.ViewingProject, project: action.project };
+    }
+    case "project-deselect":{
+      return { ...state, step: MapSteps.SelectingProject, project: "" };
+    }
+  }
+}
+
+
+export default function ProjectMapController() {
   const { data: projectsData, isLoading: areProjectsLoading } = useSWR([getProjects], () => getProjects());
   const { current: map } = useMap();
-  const [selectedInstitution, setSelectedInstitution] = useState<string>("")
+  const [selectedInstitutionName, setSelectedInstitution] = useState<string>("")
   const [selectedProjectName, setSelectedProject] = useState<string>("")
+
+  const [state, dispatch] = useReducer(reducer, initialState);
   
   // remove all projects that are falsy in specific fields that we need
   const filteredProjectsData: Record<string, ProjectData> = useMemo(() => {
@@ -65,27 +113,22 @@ function ProjectMapController() {
     }));
   }, [projectBinsByInstitution, map]);
 
-  const currentStep: MapStep = (
-    areProjectsLoading ? 'loading' :
-    selectedProjectName ? 'project-selected' :
-    selectedInstitution ? 'institution-selected' :
-    'no-selection'
-  )
 
-  switch (currentStep) {
-    case 'loading': {
+
+  switch (state.step) {
+    case MapSteps.Loading: {
       return <></>
     }
     
       
-    case 'no-selection': {
+    case MapSteps.SelectingInstitution: {
       return <>
         <ProjectMapPins pins={mapPinData} />
       </>
     }
 
       
-    case 'institution-selected': {
+    case MapSteps.SelectingProject: {
       return <>
         <Sidebar width={360}>
           <Button
@@ -98,7 +141,7 @@ function ProjectMapController() {
             Close
           </Button>
           <SidebarStack>
-            <ProjectList projects={ projectBinsByInstitution[selectedInstitution] } click={(x) => {
+            <ProjectList projects={ projectBinsByInstitution[selectedInstitutionName] } click={(x) => {
               setSelectedProject(x);
               map?.flyTo({
                 zoom: 3,
@@ -112,7 +155,7 @@ function ProjectMapController() {
       </>
     }
 
-    case 'project-selected': {
+    case MapSteps.ViewingProject: {
       return <>
         <Sidebar width={360}>
           <Button
@@ -133,5 +176,3 @@ function ProjectMapController() {
     }
   }
 }
-
-export default ProjectMapController;
