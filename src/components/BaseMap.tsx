@@ -25,7 +25,10 @@ function BaseMap({children}: {children: ReactNode}) {
           initialViewState={{
             longitude: -92.4,
             latitude: 37.8,
-            zoom: 3.5
+            zoom: 3.5,
+            padding: {
+              left: 360
+            }
           }}
           projection={'globe'}
           style={{width: "100%", height: "100%"}}

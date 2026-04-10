@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Divider, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import { ProjectData } from '@/src/utils/adstash';
@@ -10,6 +10,7 @@ import ProjectPins, { ProjectPinProps } from "./ProjectPins"
 import InsitutionPins from "./InsitutionPins"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
+import InsitutionListCard from './InstitutionListCard';
 
 enum MapSteps {
   SelectingInstitution,
@@ -97,31 +98,51 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
 
       { state.step != MapSteps.ViewingProject ? <></> : <InsitutionPins mainPin={filteredProjectsData[state.project]}/> }
 
-      { state.step == MapSteps.SelectingInstitution ? <></> :
-        <Sidebar>
-          <Button
-            variant="outlined"
-            onClick={() => { dispatch({ type: state.step == MapSteps.SelectingProject ? "institution-deselect" : "project-deselect" }) }}
-            sx={{
-              m: 1,
-              borderRadius: 2,
-              "&:hover": {
-                boxShadow: 3,
-              },
-            }}
-          >
-            {state.step == MapSteps.SelectingProject ? "Close" : "Back"}
-          </Button>
-          <SidebarStack>
-            { state.step == MapSteps.SelectingProject
-              ? projectBinsByInstitution[state.institution].sort((a, b) => b.numJobs - a.numJobs).map((project: ProjectData, i) => {
-                return <ProjectListCard key={ project.projectName } project={project} click={(p) => { dispatch({ type: "project-select", project: p }) }} />
-              })
-              : <ProjectStats stats={filteredProjectsData[state.project]} />
-            }
-          </SidebarStack>
-        </Sidebar>
-      }
+      <Sidebar>
+        {state.step == MapSteps.SelectingInstitution
+          ? <>
+            <Typography
+              variant='subtitle1'
+              lineHeight={1.1}
+              align='center'
+              sx={{
+                m: 2,
+              }}
+            >
+              Select an institution from the list or by cliking on the map
+            </Typography>
+            <Divider
+              sx={{
+                m: 2,
+              }}
+            /> 
+          </>
+          : <Button
+          variant="outlined"
+          onClick={() => { dispatch({ type: state.step == MapSteps.SelectingProject ? "institution-deselect" : "project-deselect" }) }}
+          sx={{
+            m: 1,
+            borderRadius: 2,
+            "&:hover": {
+              boxShadow: 3,
+            },
+          }}
+        >
+          Back
+        </Button> }
+        <SidebarStack>
+          {state.step == MapSteps.SelectingInstitution
+            ? mapPinData.sort((a, b) => a.name.localeCompare(b.name)).map((pin) => {
+              return <InsitutionListCard institution={ pin } />
+            })
+            : state.step == MapSteps.SelectingProject
+            ? projectBinsByInstitution[state.institution].sort((a, b) => b.numJobs - a.numJobs).map((project: ProjectData) => {
+              return <ProjectListCard key={ project.projectName } project={project} click={(p) => { dispatch({ type: "project-select", project: p }) }} />
+            })
+            : <ProjectStats stats={filteredProjectsData[state.project]} />
+          }
+        </SidebarStack>
+      </Sidebar>
     </>
   )
 }
