@@ -11,7 +11,7 @@ export default function ProjectPins({ institution }: { institution: InstitutionD
   const { data: institutionData, isLoading: isInstitutionLoading } = useSWR([institution, getInstitutionOverview], () => getInstitutionOverview(institution.institutionName));
 
   const filteredProjects: Record<string, ProjectData> = useMemo(() => {
-    return Object.fromEntries(
+    const filtered = Object.fromEntries(
       Object.entries(institutionData ?? {}).filter(([_, p]) =>
         p.projectInstitutionName &&
         p.projectInstitutionName !== institution.institutionName &&
@@ -19,7 +19,19 @@ export default function ProjectPins({ institution }: { institution: InstitutionD
         p.projectInstitutionLongitude
       )
     ) as Record<string, ProjectData>;
-  }, [institutionData, institution])
+
+    // Log all project institutions that get pins
+    if (Object.keys(filtered).length > 0) {
+      console.log(`\n=== Pins for ${institution.institutionName} ===`);
+      const institutionNames = Object.values(filtered)
+        .map(project => project.projectInstitutionName)
+        .filter((name, index, self) => self.indexOf(name) === index); // unique names
+      institutionNames.forEach(name => console.log(name));
+      console.log(`Total: ${institutionNames.length} unique institutions\n`);
+    }
+
+    return filtered;
+  }, [institutionData, institution]);
 
   return (isInstitutionLoading || !institutionData)
     ? <LoadingScreen></LoadingScreen>

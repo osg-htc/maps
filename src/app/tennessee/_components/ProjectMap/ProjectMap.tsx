@@ -3,19 +3,61 @@
 import InstitutionPins from "../InstitutionPins";
 import useSWR from 'swr';
 import { getProjects, ProjectData } from '@/src/utils/adstash';
-import { Box, Typography, Paper } from '@mui/material';
-import { formatNumber } from '@/src/utils/formatters';
+import { Box, Typography } from '@mui/material';
+import { Circle, Memory, Storage } from '@mui/icons-material';
+import StatCard from '@/src/components/StatCard';
+import DataServerPin from '@/src/components/DataServerPin';
+import osdfServers from '@/src/public/data/servers.json';
 
 const PROJECTS = [
   "Vanderbilt_Paquet",
   "Vanderbilt_Luzum"
 ]
 
+const CACHE_SERVERS = [
+  'dtn-pas.bois.nrp.internet2.edu', 'osdf1.chic.nrp.internet2.edu', 'osdf-uw-cache.svc.osg-htc.org',
+  'mghpcc-cache.nationalresearchplatform.org', 'dtn-pas.kans.nrp.internet2.edu', 'dtn-pas.jack.nrp.internet2.edu',
+  'unl-cache.nationalresearchplatform.org', 'dtn-pas.cinc.nrp.internet2.edu', 'dtn-pas.denv.nrp.internet2.edu',
+  'osg-sunnyvale-stashcache.nrp.internet2.edu', 'ncar-cache.nationalresearchplatform.org', 'osdf1.newy32aoa.nrp.internet2.edu',
+  'buzzard-pelican-ext.pace.gatech.edu', 'osg-houston-stashcache.nrp.internet2.edu', 'fdp-d3d-cache.nationalresearchplatform.org',
+  'osdf-cache.ligo-wa.caltech.edu', 'ucsd-t2-cache.nationalresearchplatform.org', 'osg-new-york-stashcache.nrp.internet2.edu',
+  'osg-hawk-cache.cc.lehigh.edu', 'osdfcache.ligo.caltech.edu', 'osg-chicago-stashcache.nrp.internet2.edu',
+  'dtn-pas.hous.nrp.internet2.edu', 'osdf-cache-01.gwave.ics.psu.edu', 'sdsc-cache.nationalresearchplatform.org',
+  'osg-stash-sfu-computecanada-ca.nationalresearchplatform.org', 'stashcache.gwave.ics.psu.edu',
+  'pelican-cache.rc.duke.edu', 'ap40.uw.osg-htc.org', 'rc-pelican.syr.edu', 'osdf-cache.sprace.org.br',
+  'its-condor-xrootd1.syr.edu', 'stashcache.ligo-la.caltech.edu', 'ligo-cache-01.gwave.ics.psu.edu',
+  'purdue-cache.nationalresearchplatform.org', 'fdp-cache.labs.hpe.com', 'ccpelicanli01.in2p3.fr',
+  'ligo.hpc.swin.edu.au', 'amst-fiona.nationalresearchplatform.org', 'osdfcache01.crc.nd.edu',
+  'xsod14.cr.cnaf.infn.it', 'cf-ac-uk-cache.nationalresearchplatform.org', 'osdf1.amst.nrp.internet2.edu'
+];
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
+
 const ProjectMap = () => {
 
   const { data: projects } = useSWR([getProjects], () => getProjects());
 
   const tennesseeProjects = Object.values(projects ?? {}).filter(p => PROJECTS.includes(p.projectName ?? ""));
+
+  const filteredDataServers = (osdfServers || []).filter(server => {
+    const serverUrl = (server.url || '')
+
+    return CACHE_SERVERS.some(cache => serverUrl.includes(cache)) &&
+           server.latitude && server.longitude && server.latitude !== 0;
+  });
+
+  // Find cache servers that didn't match any OSDF servers
+  const matchedServerNames = filteredDataServers.map(server => {
+    const serverUrl = (server.url || '').replace('https://', '');
+    return CACHE_SERVERS.find(cache => serverUrl.includes(cache));
+  }).filter(Boolean);
+
+  const unmatchedServers = CACHE_SERVERS.filter(cache =>
+    !matchedServerNames.includes(cache)
+  );
+
+  console.log("Matched:", filteredDataServers.length, "/ Expected:", CACHE_SERVERS.length);
+  console.log(`Total unmatched: ${unmatchedServers.length}\n`, unmatchedServers);
 
   return (
     <>
@@ -38,7 +80,7 @@ const ProjectMap = () => {
           p: 2
         }}>
           <Box>
-            <Typography variant="h5" sx={{ fontWeight: 600, textAlign: 'center', color: 'white' }}>
+            <Typography variant="h4" sx={{ fontWeight: 600, textAlign: 'center', color: 'white' }}>
               Research Projects at Tennessee Institutions running on the OSPool
             </Typography>
             <Typography
@@ -48,81 +90,25 @@ const ProjectMap = () => {
               April 2025 to April 2026
             </Typography>
           </Box>
-          <Paper elevation={3} sx={{
-            p: 2,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            bgcolor: '#0a1725',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
-              Total Jobs Ran
-            </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
-              {formatNumber(1428310)}
-            </Typography>
-          </Paper>
-
-          <Paper elevation={3} sx={{
-            p: 2,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            bgcolor: '#0a1725',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
-              CPU Hours Used
-            </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
-              {formatNumber(2335599.72)}
-            </Typography>
-          </Paper>
-
-          <Paper elevation={3} sx={{
-            p: 2,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            bgcolor: '#0a1725',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
-              Files Transferred via the OSDF
-            </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
-              {formatNumber(1554421)}
-            </Typography>
-          </Paper>
-
-          <Paper elevation={3} sx={{
-            p: 2,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            bgcolor: '#0a1725',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
-              Gigabytes Transferred via the OSDF
-            </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
-              {formatNumber(1088466.50)}
-            </Typography>
-          </Paper>
+          <StatCard label="Total Jobs Ran" value={1428310} />
+          <StatCard label="CPU Hours Used" value={2335599.72} />
+          <StatCard label="Files Transferred via the OSDF" value={1554421} />
+          <StatCard label="Gigabytes Transferred via the OSDF" value={1088466.50} />
         </Box>
       </Box>
       {tennesseeProjects.map((p, i) => (
         <InstitutionPins key={i} project={p as ProjectData}></InstitutionPins>
+      ))}
+      {filteredDataServers.map((server, idx) => (
+        <DataServerPin
+          key={`server-${idx}`}
+          name={server.name}
+          serverType={server.type}
+          color={'#4CAF50'}
+          size={25}
+          lat={server.latitude}
+          lon={server.longitude}
+        />
       ))}
       <Box sx={{
         position: "fixed",
@@ -138,11 +124,46 @@ const ProjectMap = () => {
         border: '2px solid rgba(255,255,255,0.1)'
       }}>
         <Typography variant="h5" sx={{ fontWeight: 600, color: 'primary.main' }}>
-          OSPool Contributors to Tennessee Research Projects
+          OSG Contributors to Tennessee Research Projects
         </Typography>
-        <Typography variant="subtitle2" gutterBottom sx={{mt: 1, color: 'white' }}>
-          Each marker on the map represents an institution that contributed capacity to a project based at an institution in Tennessee.
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+          <Box sx={{ position: 'relative', width: 30, height: 30, mt: 1}}>
+            <Circle sx={{
+              color: 'black',
+              fontSize: 30,
+            }} />
+            <Memory sx={{
+              color: 'primary.main',
+              fontSize: 21,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)"
+            }} />
+          </Box>
+          <Typography variant="body2" sx={{ color: 'white', mt: 1 }}>
+            Computing Contributing Institution Location
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1, ml: .3 }}>
+          <Box sx={{ position: 'relative', width: 25, height: 25 }}>
+            <Circle sx={{
+              color: '#4CAF50',
+              fontSize: 25,
+            }} />
+            <Storage sx={{
+              color: 'white',
+              fontSize: 15,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)"
+            }} />
+          </Box>
+          <Typography variant="body2" sx={{ color: 'white' }}>
+            OSDF Cache Location
+          </Typography>
+        </Box>
       </Box>
     </>
   )

@@ -3,15 +3,17 @@
 import ProjectPins from "../ProjectPins";
 import useSWR from 'swr';
 import { getInstitutions, InstitutionData } from '@/src/utils/adstash';
-import { Box, Typography, Paper } from '@mui/material';
-import { Person, Circle } from '@mui/icons-material';
-import { formatNumber } from '@/src/utils/formatters';
-
+import { Box, Typography } from '@mui/material';
+import { Person, Circle, Storage } from '@mui/icons-material';
+import StatCard from '@/src/components/StatCard';
+import DataServerPin from '@/src/components/DataServerPin';
 const INSTITUTIONS = [
   "Rhodes College",
   "University of Tennessee at Chattanooga",
   "Tennessee Technological University"
 ]
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const ProvidersMap = () => {
 
@@ -50,7 +52,7 @@ const ProvidersMap = () => {
           p: 2
         }}>
           <Box>
-            <Typography variant="h5" sx={{ fontWeight: 600, textAlign: 'center', color: 'white' }}>
+            <Typography variant="h3" sx={{ fontWeight: 600, textAlign: 'center', color: 'white' }}>
               Tennessee Institutions Contributing Capacity to the OSPool
             </Typography>
             <Typography
@@ -60,77 +62,8 @@ const ProvidersMap = () => {
               April 2025 to April 2026
             </Typography>
           </Box>
-          <Paper elevation={3} sx={{
-            p: 2,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            bgcolor: '#0a1725',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
-              Total Jobs Run
-            </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
-              {formatNumber(totals.numJobs)}
-            </Typography>
-          </Paper>
-
-          <Paper elevation={3} sx={{
-            p: 2,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            bgcolor: '#0a1725',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
-              CPU Hours Provided
-            </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
-              {formatNumber(totals.cpuHours)}
-            </Typography>
-          </Paper>
-
-          <Paper elevation={3} sx={{
-            p: 2,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            bgcolor: '#0a1725',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
-              Files Transferred via the OSDF
-            </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
-              {formatNumber(totals.osdfFileTransferCount)}
-            </Typography>
-          </Paper>
-
-          <Paper elevation={3} sx={{
-            p: 2,
-            flex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            bgcolor: '#0a1725',
-            border: '2px solid rgba(255,255,255,0.1)'
-          }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
-              Gigabytes Transferred via the OSDF
-            </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
-              {formatNumber(totals.osdfByteTransferCount)}
-            </Typography>
-          </Paper>
+          <StatCard label="Total Jobs Run" value={totals.numJobs} />
+          <StatCard label="CPU Hours Provided" value={totals.cpuHours} />
         </Box>
       </Box>
       {tennesseeInstitutions.map((i, idx) => (
@@ -172,7 +105,7 @@ const ProvidersMap = () => {
           </Typography>
         </Box>
         <Typography variant="caption" sx={{ color: 'white', opacity: 0.8 }}>
-          Each marker represents a research project that used computing capacity contributed by Tennessee institutions to the OSPool.
+          Markers show research projects using Tennessee computing capacity.
         </Typography>
       </Box>
     </>
