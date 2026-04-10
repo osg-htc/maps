@@ -5,6 +5,8 @@ import { InstitutionData, ProjectData, getProjectOverview } from '@/src/utils/ad
 import useSWR from 'swr';
 import { useMemo } from 'react';
 import LoadingScreen from '../LoadingScreen';
+import ArrowPopUp from '../ArrowPopUp';
+import { Typography } from '@mui/material';
 
 export default function ProjectMapContributorPins({ mainPin }: { mainPin: ProjectData }) {
   const { data: projectData, isLoading: isProjectLoading } = useSWR([mainPin, getProjectOverview], () => getProjectOverview(mainPin.projectName));
@@ -45,7 +47,14 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
             lat={pin.institutionLatitude}
             lon={pin.institutionLongitude}
           >
-            
+            <ArrowPopUp left={true}>
+              <Typography noWrap variant="body1" color={"secondary.main"}>
+                {pin.institutionName}
+              </Typography>
+              <Typography noWrap variant="subtitle2" lineHeight={ 1 } color={"secondary.main"}>
+                {pin.numJobs} Jobs
+              </Typography>
+            </ArrowPopUp>
           </ProjectMapPin>
         ))}
       </>

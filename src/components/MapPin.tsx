@@ -21,7 +21,6 @@ export type MapPinProps = {
 
 export default function MapPin(props: MapPinProps) {
   const [hovered, setHovered] = useState(false);
-
   const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
@@ -45,13 +44,13 @@ export default function MapPin(props: MapPinProps) {
       anchor="bottom"
       onClick={props.onClick}
       style={{
-        zIndex: hovered ? 1000 : props.onTop ? 500 : props.text
+        zIndex: hovered ? 1000 : props.onTop ? 500 : (props.text ?? 1)
       }}
     >
       <Box
         sx={{
           position: "relative",
-          cursor: props.onClick ? "pointer" : "",
+          cursor: "pointer",
           display: props.hidden ? "none" : "block",
         }}
         onMouseEnter={handleMouseEnter}
