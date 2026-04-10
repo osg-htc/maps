@@ -3,8 +3,7 @@
 import InstitutionPins from "../InstitutionPins";
 import useSWR from 'swr';
 import { getProjects, ProjectData } from '@/src/utils/adstash';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import { LocationPin } from '@mui/icons-material';
+import { Box, Typography, Paper } from '@mui/material';
 import { formatNumber } from '@/src/utils/formatters';
 
 const PROJECTS = [
@@ -29,79 +28,86 @@ const ProjectMap = () => {
         zIndex: 999,
         bgcolor: 'rgba(255, 255, 255, 0.98)',
         overflowY: 'auto',
-        boxShadow: '2px 0 10px rgba(0,0,0,0.1)'
+        boxShadow: '2px 0 10px rgba(0,0,0,0.1)',
+
       }}>
-        <Box p={2}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2.9,
+          p: 2
+        }}>
+          <Typography variant="h4" sx={{ fontWeight: 600, textAlign: 'center', mb: 1 }}>
             OSPool Projects In Tennessee
           </Typography>
 
-          <Typography variant="h6" gutterBottom sx={{ mt: 2, mb: 1 }}>
-            Total Statistics
-          </Typography>
+          <Paper elevation={3} sx={{
+            p: 2,
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bgcolor: '#f5f5f5'
+          }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'text.secondary' }}>
+              Total Jobs
+            </Typography>
+            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem' }}>
+              {formatNumber(1428310)}
+            </Typography>
+          </Paper>
 
-          <TableContainer component={Paper} elevation={2}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 600 }}>Metric</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 600 }}>Value</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Total Jobs</TableCell>
-                  <TableCell align="right">{formatNumber(1428310)}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>CPU Hours</TableCell>
-                  <TableCell align="right">{formatNumber(2335599.72)}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>OSDF Files Transferred</TableCell>
-                  <TableCell align="right">{formatNumber(1554421)}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>OSDF GB Transferred</TableCell>
-                  <TableCell align="right">{formatNumber(1088466.50)} GB</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Paper elevation={3} sx={{
+            p: 2,
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bgcolor: '#f5f5f5'
+          }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'text.secondary' }}>
+              CPU Hours
+            </Typography>
+            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem' }}>
+              {formatNumber(2335599.72)}
+            </Typography>
+          </Paper>
 
-          <Typography variant="h6" gutterBottom sx={{ mt: 4, mb: 1 }}>
-            Projects Breakdown
-          </Typography>
+          <Paper elevation={3} sx={{
+            p: 2,
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bgcolor: '#f5f5f5'
+          }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'text.secondary' }}>
+              OSDF Files Transferred
+            </Typography>
+            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem' }}>
+              {formatNumber(1554421)}
+            </Typography>
+          </Paper>
 
-          <TableContainer component={Paper} elevation={2}>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 600 }}>Project</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 600 }}>Jobs</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 600 }}>CPU Hours</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 600 }}>Files</TableCell>
-                  <TableCell align="right" sx={{ fontWeight: 600 }}>GB</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Vanderbilt_Paquet</TableCell>
-                  <TableCell align="right">{formatNumber(1367443)}</TableCell>
-                  <TableCell align="right">{formatNumber(2114048.65)}</TableCell>
-                  <TableCell align="right">{formatNumber(1485962)}</TableCell>
-                  <TableCell align="right">{formatNumber(938053.46)}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Vanderbilt_Luzum</TableCell>
-                  <TableCell align="right">{formatNumber(60867)}</TableCell>
-                  <TableCell align="right">{formatNumber(221551.07)}</TableCell>
-                  <TableCell align="right">{formatNumber(68459)}</TableCell>
-                  <TableCell align="right">{formatNumber(150413.04)}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableContainer>
+          <Paper elevation={3} sx={{
+            p: 2,
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            bgcolor: '#f5f5f5'
+          }}>
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'text.secondary' }}>
+              OSDF GB Transferred
+            </Typography>
+            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem' }}>
+              {formatNumber(1088466.50)}
+            </Typography>
+          </Paper>
         </Box>
       </Box>
       {tennesseeProjects.map((p, i) => (
@@ -115,12 +121,11 @@ const ProjectMap = () => {
         backgroundColor: "rgba(255, 255, 255, 0.95)",
         padding: 2,
         borderRadius: 2,
-        boxShadow: "0px 2px 8px rgba(0,0,0,0.2)",
         pointerEvents: "auto",
         zIndex: 1000,
         maxWidth: "550px",
       }}>
-        <Typography variant="h5" sx={{ fontWeight: 600 }}>
+        <Typography variant="h5" sx={{ fontWeight: 600, color: 'text.secondary' }}>
           OSPool Contributors to Tennessee Projects
         </Typography>
         <Typography variant="subtitle2" gutterBottom sx={{mt: 1 }}>
