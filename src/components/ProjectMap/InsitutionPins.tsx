@@ -23,26 +23,28 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
 
   console.log(projectData)
 
-  return (isProjectLoading || !projectData) ? <LoadingScreen></LoadingScreen> : (
-    <>
-      <ProjectMapPin
-        key={-1}
-        name={ mainPin.projectName }
-        color={'primary.main'}
-        size={40}
-        lat={mainPin.projectInstitutionLatitude}
-        lon={mainPin.projectInstitutionLongitude}
-      />
-      {Object.values(filteredProjectContributors).map((pin, i) => (
+  return (isProjectLoading || !projectData)
+    ? <LoadingScreen></LoadingScreen>
+    : (
+      <>
         <ProjectMapPin
-          key={i}
-          name={ pin.institutionName }
-          color={'secondary.main'}
-          size={30}
-          lat={pin.institutionLatitude}
-          lon={pin.institutionLongitude}
+          key={-1}
+          name={ mainPin.projectName }
+          color={'primary.main'}
+          size={40}
+          lat={mainPin.projectInstitutionLatitude}
+          lon={mainPin.projectInstitutionLongitude}
         />
-      ))}
-    </>
-  )
+        {Object.values(filteredProjectContributors).map((pin, i) => (
+          <ProjectMapPin
+            key={i}
+            name={ pin.institutionName }
+            color={'secondary.main'}
+            size={30}
+            lat={pin.institutionLatitude}
+            lon={pin.institutionLongitude}
+          />
+        ))}
+      </>
+    )
 }

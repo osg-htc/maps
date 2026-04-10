@@ -1,15 +1,15 @@
 'use client'
 
-import { Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import { ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
-import ProjectList from "./ProjectList";
 import ProjectPins, { ProjectPinProps } from "./ProjectPins"
 import InsitutionPins from "./InsitutionPins"
 import ProjectStats from "./ProjectStats"
+import ProjectListCard from './ProjectListCard';
 
 enum MapSteps {
   SelectingInstitution,
@@ -102,16 +102,21 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
           <Button
             variant="outlined"
             onClick={() => { dispatch({ type: state.step == MapSteps.SelectingProject ? "institution-deselect" : "project-deselect" }) }}
-            sx={{ m: 1 }}
+            sx={{
+              m: 1,
+              borderRadius: 2,
+              "&:hover": {
+                boxShadow: 3,
+              },
+            }}
           >
             {state.step == MapSteps.SelectingProject ? "Close" : "Back"}
           </Button>
           <SidebarStack>
             { state.step == MapSteps.SelectingProject
-              ? <ProjectList
-                  projects={projectBinsByInstitution[state.institution]}
-                  click={(p) => { dispatch({ type: "project-select", project: p }) }}
-                />
+              ? projectBinsByInstitution[state.institution].sort((a, b) => b.numJobs - a.numJobs).map((project: ProjectData, i) => {
+                return <ProjectListCard project={project} click={(p) => { dispatch({ type: "project-select", project: p }) }} />
+              })
               : <ProjectStats stats={filteredProjectsData[state.project]} />
             }
           </SidebarStack>

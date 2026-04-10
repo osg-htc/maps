@@ -5,7 +5,7 @@ export default function SidebarStack({children}: {children: ReactNode}) {
   return (
     <Stack
       component={'div'}
-      spacing={2}
+      spacing={1}
       sx={{
         p: 1,
         pt: 0,
