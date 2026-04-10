@@ -1,7 +1,10 @@
+'use client';
+
 import { LocationPin, Circle } from '@mui/icons-material';
 import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
+import { useState } from 'react';
 
 export type MapPinProps = {
   name?: string
@@ -11,11 +14,13 @@ export type MapPinProps = {
   lat: number,
   lon: number,
   hidden?: boolean,
+  popup?: boolean
   onClick?: () => void,
 }
 
 export default function MapPin(props: MapPinProps) {
-  
+  const [hovered, setHovered] = useState(false);
+
   return (
     <Marker
       key={ props.name }
@@ -24,11 +29,15 @@ export default function MapPin(props: MapPinProps) {
       anchor="bottom"
       onClick={props.onClick}
     >
-      <Box sx={{
-        position: "relative",
-        cursor: props.onClick ? "pointer" : "",
-        display: props.hidden ? "none" : "block"
-      }}>
+      <Box
+        sx={{
+          position: "relative",
+          cursor: props.onClick ? "pointer" : "",
+          display: props.hidden ? "none" : "block"
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
         <LocationPin sx={{ // location pin has a hole in the top that we dont want...
           color: props.color,
           fontSize: props.size,
@@ -51,6 +60,20 @@ export default function MapPin(props: MapPinProps) {
         }}>
           {props.text}
         </Typography>
+        {hovered &&
+          <Paper elevation={3} sx={{borderRadius: 2, display: 'flex', flexDirection: 'column', position: 'absolute', top: -50, left: 25, padding: 1, zIndex: 10000, width: "260px"}}>
+            <Typography variant="h6" color={"primary"}>name</Typography>
+            <Typography variant={'subtitle2'}>
+              Jobs
+            </Typography>
+            <Typography variant={'subtitle2'}>
+              Bytes
+            </Typography>
+            <Typography variant={'subtitle2'}>
+              Objects
+            </Typography>
+          </Paper>
+        }
       </Box>
     </Marker>
   )

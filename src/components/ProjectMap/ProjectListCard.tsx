@@ -9,7 +9,6 @@ export default function ProjectListCard({ project, click }: { project: ProjectDa
       variant="outlined"
       sx={{
         borderRadius: 2,
-        transition: "box-shadow 0.2s, border-color 0.2s",
         "&:hover": {
           boxShadow: 3,
           borderColor: "primary.main",
