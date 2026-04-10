@@ -13,3 +13,22 @@ export function formatNumber(n: number): string {
 export function addSpacesToUnderscores(text: string): string {
   return text.replace(/_/g, '_\u200B');
 };
+
+export function numberWithCommas(x: number): string {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export function thatsOverText(decimalHours: number): string {
+  const hoursInYear = 24 * 365;
+  const hoursInDay = 24;
+
+  let remaining = decimalHours;
+
+  const years = Math.floor(remaining / hoursInYear);
+  remaining %= hoursInYear;
+
+  const days = Math.floor(remaining / hoursInDay);
+  remaining %= hoursInDay;
+
+  return `${years > 0 ? numberWithCommas(years) : days > 0 ? days : 0} ${years > 0 ? "year" + (years >= 2 ? "s" : 0) : days > 0 ? "day"  + (days >= 2 ? "s" : 0) : 0}`;
+}
