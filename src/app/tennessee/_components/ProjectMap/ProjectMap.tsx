@@ -26,21 +26,28 @@ const ProjectMap = () => {
         top: 0,
         left: 0,
         zIndex: 999,
-        bgcolor: 'rgba(255, 255, 255, 0.98)',
+        bgcolor: '#0a1725',
         overflowY: 'auto',
-        boxShadow: '2px 0 10px rgba(0,0,0,0.1)',
+        boxShadow: '2px 0 10px rgba(0,0,0,0.5)',
 
       }}>
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: 2.9,
+          gap: 1.3,
           p: 2
         }}>
-          <Typography variant="h4" sx={{ fontWeight: 600, textAlign: 'center', mb: 1 }}>
-            OSPool Projects In Tennessee
-          </Typography>
-
+          <Box>
+            <Typography variant="h5" sx={{ fontWeight: 600, textAlign: 'center', color: 'white' }}>
+              Research Projects at Tennessee Institutions running on the OSPool
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 600, textAlign: 'center', mb: 1, color: '#e3e3e3' }}
+            >
+              April 2025 to April 2026
+            </Typography>
+          </Box>
           <Paper elevation={3} sx={{
             p: 2,
             flex: 1,
@@ -48,12 +55,13 @@ const ProjectMap = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            bgcolor: '#f5f5f5'
+            bgcolor: '#0a1725',
+            border: '2px solid rgba(255,255,255,0.1)'
           }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'text.secondary' }}>
-              Total Jobs
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
+              Total Jobs Ran
             </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem' }}>
+            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
               {formatNumber(1428310)}
             </Typography>
           </Paper>
@@ -65,12 +73,13 @@ const ProjectMap = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            bgcolor: '#f5f5f5'
+            bgcolor: '#0a1725',
+            border: '2px solid rgba(255,255,255,0.1)'
           }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'text.secondary' }}>
-              CPU Hours
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
+              CPU Hours Used
             </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem' }}>
+            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
               {formatNumber(2335599.72)}
             </Typography>
           </Paper>
@@ -82,12 +91,13 @@ const ProjectMap = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            bgcolor: '#f5f5f5'
+            bgcolor: '#0a1725',
+            border: '2px solid rgba(255,255,255,0.1)'
           }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'text.secondary' }}>
-              OSDF Files Transferred
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
+              Files Transferred via the OSDF
             </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem' }}>
+            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
               {formatNumber(1554421)}
             </Typography>
           </Paper>
@@ -99,12 +109,13 @@ const ProjectMap = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
-            bgcolor: '#f5f5f5'
+            bgcolor: '#0a1725',
+            border: '2px solid rgba(255,255,255,0.1)'
           }}>
-            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'text.secondary' }}>
-              OSDF GB Transferred
+            <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: 'primary.main' }}>
+              Gigabytes Transferred via the OSDF
             </Typography>
-            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem' }}>
+            <Typography variant="h1" sx={{ fontWeight: 700, fontSize: '4rem', color: 'white' }}>
               {formatNumber(1088466.50)}
             </Typography>
           </Paper>
@@ -118,18 +129,19 @@ const ProjectMap = () => {
         bottom: 10,
         left: "27.5%",
         transform: "translateX(10%)",
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        backgroundColor: "#0a1725",
         padding: 2,
         borderRadius: 2,
         pointerEvents: "auto",
         zIndex: 1000,
         maxWidth: "550px",
+        border: '2px solid rgba(255,255,255,0.1)'
       }}>
-        <Typography variant="h5" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-          OSPool Contributors to Tennessee Projects
+        <Typography variant="h5" sx={{ fontWeight: 600, color: 'primary.main' }}>
+          OSPool Contributors to Tennessee Research Projects
         </Typography>
-        <Typography variant="subtitle2" gutterBottom sx={{mt: 1 }}>
-          Each marker on the map represents an institution that contributed capacity to a project based in Tennessee.
+        <Typography variant="subtitle2" gutterBottom sx={{mt: 1, color: 'white' }}>
+          Each marker on the map represents an institution that contributed capacity to a project based at a institution in Tennessee.
         </Typography>
       </Box>
     </>
