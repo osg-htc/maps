@@ -6,7 +6,7 @@ export function formatBytes(bytes: number): string {
 };
 
 export function formatNumber(n: number): string {
-  return new Intl.NumberFormat("en-US", { notation: "compact" }).format(n);
+  return new Intl.NumberFormat("en-US", { notation: "standard" }).format(Math.round(n));
 }
 
 // adds zerowidth breaking spaces after underscores so text can split onto the next line at them

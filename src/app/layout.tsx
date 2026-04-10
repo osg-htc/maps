@@ -29,10 +29,15 @@ export default function RootLayout({
       <AppRouterCacheProvider>
         <Box component={"body"} sx={{ margin: 0, padding: 0 }}>
           <ThemeProvider theme={theme}> 
-            <Box sx={{ position: 'relative', width: '100vw', height: '100vh', bgcolor: "background.default" }}>
-              <BaseMap>
-                {children}
-              </BaseMap>
+            <Box sx={{ position: 'relative', width: '100vw', height: '100vh', bgcolor: "background.default" , display: "flex", flexDirection: "row"}}>
+              <Box sx={{height: '100vh', width: "30vw"}}>
+
+              </Box>
+              <Box sx={{height: '100vh', width: "70vw"}}>
+                <BaseMap>
+                  {children}
+                </BaseMap>
+              </Box>
             </Box>
           </ThemeProvider>
         </Box>

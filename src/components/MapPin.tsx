@@ -1,6 +1,6 @@
 'use client';
 
-import { LocationPin, Circle } from '@mui/icons-material';
+import { Memory, Circle } from '@mui/icons-material';
 import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Paper, Typography } from '@mui/material';
@@ -16,6 +16,7 @@ export type MapPinProps = {
   hidden?: boolean,
   popup?: boolean
   onClick?: () => void,
+  zIndex?: number
 }
 
 export default function MapPin(props: MapPinProps) {
@@ -28,6 +29,7 @@ export default function MapPin(props: MapPinProps) {
       longitude={props.lon}
       anchor="bottom"
       onClick={props.onClick}
+      style={{ zIndex: props.zIndex ?? 1 }}
     >
       <Box
         sx={{
@@ -38,17 +40,18 @@ export default function MapPin(props: MapPinProps) {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
-        <LocationPin sx={{ // location pin has a hole in the top that we dont want...
+        <Memory sx={{ // location pin has a hole in the top that we dont want...
           color: props.color,
           fontSize: props.size,
         }} />
         <Circle sx={{ // ...so we just fill it with a circle
-          color: props.color,
-          fontSize: props.size / 2,
+          color: 'black',
+          fontSize: props.size * 1.3,
           position: "absolute",
-          top: "35%",
+          top: "42%",
           left: "50%",
-          transform: "translate(-50%, -50%)"
+          transform: "translate(-50%, -50%)",
+          zIndex: -1
         }} />
         <Typography sx={{
           color: "white",
