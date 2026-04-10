@@ -141,7 +141,7 @@ const ProjectMap = () => {
           OSPool Contributors to Tennessee Research Projects
         </Typography>
         <Typography variant="subtitle2" gutterBottom sx={{mt: 1, color: 'white' }}>
-          Each marker on the map represents an institution that contributed capacity to a project based at a institution in Tennessee.
+          Each marker on the map represents an institution that contributed capacity to a project based at an institution in Tennessee.
         </Typography>
       </Box>
     </>
