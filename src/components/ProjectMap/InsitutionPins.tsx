@@ -34,6 +34,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
           size={40}
           lat={mainPin.projectInstitutionLatitude}
           lon={mainPin.projectInstitutionLongitude}
+          onTop={true}
         />
         {Object.values(filteredProjectContributors).map((pin, i) => (
           <ProjectMapPin
@@ -43,7 +44,9 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
             size={30}
             lat={pin.institutionLatitude}
             lon={pin.institutionLongitude}
-          />
+          >
+            
+          </ProjectMapPin>
         ))}
       </>
     )

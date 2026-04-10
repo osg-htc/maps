@@ -83,7 +83,7 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
   const mapPinData: ProjectPinProps[] = useMemo(() => {
     return Object.values(projectBinsByInstitution).map((bin) => ({
       name: bin[0].projectInstitutionName,
-      num: bin.length.toString(),
+      num: bin.length,
       lat: bin[0].projectInstitutionLatitude,
       lon: bin[0].projectInstitutionLongitude,
       onClick: () => { dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName }) },
@@ -115,7 +115,7 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
           <SidebarStack>
             { state.step == MapSteps.SelectingProject
               ? projectBinsByInstitution[state.institution].sort((a, b) => b.numJobs - a.numJobs).map((project: ProjectData, i) => {
-                return <ProjectListCard project={project} click={(p) => { dispatch({ type: "project-select", project: p }) }} />
+                return <ProjectListCard key={ project.projectName } project={project} click={(p) => { dispatch({ type: "project-select", project: p }) }} />
               })
               : <ProjectStats stats={filteredProjectsData[state.project]} />
             }

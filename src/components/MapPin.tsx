@@ -4,22 +4,38 @@ import { LocationPin, Circle } from '@mui/icons-material';
 import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Paper, Typography } from '@mui/material';
-import { useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 
 export type MapPinProps = {
   name?: string
-  text?: string,
+  text?: number,
   color: string,
   size: number,
   lat: number,
   lon: number,
   hidden?: boolean,
-  popup?: boolean
   onClick?: () => void,
+  onTop?: boolean,
+  children?: ReactNode
 }
 
 export default function MapPin(props: MapPinProps) {
   const [hovered, setHovered] = useState(false);
+
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    hoverTimeout.current = setTimeout(() => {
+      setHovered(true);
+    }, 300);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+    }
+    setHovered(false);
+  };
 
   return (
     <Marker
@@ -28,15 +44,18 @@ export default function MapPin(props: MapPinProps) {
       longitude={props.lon}
       anchor="bottom"
       onClick={props.onClick}
+      style={{
+        zIndex: hovered ? 1000 : props.onTop ? 500 : props.text
+      }}
     >
       <Box
         sx={{
           position: "relative",
           cursor: props.onClick ? "pointer" : "",
-          display: props.hidden ? "none" : "block"
+          display: props.hidden ? "none" : "block",
         }}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <LocationPin sx={{ // location pin has a hole in the top that we dont want...
           color: props.color,
@@ -60,20 +79,7 @@ export default function MapPin(props: MapPinProps) {
         }}>
           {props.text}
         </Typography>
-        {hovered &&
-          <Paper elevation={3} sx={{borderRadius: 2, display: 'flex', flexDirection: 'column', position: 'absolute', top: -50, left: 25, padding: 1, zIndex: 10000, width: "260px"}}>
-            <Typography variant="h6" color={"primary"}>name</Typography>
-            <Typography variant={'subtitle2'}>
-              Jobs
-            </Typography>
-            <Typography variant={'subtitle2'}>
-              Bytes
-            </Typography>
-            <Typography variant={'subtitle2'}>
-              Objects
-            </Typography>
-          </Paper>
-        }
+        {hovered && props.children}
       </Box>
     </Marker>
   )

@@ -15,6 +15,7 @@ export default function Sidebar({children}: {children: ReactNode}) {
           borderRadius: 3,
           overflowY: 'auto',
           m: 1,
+          zIndex: 2000
         }}
       >
         { children }
