@@ -1,7 +1,10 @@
-import ProjectMap from "@/src/components/ProjectMap";
+import BaseMap from "@/src/components/BaseMap";
+import ProvidersMap from "@/src/app/tennessee/_components/ProvidersMap";
 
-export default async function ProjectPage() {
+export default async function ProvidersPage() {
   return (
-    <ProjectMap></ProjectMap>
+    <BaseMap>
+      <ProvidersMap></ProvidersMap>
+    </BaseMap>
   );
 }

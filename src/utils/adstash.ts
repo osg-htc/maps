@@ -323,6 +323,8 @@ export async function getInstitutions(
       institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
       institutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "tribal_college_or_university"),
       institutionCarnegieClassification2025: getFromCommonField<string>(v, "ResourceInstitution", "carnegie_metadata", "classification2025"),
+      institutionLatitude: getFromCommonField<number>(v, 'ResourceInstitution', 'latitude'),
+      institutionLongitude: getFromCommonField<number>(v, 'ResourceInstitution', 'longitude'),
     }
     return p
   }, {})
@@ -523,6 +525,8 @@ export async function getInstitutionOverview(institutionName: string): Promise<R
       projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, 'ProjectInstitution', 'ipeds_metadata', 'historically_black_college_or_university'),
       projectInstitutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, 'ProjectInstitution', 'ipeds_metadata', 'tribal_college_or_university'),
       projectInstitutionState: getFromCommonField<string>(v, 'ProjectInstitution', 'state'),
+      projectInstitutionLatitude: getFromCommonField<number>(v, 'ProjectInstitution', 'latitude'),
+      projectInstitutionLongitude: getFromCommonField<number>(v, 'ProjectInstitution', 'longitude'),
       projectEpscorState: EPSCOR_STATES.includes(getFromCommonField<string>(v, 'ProjectInstitution', 'state') ?? '')
     }
     return p
