@@ -1,8 +1,9 @@
-export function formatBytes(bytes: number): string {
+export function formatBytes(bytes: number, fullName?: boolean): string {
   if (bytes === 0) return "0 B";
-  const sizes = ["B", "KB", "MB", "GB", "TB"];
+  const sizes = ["B", "KB", "MB", "GB", "TB", "PB"];
+  const sizeFullNames = ["Bytes", "Kilobytes", "Megabytes", "Gigabytes", "Terabytes", "Petabytes"];
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${sizes[i]}`;
+  return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${fullName ? sizeFullNames[i] : sizes[i]}`;
 };
 
 export function formatNumber(n: number): string {

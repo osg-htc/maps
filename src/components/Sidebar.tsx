@@ -11,7 +11,7 @@ export default function Sidebar({children}: {children: ReactNode}) {
           top: 8,
           left: 8,
           bottom: 8,
-          width: 360 - 16,
+          width: 400 - 16,
           borderRadius: 3,
           overflowY: 'auto',
           m: 1,
