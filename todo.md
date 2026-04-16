@@ -1,8 +1,7 @@
-- Standardize padding in the sidebar in one place
-- Add a search box to both lists on the sidebar
-- Finish the new stats view
-- Add more data to the tooltips
 - Combine listcards into a single component that takes children
 - Add flyTo back on selections
 - Make the institution list actually look good somehow
 - Make project selectable with URL parameters
+- Add useSWR fallbacks
+- Add GeoJSON lines
+- Update the /maps/ path to use the sidebar
