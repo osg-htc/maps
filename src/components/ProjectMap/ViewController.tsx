@@ -1,7 +1,7 @@
 'use client'
 
-import { Box, Button, Divider, Typography } from '@mui/material';
-import { useEffect, useMemo, useReducer } from 'react';
+import { Box, Button, colors, Divider, IconButton, TextField, Typography } from '@mui/material';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import { ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
@@ -11,6 +11,8 @@ import InsitutionPins from "./InsitutionPins"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
 import InsitutionListCard from './InstitutionListCard';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { addSpacesToUnderscores } from '@/src/utils/formatters';
 
 enum MapSteps {
   SelectingInstitution,
@@ -55,7 +57,8 @@ function reducer(state: MapStates, action: MapActions): MapStates {
 
 export default function ViewController({ rawProjectsData }: {rawProjectsData: Record<string, Partial<ProjectData>>  }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { current: map } = useMap();
+  const [searchTerm, setSearchTerm] = useState<string>('');
+
 
   // remove all projects that are falsy in specific fields that we need
   const filteredProjectsData: Record<string, ProjectData> = useMemo(() => {
@@ -92,57 +95,92 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
   }, [projectBinsByInstitution]);
 
 
+ 
+
+  const isSelectingInstitution = state.step === MapSteps.SelectingInstitution;
+  const isSelectingProject = state.step === MapSteps.SelectingProject;
+  const isViewingProject = state.step === MapSteps.ViewingProject;
+
   return (
     <>
-      <ProjectPins pins={mapPinData} hidden={ state.step == MapSteps.ViewingProject } />
+      <ProjectPins pins={mapPinData.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase().trim()))} hidden={isViewingProject} />
 
-      { state.step != MapSteps.ViewingProject ? <></> : <InsitutionPins mainPin={filteredProjectsData[state.project]}/> }
+      {isViewingProject && <InsitutionPins mainPin={filteredProjectsData[state.project]} />}
 
       <Sidebar>
-        {state.step == MapSteps.SelectingInstitution
-          ? <>
-            <Typography
-              variant='subtitle1'
-              lineHeight={1.1}
-              align='center'
-              sx={{
-                m: 2,
-              }}
-            >
-              Select an institution from the list or by cliking on the map
-            </Typography>
-            <Divider
-              sx={{
-                m: 2,
-              }}
-            /> 
-          </>
-          : <Button
-          variant="outlined"
-          onClick={() => { dispatch({ type: state.step == MapSteps.SelectingProject ? "institution-deselect" : "project-deselect" }) }}
-          sx={{
-            m: 1,
-            borderRadius: 2,
-            "&:hover": {
-              boxShadow: 3,
-            },
+        <Box 
+          sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: isSelectingInstitution ? '0px auto 0px' : '40px auto 0px',
+            alignItems: 'center',
+            mb: 1
           }}
         >
-          Back
-        </Button> }
+          <Box>
+            {!isSelectingInstitution && (
+              <IconButton
+                size="small"
+                onClick={() => dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+                sx={{ alignSelf: 'flex-start' }}
+              >
+                <ArrowBackIcon />
+              </IconButton> 
+            )}
+          </Box>
+          {/* <Typography
+            variant='subtitle2'
+            align='center'
+            lineHeight={isViewingProject ? undefined : 1.1}
+            sx={{
+              mb: 1,
+              textWrap: 'pretty'
+            }}
+          >
+            {isSelectingInstitution && "Select an institution from the list or by cliking on the map"}
+            {isSelectingProject && state.institution }
+            {isViewingProject && addSpacesToUnderscores(state.project) }
+          </Typography> */}
+          <Box>
+            <TextField
+              fullWidth
+              size="small"
+              placeholder={isSelectingInstitution ? "Search institutions..." : "Search projects..."}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Box>
+          <Box />
+        </Box>
+
         <SidebarStack>
-          {state.step == MapSteps.SelectingInstitution
-            ? mapPinData.sort((a, b) => a.name.localeCompare(b.name)).map((pin) => {
-              return <InsitutionListCard institution={ pin } />
-            })
-            : state.step == MapSteps.SelectingProject
-            ? projectBinsByInstitution[state.institution].sort((a, b) => b.numJobs - a.numJobs).map((project: ProjectData) => {
-              return <ProjectListCard key={ project.projectName } project={project} click={(p) => { dispatch({ type: "project-select", project: p }) }} />
-            })
-            : <ProjectStats stats={filteredProjectsData[state.project]} />
+          {
+            isSelectingInstitution ?
+              (
+                mapPinData
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase().trim()))
+                  .map((pin) => <InsitutionListCard key={pin.name} institution={pin} />)
+              )
+            : isSelectingProject ?
+              (
+                projectBinsByInstitution[state.institution]
+                  .sort((a, b) => b.numJobs - a.numJobs)
+                  .filter(p => p.projectName.toLowerCase().includes(searchTerm.toLowerCase().trim()))
+                  .map((project: ProjectData) => (
+                    <ProjectListCard 
+                      key={project.projectName} 
+                      project={project} 
+                      click={(p) => dispatch({ type: "project-select", project: p })} 
+                    />
+                  ))
+                )
+              : // isViewingProject
+                ( 
+                  < ProjectStats stats={filteredProjectsData[state.project]} />
+                )
           }
         </SidebarStack>
       </Sidebar>
     </>
-  )
+  );
 }

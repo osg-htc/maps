@@ -10,7 +10,6 @@ export default function ProjectListCard({ project, click }: { project: ProjectDa
       sx={{
         borderRadius: 2,
         "&:hover": {
-          boxShadow: 3,
           borderColor: "primary.main",
         },
       }}

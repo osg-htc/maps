@@ -11,20 +11,19 @@ export default function InsitutionListCard({ institution }: {institution: Projec
       sx={{
         borderRadius: 2,
         "&:hover": {
-          boxShadow: 3,
           borderColor: "primary.main",
         },
       }}
     >
       <CardActionArea onClick={ institution.onClick }>
         <CardContent sx={{ p: 1.5 }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
-            <Stack spacing={0.5}>
+          {/* <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
+            <Stack spacing={0.5}> */}
               <Typography variant="body1" lineHeight={1.2}>
                 { institution.name }
               </Typography>
-            </Stack>
-          </Stack>
+            {/* </Stack>
+          </Stack> */}
         </CardContent>
       </CardActionArea>
     </Card>

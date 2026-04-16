@@ -3,12 +3,15 @@ import { Card, CardContent, Divider, Stack, Typography } from '@mui/material';
 import { ProjectData } from '@/src/utils/adstash';
 import { numberWithCommas, thatsOverText, formatBytes } from '@/src/utils/formatters'
 
-function ProjectStats({ stats }: { stats: ProjectData}) {
+function ProjectStats({ stats }: { stats: ProjectData }) {
+  
+  const now = new Date();
+  const currentMonth = now.toLocaleString('default', { month: 'long' });
+  const currentYear = now.getFullYear();
+  const dateRangeText = `${currentMonth} ${currentYear - 1} to ${currentMonth} ${currentYear}`;
+
   return (
     <>
-      <Typography variant="subtitle1" align='center'>
-        April 2025 to April 2026
-      </Typography>
       <Card key={ "numJobs" } variant="outlined">
         <CardContent sx={{ p: "12px !important" }}>
           <Typography color="secondary.main" align='center' variant="h6">Jobs Ran</Typography>
@@ -49,6 +52,7 @@ function ProjectStats({ stats }: { stats: ProjectData}) {
           </CardContent>
         </Card>
       }
+      <Typography align="center" variant="subtitle2" fontStyle='italic' sx={{mt: "4px !important"}}>{dateRangeText}</Typography>
     </>
   )
 }
