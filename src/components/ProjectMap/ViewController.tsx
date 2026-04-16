@@ -103,15 +103,20 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
 
   return (
     <>
-      <ProjectPins pins={mapPinData.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase().trim()))} hidden={isViewingProject} />
-
-      {isViewingProject && <InsitutionPins mainPin={filteredProjectsData[state.project]} />}
+      {
+        isSelectingInstitution ?
+          <ProjectPins pins={mapPinData.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase().trim()))} hidden={isViewingProject} />
+        : isSelectingProject ?
+          <ProjectPins pins={mapPinData.filter(p => p.name == state.institution)} hidden={isViewingProject} />
+        : // isViewingProject
+          <InsitutionPins mainPin={filteredProjectsData[state.project]} />
+      }
 
       <Sidebar>
         <Box 
           sx={{ 
             display: 'grid', 
-            gridTemplateColumns: isSelectingInstitution ? '0px auto 0px' : '40px auto 0px',
+            gridTemplateColumns: isSelectingInstitution ? '0px auto 0px' : '40px auto 40px',
             alignItems: 'center',
             mb: 1
           }}
@@ -141,14 +146,22 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
             {isViewingProject && addSpacesToUnderscores(state.project) }
           </Typography> */}
           <Box>
-            <TextField
-              fullWidth
-              size="small"
-              placeholder={isSelectingInstitution ? "Search institutions..." : "Search projects..."}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+            {
+              isSelectingInstitution ?
+                <TextField
+                  fullWidth
+                  size="small"
+                  placeholder="Search institutions..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              : isSelectingProject ? 
+                <Typography variant="h5" align='center' sx={{textWrap: 'balance'}}>{ state.institution }</Typography>
+              : // isViewing Project
+                <Typography variant="h5" align='center' sx={{textWrap: 'balance'}}>{ addSpacesToUnderscores(state.project) }</Typography>    
+            }
           </Box>
+
           <Box />
         </Box>
 
@@ -165,7 +178,6 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
               (
                 projectBinsByInstitution[state.institution]
                   .sort((a, b) => b.numJobs - a.numJobs)
-                  .filter(p => p.projectName.toLowerCase().includes(searchTerm.toLowerCase().trim()))
                   .map((project: ProjectData) => (
                     <ProjectListCard 
                       key={project.projectName} 
