@@ -1,4 +1,3 @@
-- Combine listcards into a single component that takes children
-- Add flyTo back on selections
-- Make project selectable with URL parameters
+- Add flyTo on selections
 - Add useSWR fallbacks
+- Change contributor pins to bars with contribution representation
