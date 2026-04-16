@@ -21,11 +21,12 @@ function BaseMap({children}: {children: ReactNode}) {
         maxWidth: '100vw',
       }}>
         <Map
+          // locked to specific domains, no need to put in .env
           mapboxAccessToken="pk.eyJ1IjoiY2Fubm9uLWxvY2siLCJhIjoiY21tMTUxbjhqMDVnaDJxcHE2eWp6aGo2ZiJ9.oZFr4GezivM26AkP87Cg-w"
           initialViewState={{
-            longitude: -92.4,
+            longitude: -97.4,
             latitude: 37.8,
-            zoom: 3.5,
+            zoom: 3,
             padding: {
               left: 400
             }
