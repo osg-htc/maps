@@ -1,7 +1,7 @@
 
-import { Card, CardContent, Divider, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Typography } from '@mui/material';
 import { ProjectData } from '@/src/utils/adstash';
-import { numberWithCommas, thatsOverText, formatBytes } from '@/src/utils/formatters'
+import { numberWithCommas, formatBytes } from '@/src/utils/formatters'
 
 function ProjectStats({ stats }: { stats: ProjectData }) {
   

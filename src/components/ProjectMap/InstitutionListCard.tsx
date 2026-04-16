@@ -1,6 +1,4 @@
-import { ProjectData } from '@/src/utils/adstash';
-import { Typography, Stack, Card, CardContent, CardActionArea, Divider, Grid, Chip, Tooltip, Box } from '@mui/material';
-import { addSpacesToUnderscores, formatNumber } from '@/src/utils/formatters';
+import { Typography } from '@mui/material';
 import { ProjectPinProps } from './ProjectPins';
 import ListCardBase from '../ListCardBase';
 

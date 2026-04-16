@@ -1,4 +1,4 @@
-import { Box, Card, Typography } from '@mui/material'
+import { Typography } from '@mui/material'
 import MapPin from '../MapPin'
 import ArrowPopUp from '../ArrowPopUp'
 

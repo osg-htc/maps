@@ -1,3 +1,4 @@
 - Add flyTo on selections
 - Add useSWR fallbacks
 - Change contributor pins to bars with contribution representation
+- Retype adstash to not use any

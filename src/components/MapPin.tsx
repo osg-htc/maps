@@ -3,7 +3,7 @@
 import { LocationPin, Circle } from '@mui/icons-material';
 import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Box, Paper, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { ReactNode, useRef, useState } from 'react';
 
 export type MapPinProps = {

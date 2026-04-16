@@ -1,8 +1,7 @@
 'use client'
 
-import { Box, Button, colors, Divider, IconButton, Link, TextField, Typography } from '@mui/material';
+import { Box, IconButton, Link, TextField, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer, useState } from 'react';
-import { useMap } from 'react-map-gl/mapbox';
 import { ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
@@ -108,7 +107,7 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
   useEffect(() => {
     if (!projectSearchParam || !filteredProjectsData[projectSearchParam]) return
     dispatch({ type: "load-from-search-params", institution: filteredProjectsData[projectSearchParam].projectInstitutionName, project: projectSearchParam })
-  }, [projectSearchParam])
+  }, [projectSearchParam, filteredProjectsData])
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);

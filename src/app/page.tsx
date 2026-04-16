@@ -1,6 +1,6 @@
 import Sidebar from "@/src/components/Sidebar";
 import SidebarStack from "@/src/components/SidebarStack";
-import { Card, CardActionArea, CardContent, Chip, Link, Stack, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import Image from 'next-image-export-optimizer';
 import ListCardBase from "../components/ListCardBase";
 
