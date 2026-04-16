@@ -13,6 +13,8 @@ import ProjectListCard from './ProjectListCard';
 import InsitutionListCard from './InstitutionListCard';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { addSpacesToUnderscores } from '@/src/utils/formatters';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
 
 enum MapSteps {
   SelectingInstitution,
@@ -30,6 +32,7 @@ type MapActions =
   | { type: "institution-deselect" }
   | { type: "project-select", project: string }
   | { type: "project-deselect" }
+  | { type: "load-from-search-params", institution: string, project: string }
 
 const initialState: MapStates = {
   step: MapSteps.SelectingInstitution, 
@@ -41,16 +44,19 @@ function reducer(state: MapStates, action: MapActions): MapStates {
   console.log(state, action);
   switch (action.type) {
     case "institution-select": {
-      return { ...state, step: MapSteps.SelectingProject, institution: action.institution, project: "" };
+      return { step: MapSteps.SelectingProject, institution: action.institution, project: "" };
     }
     case "institution-deselect":{
-      return { ...state, step: MapSteps.SelectingInstitution, institution: "", project: "" };
+      return { step: MapSteps.SelectingInstitution, institution: "", project: "" };
     }
     case "project-select":{
-      return { ...state, step: MapSteps.ViewingProject, project: action.project };
+      return { step: MapSteps.ViewingProject, institution: state.institution, project: action.project };
     }
     case "project-deselect":{
-      return { ...state, step: MapSteps.SelectingProject, project: "" };
+      return { step: MapSteps.SelectingProject, institution: state.institution, project: "" };
+    }
+    case "load-from-search-params": {
+      return { step: MapSteps.ViewingProject, institution: action.institution, project: action.project }
     }
   }
 }
@@ -58,7 +64,9 @@ function reducer(state: MapStates, action: MapActions): MapStates {
 export default function ViewController({ rawProjectsData }: {rawProjectsData: Record<string, Partial<ProjectData>>  }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [searchTerm, setSearchTerm] = useState<string>('');
-
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
   // remove all projects that are falsy in specific fields that we need
   const filteredProjectsData: Record<string, ProjectData> = useMemo(() => {
@@ -95,7 +103,22 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
   }, [projectBinsByInstitution]);
 
 
- 
+  const projectSearchParam = searchParams.get('project')
+
+  useEffect(() => {
+    if (!projectSearchParam || !filteredProjectsData[projectSearchParam]) return
+    dispatch({ type: "load-from-search-params", institution: filteredProjectsData[projectSearchParam].projectInstitutionName, project: projectSearchParam })
+  }, [projectSearchParam])
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    if (state.step == MapSteps.ViewingProject) {
+      params.set('project', state.project)
+    } else {
+      params.delete('project')
+    }
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [state.step, projectSearchParam])
 
   const isSelectingInstitution = state.step === MapSteps.SelectingInstitution;
   const isSelectingProject = state.step === MapSteps.SelectingProject;
