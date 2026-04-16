@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, colors, Divider, IconButton, TextField, Typography } from '@mui/material';
+import { Box, Button, colors, Divider, IconButton, Link, TextField, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useMap } from 'react-map-gl/mapbox';
 import { ProjectData } from '@/src/utils/adstash';
@@ -116,21 +116,21 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
         <Box 
           sx={{ 
             display: 'grid', 
-            gridTemplateColumns: isSelectingInstitution ? '0px auto 0px' : '40px auto 40px',
+            gridTemplateColumns: isSelectingInstitution ? '40px auto 0px' : '40px auto 40px',
             alignItems: 'center',
             mb: 1
           }}
         >
           <Box>
-            {!isSelectingInstitution && (
+            <Link href={isSelectingInstitution ? "../" : ""}>
               <IconButton
                 size="small"
-                onClick={() => dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+                onClick={() => isSelectingInstitution ? {} :dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
                 sx={{ alignSelf: 'flex-start' }}
               >
                 <ArrowBackIcon />
               </IconButton> 
-            )}
+            </Link>
           </Box>
           {/* <Typography
             variant='subtitle2'
