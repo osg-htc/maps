@@ -11,10 +11,10 @@ export default function ProjectListCard({ project, click }: { project: ProjectDa
           <Typography variant="h6" lineHeight={1.2}>
             { addSpacesToUnderscores(project.projectName) }
           </Typography>
-          <Typography variant="body2" lineHeight={1.1}>
+          <Typography color="secondary.main" variant="body2" lineHeight={1.1}>
             { project.detailedFieldOfScience }
           </Typography>
-          <Typography variant="caption" color="text.secondary" lineHeight={1}>
+          <Typography variant="caption" color="secondary.main" lineHeight={1}>
             { project.projectInstitutionName }
           </Typography>
         </Stack>
@@ -22,7 +22,7 @@ export default function ProjectListCard({ project, click }: { project: ProjectDa
           label={ formatNumber(project.numJobs) + " Jobs"}
           size="small"
           color="primary"
-          variant="outlined"
+          variant="filled"
           sx={{
             flexShrink: 0,
             fontSize: "0.7rem",

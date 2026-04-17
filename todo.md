@@ -2,3 +2,4 @@
 - Add useSWR fallbacks
 - Change contributor pins to bars with contribution representation
 - Retype adstash to not use any
+- filter isntitutions by r1, r2 or epschor states

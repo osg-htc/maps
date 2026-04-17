@@ -5,6 +5,7 @@ import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box, Typography } from '@mui/material';
 import { ReactNode, useRef, useState } from 'react';
+import MapPinContents from './MapPinContents';
 
 export type MapPinProps = {
   name?: string
@@ -56,18 +57,7 @@ export default function MapPin(props: MapPinProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <LocationPin sx={{ // location pin has a hole in the top that we dont want...
-          color: props.color,
-          fontSize: props.size,
-        }} />
-        <Circle sx={{ // ...so we just fill it with a circle
-          color: props.color,
-          fontSize: props.size / 2,
-          position: "absolute",
-          top: "35%",
-          left: "50%",
-          transform: "translate(-50%, -50%)"
-        }} />
+        <MapPinContents color={props.color} size={props.size}/>
         <Typography sx={{
           color: "white",
           fontSize: props.size / 2,

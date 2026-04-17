@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, IconButton, Link, TextField, Typography } from '@mui/material';
+import { Box, Card, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
@@ -13,6 +13,10 @@ import InsitutionListCard from './InstitutionListCard';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { addSpacesToUnderscores } from '@/src/utils/formatters';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Legend from '../Legend';
+import { Circle, LocationPin } from '@mui/icons-material';
+import MapPin from '../MapPin';
+import MapPinContents from '../MapPinContents';
 
 
 enum MapSteps {
@@ -134,6 +138,20 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
           <InsitutionPins mainPin={filteredProjectsData[state.project]} />
       }
 
+      {isViewingProject ?
+        <Legend>
+          <Stack direction="row" alignItems="center" spacing={0}>
+            <MapPinContents color='primary.main' size={30} />
+            <Typography variant="subtitle1">Selected institution</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={0}>
+            <MapPinContents color='secondary.main' size={30} />
+            <Typography variant="subtitle1">Contributing institution</Typography>
+          </Stack>
+        </Legend>
+        : <></>
+      }
+
       <Sidebar>
         <Box 
           sx={{ 
@@ -154,19 +172,6 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
               </IconButton> 
             </Link>
           </Box>
-          {/* <Typography
-            variant='subtitle2'
-            align='center'
-            lineHeight={isViewingProject ? undefined : 1.1}
-            sx={{
-              mb: 1,
-              textWrap: 'pretty'
-            }}
-          >
-            {isSelectingInstitution && "Select an institution from the list or by cliking on the map"}
-            {isSelectingProject && state.institution }
-            {isViewingProject && addSpacesToUnderscores(state.project) }
-          </Typography> */}
           <Box>
             {
               isSelectingInstitution ?
