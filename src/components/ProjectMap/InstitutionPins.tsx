@@ -1,34 +1,31 @@
 'use client'
 
 import ProjectMapPin from '../MapPin'
-import { InstitutionData, ProjectData, getProjectOverview } from '@/src/utils/adstash';
-import useSWR from 'swr';
+import { InstitutionData, ProjectData } from '@/src/utils/adstash';
 import { useMemo } from 'react';
-import LoadingScreen from '../LoadingScreen';
 import ArrowPopUp from '../ArrowPopUp';
 import { Typography } from '@mui/material';
-import { numberWithCommas } from '@/src/utils/formatters';
+import { numberWithCommas } from '@/src/utils/helpers';
 
-export default function ProjectMapContributorPins({ mainPin }: { mainPin: ProjectData }) {
-  const { data: projectData, isLoading: isProjectLoading } = useSWR([mainPin, getProjectOverview], () => getProjectOverview(mainPin.projectName));
+export default function ProjectMapContributorPins({
+  mainPin,
+  rawProjectOverviewData
+}: {
+  mainPin: ProjectData,
+  rawProjectOverviewData: Record<string, Partial<InstitutionData>>
+}) {
+  const filteredProjectContributors: Record<string, InstitutionData> = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(rawProjectOverviewData).filter(([_, p]) =>
+        p.institutionName &&
+        p.institutionName !== mainPin.projectInstitutionName &&
+        p.institutionLatitude &&
+        p.institutionLongitude
+      )
+    ) as Record<string, InstitutionData>;
+  }, [rawProjectOverviewData, mainPin])
 
-    const filteredProjectContributors: Record<string, InstitutionData> = useMemo(() => {
-      return Object.fromEntries(
-        Object.entries(projectData ?? {}).filter(([_, p]) =>
-          p.institutionName &&
-          p.institutionName !== mainPin.projectInstitutionName &&
-          p.institutionLatitude &&
-          p.institutionLongitude
-        )
-      ) as Record<string, InstitutionData>;
-    }, [projectData, mainPin])
-
-
-  console.log(projectData)
-
-  return (isProjectLoading || !projectData)
-    ? <LoadingScreen></LoadingScreen>
-    : (
+  return (
       <>
         <ProjectMapPin
           key={-1}

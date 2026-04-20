@@ -1,13 +1,12 @@
 
 import { Card, CardContent, Typography } from '@mui/material';
 import { ProjectData } from '@/src/utils/adstash';
-import { numberWithCommas, formatBytes } from '@/src/utils/formatters'
+import { numberWithCommas, formatBytes } from '@/src/utils/helpers'
 
-function ProjectStats({ stats }: { stats: ProjectData }) {
+function ProjectStats({ stats, date }: { stats: ProjectData, date: Date }) {
   
-  const now = new Date();
-  const currentMonth = now.toLocaleString('default', { month: 'long' });
-  const currentYear = now.getFullYear();
+  const currentMonth = date.toLocaleString('default', { month: 'long' });
+  const currentYear = date.getFullYear();
   const dateRangeText = `${currentMonth} ${currentYear - 1} to ${currentMonth} ${currentYear}`;
 
   return (

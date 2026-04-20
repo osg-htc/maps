@@ -1,6 +1,6 @@
 import { ProjectData } from '@/src/utils/adstash';
 import { Typography, Stack, Chip } from '@mui/material';
-import { addSpacesToUnderscores, formatNumber } from '@/src/utils/formatters';
+import { addSpacesToUnderscores, formatNumber } from '@/src/utils/helpers';
 import ListCardBase from '../ListCardBase';
 
 export default function ProjectListCard({ project, click }: { project: ProjectData, click: (arg0: string) => void } ) {

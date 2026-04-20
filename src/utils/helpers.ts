@@ -33,3 +33,20 @@ export function thatsOverText(decimalHours: number): string {
 
   return `${years > 0 ? numberWithCommas(years) : days > 0 ? days : 0} ${years > 0 ? "year" + (years >= 2 ? "s" : 0) : days > 0 ? "day"  + (days >= 2 ? "s" : 0) : 0}`;
 }
+
+export function generateHash(string: string) {
+  let hash = 0;
+  for (const char of string) {
+    hash = (hash << 5) - hash + char.charCodeAt(0);
+    hash |= 0; // Constrain to 32bit integer
+  }
+  return hash;
+}
+
+export const BACKUP_DIRECTORY = './public/fallbacks'; // filesystem path for script
+export const BACKUP_URL_PATH = '/fallbacks'; // HTTP path for runtime
+
+export function getBackupPath(fetcher: Function, args: any[]): string {
+  const hash = generateHash(`${fetcher.name}:${JSON.stringify(args)}`);
+  return `${hash}.json`;
+}

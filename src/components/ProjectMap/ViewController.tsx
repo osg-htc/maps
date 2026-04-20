@@ -6,12 +6,12 @@ import { ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
 import ProjectPins, { ProjectPinProps } from "./ProjectPins"
-import InsitutionPins from "./InsitutionPins"
+import InstitutionPinsDataLoader from "./InstitutionPinsDataLoader"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
 import InsitutionListCard from './InstitutionListCard';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { addSpacesToUnderscores } from '@/src/utils/formatters';
+import { addSpacesToUnderscores } from '@/src/utils/helpers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Legend from '../Legend';
 import { Circle, LocationPin } from '@mui/icons-material';
@@ -44,7 +44,6 @@ const initialState: MapStates = {
 }
 
 function reducer(state: MapStates, action: MapActions): MapStates {
-  console.log(state, action);
   switch (action.type) {
     case "institution-select": {
       return { step: MapSteps.SelectingProject, institution: action.institution, project: "" };
@@ -64,7 +63,7 @@ function reducer(state: MapStates, action: MapActions): MapStates {
   }
 }
 
-export default function ViewController({ rawProjectsData }: {rawProjectsData: Record<string, Partial<ProjectData>>  }) {
+export default function ViewController({ date, rawProjectsData }: { date: Date, rawProjectsData: Record<string, Partial<ProjectData>>  }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const searchParams = useSearchParams();
@@ -135,7 +134,7 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
         : isSelectingProject ?
           <ProjectPins pins={mapPinData.filter(p => p.name == state.institution)} hidden={isViewingProject} />
         : // isViewingProject
-          <InsitutionPins mainPin={filteredProjectsData[state.project]} />
+          <InstitutionPinsDataLoader mainPin={filteredProjectsData[state.project]} />
       }
 
       {isViewingProject ?
@@ -215,7 +214,7 @@ export default function ViewController({ rawProjectsData }: {rawProjectsData: Re
                 )
               : // isViewingProject
                 ( 
-                  < ProjectStats stats={filteredProjectsData[state.project]} />
+                  < ProjectStats date={ date } stats={filteredProjectsData[state.project]} />
                 )
           }
         </SidebarStack>
