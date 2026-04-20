@@ -7,7 +7,6 @@ const ADSTASH_ENDPOINT: string = "https://elastic.osg.chtc.io/q"
 
 async function elasticSearch<T = unknown>(body: object = {}): Promise<T> {
   const url = `${ADSTASH_ENDPOINT}/${ADSTASH_SUMMARY_INDEX}/_search`
-  // const url = `FAKEURL`
 
   const response = await Promise.race([
     fetch(url, {
@@ -20,7 +19,7 @@ async function elasticSearch<T = unknown>(body: object = {}): Promise<T> {
     new Promise<never>((_, reject) => setTimeout(() => reject(new Error('Request timed out')), 15000))
   ])
 
-  if( !response.ok ){
+  if (!response.ok) {
     console.error(await response.json())
     throw Error(`Invalid Response from ${url}`)
   }
@@ -28,6 +27,9 @@ async function elasticSearch<T = unknown>(body: object = {}): Promise<T> {
   return await response.json()
 }
 
+// ---------------------------------------------------------
+// DATA MODEL TYPES
+// ---------------------------------------------------------
 
 export type ComputeStats = {
   byteTransferCount: number 
@@ -77,35 +79,111 @@ export type ProjectData = ComputeStats & {
   projectName: string
 }
 
+type ESValue = { value: number };
+type ESBuckets = { buckets: unknown[] };
+type ESTopHits = {
+  hits: {
+    hits: Array<{
+      _source: Record<string, unknown>;
+    }>;
+  };
+};
+
+type BaseComputeMetrics = {
+  NumJobs: ESValue;
+  FileTransferCount: ESValue;
+  ByteTransferCount: ESValue;
+  CpuHours: ESValue;
+  GpuHours: ESValue;
+  OSDFFileTransferCount: ESValue;
+  OSDFByteTransferCount: ESValue;
+};
+
+type DateQueryResponse = {
+  hits: {
+    hits: Array<{
+      _source: { Date: string | number };
+    }>;
+  };
+};
+
+type OverviewAggResponse = {
+  aggregations: BaseComputeMetrics & {
+    NumInstitutions: ESBuckets;
+    NumProjects: ESBuckets;
+    NumMajorFieldOfScience: ESBuckets;
+    NumBroadFieldOfScience: ESBuckets;
+    NumDetailedFieldOfScience: ESBuckets;
+  };
+};
+
+type InstitutionBucket = BaseComputeMetrics & {
+  key: string;
+  NumProjects: ESBuckets;
+  NumMajorFieldOfScience: ESBuckets;
+  NumBroadFieldOfScience: ESBuckets;
+  NumDetailedFieldOfScience: ESBuckets;
+  CommonFields: ESTopHits;
+};
+
+type InstitutionsQueryResponse = {
+  aggregations: {
+    bucket: {
+      buckets: InstitutionBucket[];
+    };
+  };
+};
+
+type StandardBucket = BaseComputeMetrics & {
+  key: string;
+  CommonFields: ESTopHits;
+};
+
+type ProjectsQueryResponse = {
+  aggregations: {
+    bucket: {
+      buckets: StandardBucket[];
+    };
+  };
+};
+
+type FilteredQueryResponse = {
+  aggregations: {
+    agg: {
+      buckets: StandardBucket[];
+    };
+  };
+};
+
 const DATE_RANGE: Record<string, number> = {
-    oneYearAgo: new Date(new Date().setDate(new Date().getDate()-365)).getTime(), // Gets last years timestamp
-    threeMonthsAgo: new Date(new Date().setDate(new Date().getDate()-90)).getTime(), // Gets date object 90 days in advance
-    now: new Date().getTime(),
-    yesterday: new Date(new Date().setDate(new Date().getDate()-1)).getTime(),
+  oneYearAgo: new Date(new Date().setDate(new Date().getDate()-365)).getTime(), 
+  threeMonthsAgo: new Date(new Date().setDate(new Date().getDate()-90)).getTime(), 
+  now: new Date().getTime(),
+  yesterday: new Date(new Date().setDate(new Date().getDate()-1)).getTime(),
 }
 
 export async function getDateOfLatestData(): Promise<Date | undefined> {
-    const usageQueryResult: any = await elasticSearch({
-        size: 1,
-        sort: [
-            {
-                "Date": {
-                    "order": "desc"
-                }
-            }
-        ],
-    })
-    return new Date(usageQueryResult.hits.hits[0]._source.Date)
+  const usageQueryResult = await elasticSearch<DateQueryResponse>({
+      size: 1,
+      sort: [
+          {
+              "Date": {
+                  "order": "desc"
+              }
+          }
+      ],
+  })
+  return new Date(usageQueryResult.hits.hits[0]._source.Date)
 }
 
 export async function getLatestOSPoolOverview(): Promise<Partial<OSPoolOverviewStats>> {
-    let overview: Partial<OverviewStats> | null = null
-    const d: Date = new Date()
-    d.setUTCHours(0,0,0,0)
-    while (!overview || overview['numJobs'] == 0) {
-        d.setUTCDate(d.getUTCDate() - 1)
-        overview = await getInstitutionsOverview(d.getTime(), d.getTime())
-    }
+  let overview: Partial<OverviewStats> | null = null
+  const d: Date = new Date()
+  d.setUTCHours(0,0,0,0)
+  while (!overview || overview.numJobs == 0) {
+      d.setUTCDate(d.getUTCDate() - 1)
+      overview = await getInstitutionsOverview(d.getTime(), d.getTime())
+  }
   return { ...overview, date: d}
 }
 
@@ -113,7 +191,7 @@ export async function getInstitutionsOverview(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Partial<OverviewStats>> {
   
-  const usageQueryResult: any = await elasticSearch({
+  const usageQueryResult = await elasticSearch<OverviewAggResponse>({
     size: 0,
     query: {
       range: {
@@ -124,89 +202,36 @@ export async function getInstitutionsOverview(
       }
     },
     "aggs": {
-      "NumInstitutions": {
-        "terms": {
-          "field": "ResourceInstitution.name.keyword",
-          "size": 10000
-        }
-      },
-      "NumProjects": {
-        "terms": {
-          "field": "ProjectName.keyword",
-          "size": 10000
-        }
-      },
-      "NumMajorFieldOfScience": {
-        "terms": {
-          "field": "MajorFieldOfScience.keyword",
-          "size": 10000
-        }
-      },
-      "NumBroadFieldOfScience": {
-        "terms": {
-          "field": "BroadFieldOfScience.keyword",
-          "size": 10000
-        }
-      },
-      "NumDetailedFieldOfScience": {
-        "terms": {
-          "field": "DetailedFieldOfScience.keyword",
-          "size": 10000
-        }
-      },
-      "NumJobs": {
-        "sum": {
-          "field": "NumJobs"
-        }
-      },
-      "FileTransferCount": {
-        "sum": {
-          "field": "FileTransferCount"
-        }
-      },
-      "ByteTransferCount": {
-        "sum": {
-          "field": "ByteTransferCount"
-        }
-      },
-      "CpuHours": {
-        "sum": {
-          "field": "CpuHours"
-        }
-      },
-      "GpuHours": {
-        "sum": {
-          "field": "GpuHours"
-        }
-      },
-      "OSDFFileTransferCount": {
-        "sum": {
-          "field": "OSDFFileTransferCount"
-        }
-      },
-      "OSDFByteTransferCount": {
-        "sum": {
-          "field": "OSDFByteTransferCount"
-        }
-      }
+      "NumInstitutions": { "terms": { "field": "ResourceInstitution.name.keyword", "size": 10000 } },
+      "NumProjects": { "terms": { "field": "ProjectName.keyword", "size": 10000 } },
+      "NumMajorFieldOfScience": { "terms": { "field": "MajorFieldOfScience.keyword", "size": 10000 } },
+      "NumBroadFieldOfScience": { "terms": { "field": "BroadFieldOfScience.keyword", "size": 10000 } },
+      "NumDetailedFieldOfScience": { "terms": { "field": "DetailedFieldOfScience.keyword", "size": 10000 } },
+      "NumJobs": { "sum": { "field": "NumJobs" } },
+      "FileTransferCount": { "sum": { "field": "FileTransferCount" } },
+      "ByteTransferCount": { "sum": { "field": "ByteTransferCount" } },
+      "CpuHours": { "sum": { "field": "CpuHours" } },
+      "GpuHours": { "sum": { "field": "GpuHours" } },
+      "OSDFFileTransferCount": { "sum": { "field": "OSDFFileTransferCount" } },
+      "OSDFByteTransferCount": { "sum": { "field": "OSDFByteTransferCount" } }
     }
   })
 
   const data = usageQueryResult.aggregations
 
   return {
-    numInstitutions: data['NumInstitutions']['buckets'].length,
-    numJobs: data['NumJobs']['value'],
-    cpuHours: data['CpuHours']['value'],
-    gpuHours: data['GpuHours']['value'],
-    fileTransferCount: data['FileTransferCount']['value'],
-    byteTransferCount: data['ByteTransferCount']['value'],
-    osdfFileTransferCount: data['OSDFFileTransferCount']['value'],
-    osdfByteTransferCount: data['OSDFByteTransferCount']['value'],
-    numProjects: data['NumProjects']['buckets'].length,
-    numMajorFieldOfScience: data['NumMajorFieldOfScience']['buckets'].length,
-    numBroadFieldOfScience: data['NumBroadFieldOfScience']['buckets'].length,
-    numDetailedFieldOfScience: data['NumDetailedFieldOfScience']['buckets'].length,
+    numInstitutions: data.NumInstitutions.buckets.length,
+    numJobs: data.NumJobs.value,
+    cpuHours: data.CpuHours.value,
+    gpuHours: data.GpuHours.value,
+    fileTransferCount: data.FileTransferCount.value,
+    byteTransferCount: data.ByteTransferCount.value,
+    osdfFileTransferCount: data.OSDFFileTransferCount.value,
+    osdfByteTransferCount: data.OSDFByteTransferCount.value,
+    numProjects: data.NumProjects.buckets.length,
+    numMajorFieldOfScience: data.NumMajorFieldOfScience.buckets.length,
+    numBroadFieldOfScience: data.NumBroadFieldOfScience.buckets.length,
+    numDetailedFieldOfScience: data.NumDetailedFieldOfScience.buckets.length,
   }
 }
 
@@ -214,7 +239,7 @@ export async function getInstitutions(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Record<string, Partial<InstitutionData>>> {
 	
-	const usageQueryResult: any = await elasticSearch({
+	const usageQueryResult = await elasticSearch<InstitutionsQueryResponse>({
 		size: 0,
 		query: {
 			range: {
@@ -226,75 +251,22 @@ export async function getInstitutions(
 		},
 		"aggs": {
 			"bucket": {
-				"terms": {
-					"field": "ResourceInstitution.name.keyword",
-					"size": 10000
-				},
+				"terms": { "field": "ResourceInstitution.name.keyword", "size": 10000 },
 				"aggs": {
-					"NumProjects": {
-						"terms": {
-							"field": "ProjectName.keyword",
-							"size": 10000
-						}
-					},
-					"NumMajorFieldOfScience": {
-						"terms": {
-							"field": "MajorFieldOfScience.keyword",
-							"size": 10000
-						}
-					},
-					"NumBroadFieldOfScience": {
-						"terms": {
-							"field": "BroadFieldOfScience.keyword",
-							"size": 10000
-						}
-					},
-					"NumDetailedFieldOfScience": {
-						"terms": {
-							"field": "DetailedFieldOfScience.keyword",
-							"size": 10000
-						}
-					},
-					"NumJobs": {
-						"sum": {
-							"field": "NumJobs"
-						}
-					},
-					"FileTransferCount": {
-						"sum": {
-							"field": "FileTransferCount"
-						}
-					},
-					"ByteTransferCount": {
-						"sum": {
-							"field": "ByteTransferCount"
-						}
-					},
-					"CpuHours": {
-						"sum": {
-							"field": "CpuHours"
-						}
-					},
-					"GpuHours": {
-						"sum": {
-							"field": "GpuHours"
-						}
-					},
-					"OSDFFileTransferCount": {
-						"sum": {
-							"field": "OSDFFileTransferCount"
-						}
-					},
-					"OSDFByteTransferCount": {
-						"sum": {
-							"field": "OSDFByteTransferCount"
-						}
-					},
+					"NumProjects": { "terms": { "field": "ProjectName.keyword", "size": 10000 } },
+					"NumMajorFieldOfScience": { "terms": { "field": "MajorFieldOfScience.keyword", "size": 10000 } },
+					"NumBroadFieldOfScience": { "terms": { "field": "BroadFieldOfScience.keyword", "size": 10000 } },
+					"NumDetailedFieldOfScience": { "terms": { "field": "DetailedFieldOfScience.keyword", "size": 10000 } },
+					"NumJobs": { "sum": { "field": "NumJobs" } },
+					"FileTransferCount": { "sum": { "field": "FileTransferCount" } },
+					"ByteTransferCount": { "sum": { "field": "ByteTransferCount" } },
+					"CpuHours": { "sum": { "field": "CpuHours" } },
+					"GpuHours": { "sum": { "field": "GpuHours" } },
+					"OSDFFileTransferCount": { "sum": { "field": "OSDFFileTransferCount" } },
+					"OSDFByteTransferCount": { "sum": { "field": "OSDFByteTransferCount" } },
 					"CommonFields": {
 						"top_hits": {
-							"_source": {
-								"includes": RESOURCE_COMMON_FIELDS
-							},
+							"_source": { "includes": RESOURCE_COMMON_FIELDS },
 							"size": 1
 						}
 					}
@@ -305,20 +277,20 @@ export async function getInstitutions(
 
 	const buckets = usageQueryResult.aggregations.bucket.buckets
 
-  return buckets.reduce((p: any, v: any) => {
-    p[v['key']] = {
-      institutionName: v['key'],
-      numJobs: v['NumJobs']['value'],
-      cpuHours: v['CpuHours']['value'],
-      gpuHours: v['GpuHours']['value'],
-      fileTransferCount: v['FileTransferCount']['value'],
-      byteTransferCount: v['ByteTransferCount']['value'],
-      osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
-      osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
-      numProjects: v['NumProjects']['buckets'].length,
-      numMajorFieldOfScience: v['NumMajorFieldOfScience']['buckets'].length,
-      numBroadFieldOfScience: v['NumBroadFieldOfScience']['buckets'].length,
-      numDetailedFieldOfScience: v['NumDetailedFieldOfScience']['buckets'].length,
+  return buckets.reduce<Record<string, Partial<InstitutionData>>>((p, v) => {
+    p[v.key] = {
+      institutionName: v.key,
+      numJobs: v.NumJobs.value,
+      cpuHours: v.CpuHours.value,
+      gpuHours: v.GpuHours.value,
+      fileTransferCount: v.FileTransferCount.value,
+      byteTransferCount: v.ByteTransferCount.value,
+      osdfFileTransferCount: v.OSDFFileTransferCount.value,
+      osdfByteTransferCount: v.OSDFByteTransferCount.value,
+      numProjects: v.NumProjects.buckets.length,
+      numMajorFieldOfScience: v.NumMajorFieldOfScience.buckets.length,
+      numBroadFieldOfScience: v.NumBroadFieldOfScience.buckets.length,
+      numDetailedFieldOfScience: v.NumDetailedFieldOfScience.buckets.length,
       institutionState: getFromCommonField<string>(v, "ResourceInstitution", "state"),
       institutionIpedsWebsiteAddress: getFromCommonField<string>(v, "ResourceInstitution", "ipeds_metadata", "website_address"),
       institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
@@ -333,7 +305,7 @@ export async function getProjects(
   startTime: number = DATE_RANGE['oneYearAgo'], endTime: number = DATE_RANGE['now']
 ): Promise<Record<string, Partial<ProjectData>>> {
   
-  const usageQueryResult: any = await elasticSearch({
+  const usageQueryResult = await elasticSearch<ProjectsQueryResponse>({
     size: 0,
     query: {
       range: {
@@ -345,51 +317,18 @@ export async function getProjects(
     },
     "aggs": {
       "bucket": {
-        "terms": {
-          "field": "ProjectName.keyword",
-          "size": 10000
-        },
+        "terms": { "field": "ProjectName.keyword", "size": 10000 },
         "aggs": {
-          "NumJobs": {
-            "sum": {
-              "field": "NumJobs"
-            }
-          },
-          "FileTransferCount": {
-            "sum": {
-              "field": "FileTransferCount"
-            }
-          },
-          "ByteTransferCount": {
-            "sum": {
-              "field": "ByteTransferCount"
-            }
-          },
-          "CpuHours": {
-            "sum": {
-              "field": "CpuHours"
-            }
-          },
-          "GpuHours": {
-            "sum": {
-              "field": "GpuHours"
-            }
-          },
-          "OSDFFileTransferCount": {
-            "sum": {
-              "field": "OSDFFileTransferCount"
-            }
-          },
-          "OSDFByteTransferCount": {
-            "sum": {
-              "field": "OSDFByteTransferCount"
-            }
-          },
+          "NumJobs": { "sum": { "field": "NumJobs" } },
+          "FileTransferCount": { "sum": { "field": "FileTransferCount" } },
+          "ByteTransferCount": { "sum": { "field": "ByteTransferCount" } },
+          "CpuHours": { "sum": { "field": "CpuHours" } },
+          "GpuHours": { "sum": { "field": "GpuHours" } },
+          "OSDFFileTransferCount": { "sum": { "field": "OSDFFileTransferCount" } },
+          "OSDFByteTransferCount": { "sum": { "field": "OSDFByteTransferCount" } },
           "CommonFields": {
             "top_hits": {
-              "_source": {
-                "includes": PROJECT_COMMON_FIELDS
-              },
+              "_source": { "includes": PROJECT_COMMON_FIELDS },
               "size": 1
             }
           }
@@ -400,16 +339,16 @@ export async function getProjects(
 
   const buckets = usageQueryResult.aggregations.bucket.buckets
 
-  return buckets.reduce((p: any, v: any) => {
-    p[v['key']] = {
-      projectName: v['key'],
-      numJobs: v['NumJobs']['value'],
-      cpuHours: v['CpuHours']['value'],
-      gpuHours: v['GpuHours']['value'],
-      fileTransferCount: v['FileTransferCount']['value'],
-      byteTransferCount: v['ByteTransferCount']['value'],
-      osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
-      osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
+  return buckets.reduce<Record<string, Partial<ProjectData>>>((p, v) => {
+    p[v.key] = {
+      projectName: v.key,
+      numJobs: v.NumJobs.value,
+      cpuHours: v.CpuHours.value,
+      gpuHours: v.GpuHours.value,
+      fileTransferCount: v.FileTransferCount.value,
+      byteTransferCount: v.ByteTransferCount.value,
+      osdfFileTransferCount: v.OSDFFileTransferCount.value,
+      osdfByteTransferCount: v.OSDFByteTransferCount.value,
       broadFieldOfScience: getFromCommonField<string>(v, 'BroadFieldOfScience'),
       majorFieldOfScience: getFromCommonField<string>(v, 'MajorFieldOfScience'),
       detailedFieldOfScience: getFromCommonField<string>(v, 'DetailedFieldOfScience'),
@@ -428,7 +367,7 @@ export async function getProjects(
 
 export async function getInstitutionOverview(institutionName: string): Promise<Record<string, Partial<ProjectData>>> {
 
-	const usageQueryResult: any = await elasticSearch({
+	const usageQueryResult = await elasticSearch<FilteredQueryResponse>({
 		size: 0,
 		query: {
 			bool: {
@@ -451,51 +390,18 @@ export async function getInstitutionOverview(institutionName: string): Promise<R
 		},
 		"aggs": {
 			"agg": {
-				"terms": {
-					"field": "ProjectName.keyword",
-					"size": 10000
-				},
+				"terms": { "field": "ProjectName.keyword", "size": 10000 },
 				"aggs": {
-					"NumJobs": {
-						"sum": {
-							"field": "NumJobs"
-						}
-					},
-					"FileTransferCount": {
-						"sum": {
-							"field": "FileTransferCount"
-						}
-					},
-					"ByteTransferCount": {
-						"sum": {
-							"field": "ByteTransferCount"
-						}
-					},
-					"CpuHours": {
-						"sum": {
-							"field": "CpuHours"
-						}
-					},
-					"GpuHours": {
-						"sum": {
-							"field": "GpuHours"
-						}
-					},
-					"OSDFFileTransferCount": {
-						"sum": {
-							"field": "OSDFFileTransferCount"
-						}
-					},
-					"OSDFByteTransferCount": {
-						"sum": {
-							"field": "OSDFByteTransferCount"
-						}
-					},
+					"NumJobs": { "sum": { "field": "NumJobs" } },
+					"FileTransferCount": { "sum": { "field": "FileTransferCount" } },
+					"ByteTransferCount": { "sum": { "field": "ByteTransferCount" } },
+					"CpuHours": { "sum": { "field": "CpuHours" } },
+					"GpuHours": { "sum": { "field": "GpuHours" } },
+					"OSDFFileTransferCount": { "sum": { "field": "OSDFFileTransferCount" } },
+					"OSDFByteTransferCount": { "sum": { "field": "OSDFByteTransferCount" } },
 					"CommonFields": {
 						"top_hits": {
-							"_source": {
-								"includes": PROJECT_COMMON_FIELDS
-							},
+							"_source": { "includes": PROJECT_COMMON_FIELDS },
 							"size": 1
 						}
 					}
@@ -506,16 +412,16 @@ export async function getInstitutionOverview(institutionName: string): Promise<R
 
 	const buckets = usageQueryResult.aggregations.agg.buckets
 
-  return buckets.reduce((p: any, v: any) => {
-    p[v['key']] = {
-      projectName: v['key'],
-      numJobs: v['NumJobs']['value'],
-      cpuHours: v['CpuHours']['value'],
-      gpuHours: v['GpuHours']['value'],
-      fileTransferCount: v['FileTransferCount']['value'],
-      byteTransferCount: v['ByteTransferCount']['value'],
-      osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
-      osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
+  return buckets.reduce<Record<string, Partial<ProjectData>>>((p, v) => {
+    p[v.key] = {
+      projectName: v.key,
+      numJobs: v.NumJobs.value,
+      cpuHours: v.CpuHours.value,
+      gpuHours: v.GpuHours.value,
+      fileTransferCount: v.FileTransferCount.value,
+      byteTransferCount: v.ByteTransferCount.value,
+      osdfFileTransferCount: v.OSDFFileTransferCount.value,
+      osdfByteTransferCount: v.OSDFByteTransferCount.value,
       broadFieldOfScience: getFromCommonField<string>(v, 'BroadFieldOfScience'),
       majorFieldOfScience: getFromCommonField<string>(v, 'MajorFieldOfScience'),
       detailedFieldOfScience: getFromCommonField<string>(v, 'DetailedFieldOfScience'),
@@ -533,7 +439,7 @@ export async function getInstitutionOverview(institutionName: string): Promise<R
 
 export async function getProjectOverview(projectName: string): Promise<Record<string, Partial<InstitutionData>>> {
 	
-	const usageQueryResult: any = await elasticSearch({
+	const usageQueryResult = await elasticSearch<FilteredQueryResponse>({
 		size: 0,
 		query: {
 			bool: {
@@ -556,51 +462,18 @@ export async function getProjectOverview(projectName: string): Promise<Record<st
 		},
 		"aggs": {
 			"agg": {
-				"terms": {
-					"field": "ResourceInstitution.name.keyword",
-					"size": 10000
-				},
+				"terms": { "field": "ResourceInstitution.name.keyword", "size": 10000 },
 				"aggs": {
-					"NumJobs": {
-						"sum": {
-							"field": "NumJobs"
-						}
-					},
-					"FileTransferCount": {
-						"sum": {
-							"field": "FileTransferCount"
-						}
-					},
-					"ByteTransferCount": {
-						"sum": {
-							"field": "ByteTransferCount"
-						}
-					},
-					"CpuHours": {
-						"sum": {
-							"field": "CpuHours"
-						}
-					},
-					"GpuHours": {
-						"sum": {
-							"field": "GpuHours"
-						}
-					},
-					"OSDFFileTransferCount": {
-						"sum": {
-							"field": "OSDFFileTransferCount"
-						}
-					},
-					"OSDFByteTransferCount": {
-						"sum": {
-							"field": "OSDFByteTransferCount"
-						}
-					},
+					"NumJobs": { "sum": { "field": "NumJobs" } },
+					"FileTransferCount": { "sum": { "field": "FileTransferCount" } },
+					"ByteTransferCount": { "sum": { "field": "ByteTransferCount" } },
+					"CpuHours": { "sum": { "field": "CpuHours" } },
+					"GpuHours": { "sum": { "field": "GpuHours" } },
+					"OSDFFileTransferCount": { "sum": { "field": "OSDFFileTransferCount" } },
+					"OSDFByteTransferCount": { "sum": { "field": "OSDFByteTransferCount" } },
 					"CommonFields": {
 						"top_hits": {
-							"_source": {
-								"includes": RESOURCE_COMMON_FIELDS
-							},
+							"_source": { "includes": RESOURCE_COMMON_FIELDS },
 							"size": 1
 						}
 					}
@@ -611,16 +484,16 @@ export async function getProjectOverview(projectName: string): Promise<Record<st
 
 	const buckets = usageQueryResult.aggregations.agg.buckets
 
-  return buckets.reduce((p: any, v: any) => {
-    p[v['key']] = {
-      institutionName: v['key'],
-      numJobs: v['NumJobs']['value'],
-      cpuHours: v['CpuHours']['value'],
-      gpuHours: v['GpuHours']['value'],
-      fileTransferCount: v['FileTransferCount']['value'],
-      byteTransferCount: v['ByteTransferCount']['value'],
-      osdfFileTransferCount: v['OSDFFileTransferCount']['value'],
-      osdfByteTransferCount: v['OSDFByteTransferCount']['value'],
+  return buckets.reduce<Record<string, Partial<InstitutionData>>>((p, v) => {
+    p[v.key] = {
+      institutionName: v.key,
+      numJobs: v.NumJobs.value,
+      cpuHours: v.CpuHours.value,
+      gpuHours: v.GpuHours.value,
+      fileTransferCount: v.FileTransferCount.value,
+      byteTransferCount: v.ByteTransferCount.value,
+      osdfFileTransferCount: v.OSDFFileTransferCount.value,
+      osdfByteTransferCount: v.OSDFByteTransferCount.value,
       institutionState: getFromCommonField<string>(v, "ResourceInstitution", "state"),
       institutionIpedsWebsiteAddress: getFromCommonField<string>(v, "ResourceInstitution", "ipeds_metadata", "website_address"),
       institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
@@ -633,7 +506,7 @@ export async function getProjectOverview(projectName: string): Promise<Record<st
   }, {})
 }
 
-function recurseObject<T>(obj: (object | object[]), ...path: (string | number)[]): T | undefined {
+function recurseObject<T>(obj: unknown, ...path: (string | number)[]): T | undefined {
   return path.reduce((o: unknown, key: (string | number)) => {
     if (
       o !== null && o !== undefined && typeof o === 'object' &&
@@ -645,7 +518,7 @@ function recurseObject<T>(obj: (object | object[]), ...path: (string | number)[]
   }, obj) as T
 }
 
-function getFromCommonField<T>(data: object, ...field: (string | number)[]): T | undefined {
+function getFromCommonField<T>(data: unknown, ...field: (string | number)[]): T | undefined {
     const commonKeys: (string | number)[] = ['CommonFields', 'hits', 'hits', 0, '_source']
     return recurseObject<T>(data, ...commonKeys, ...field)
 }
