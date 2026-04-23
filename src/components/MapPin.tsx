@@ -40,10 +40,10 @@ export default function MapPin(props: MapPinProps) {
   return (
     <Marker
       key={ props.name }
-      latitude={props.lat}
-      longitude={props.lon}
+      latitude={ props.lat }
+      longitude={ props.lon }
       anchor="bottom"
-      onClick={props.onClick}
+      onClick={ props.onClick }
       style={{
         zIndex: hovered ? 1000 : props.onTop ? 500 : (props.text ?? 1)
       }}

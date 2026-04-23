@@ -27,10 +27,6 @@ async function elasticSearch<T = unknown>(body: object = {}): Promise<T> {
   return await response.json()
 }
 
-// ---------------------------------------------------------
-// DATA MODEL TYPES
-// ---------------------------------------------------------
-
 export type ComputeStats = {
   byteTransferCount: number 
   cpuHours: number 
@@ -69,6 +65,7 @@ export type ProjectData = ComputeStats & {
   detailedFieldOfScience: string 
   majorFieldOfScience: string 
   projectEpscorState: boolean 
+  projectInstitutionCarnegieClassification2025: string
   projectInstitutionIpedsHistoricallyBlackCollegeOrUniversity: boolean 
   projectInstitutionIpedsTribalCollegeOrUniversity: boolean
   projectInstitutionIpedsWebsiteAddress: string
@@ -359,6 +356,7 @@ export async function getProjects(
       projectInstitutionState: getFromCommonField<string>(v, 'ProjectInstitution', 'state'),
       projectInstitutionLatitude: getFromCommonField<number>(v, 'ProjectInstitution', 'latitude'),
       projectInstitutionLongitude: getFromCommonField<number>(v, 'ProjectInstitution', 'longitude'),
+      projectInstitutionCarnegieClassification2025: getFromCommonField<string>(v, 'ProjectInstitution', 'carnegie_metadata', 'classification2025'),
       projectEpscorState: EPSCOR_STATES.includes(getFromCommonField<string>(v, 'ProjectInstitution', 'state') ?? '')
     }
     return p
@@ -531,6 +529,7 @@ const PROJECT_COMMON_FIELDS: string[] = [
   "ProjectInstitution.state",
   "ProjectInstitution.latitude",
   "ProjectInstitution.longitude",
+  "ProjectInstitution.carnegie_metadata.classification2025",
 	"ProjectInstitution.ipeds_metadata.website_address",
 	"ProjectInstitution.ipeds_metadata.historically_black_college_or_university",
 	"ProjectInstitution.ipeds_metadata.tribal_college_or_university",
@@ -548,7 +547,7 @@ const RESOURCE_COMMON_FIELDS: string[] = [
 	"ResourceInstitution.carnegie_metadata.classification2025"
 ]
 
-const EPSCOR_STATES: string[] = [
+export const EPSCOR_STATES: string[] = [
 	"AL", // Alabama
 	"AK", // Alaska
 	"AR", // Arkansas

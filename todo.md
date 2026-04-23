@@ -1,3 +1,2 @@
-- Add flyTo on selections
 - Change contributor pins to bars with contribution representation
 - filter isntitutions by r1, r2 or epschor states

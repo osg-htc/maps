@@ -1,7 +1,7 @@
 import { Card, CardContent, CardActionArea, Link } from '@mui/material';
 import { ReactNode } from 'react';
 
-export default function ListCardBase({ children, listKey, onClick, link }: { children: ReactNode, listKey: string, onClick?: () => void, link?: string }) {
+export default function ListCardBase({ children, listKey, onClick, link }: { children: ReactNode, listKey?: string, onClick?: () => void, link?: string }) {
   return (
     <Card
       key={listKey}

@@ -1,23 +1,24 @@
 'use client'
 
-import { Box, Card, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
+import { Box, Card, IconButton, Link, Popover, Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
-import ProjectPins, { ProjectPinProps } from "./ProjectPins"
+import ProjectsPin from "./ProjectsPin"
 import InstitutionPinsDataLoader from "./InstitutionPinsDataLoader"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
-import InsitutionListCard from './InstitutionListCard';
+import ProjectInsitutionListCard from './ProjectInsitutionListCard';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { addSpacesToUnderscores } from '@/src/utils/helpers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Legend from '../Legend';
-import { Circle, LocationPin } from '@mui/icons-material';
+import { Circle, FilterAlt, LocationPin } from '@mui/icons-material';
 import MapPin from '../MapPin';
 import MapPinContents from '../MapPinContents';
-
+import DropdownPopover from '../DropdownPopover';
+import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from './InstitutionFilterMenu';
 
 enum MapSteps {
   SelectingInstitution,
@@ -69,9 +70,12 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+  const [chosenState, setChosenState] = useState<string>("WI")
+  const [stateFilterMode, setStateFilterMode] = useState<StateFilterMode>("All");
+  const [classificationFilterMode, setClassificationFilterMode] = useState<ClassificationFilterMode>("All");
 
   // remove all projects that are falsy in specific fields that we need
-  const filteredProjectsData: Record<string, ProjectData> = useMemo(() => {
+  const validProjectsData: Record<string, ProjectData> = useMemo(() => {
     return Object.fromEntries(
       Object.entries(rawProjectsData ?? {}).filter(([_, p]) =>
         p.projectInstitutionName &&
@@ -81,9 +85,9 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
       )
     ) as Record<string, ProjectData>;
   }, [rawProjectsData])
-
+  
   const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
-    return Object.values(filteredProjectsData ?? {}).reduce<Record<string, ProjectData[]>>(
+    return Object.values(validProjectsData ?? {}).reduce<Record<string, ProjectData[]>>(
       (bins, project) => {
         bins[project.projectInstitutionName] ??= [];
         bins[project.projectInstitutionName].push(project as ProjectData);
@@ -91,26 +95,51 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
       },
       {}
     );
-  }, [filteredProjectsData]);
+  }, [validProjectsData]);
 
+const searchedBinnedProjects: Record<string, ProjectData[]> = useMemo(() => {
+  return Object.fromEntries(
+    Object.entries(projectBinsByInstitution).filter(([_, projects]) => {
+      const firstProject = projects[0];
+      
+      if (stateFilterMode === 'EPSCOR' && !firstProject.projectEpscorState) {
+        return false;
+      }
+      if (stateFilterMode === 'Specific' && firstProject.projectInstitutionState !== chosenState) {
+        return false;
+      }
+      if (classificationFilterMode === 'NonR1') {
+        const classification = firstProject.projectInstitutionCarnegieClassification2025;
+        if (!classification || classification.includes("Research 1:")) {
+          return false;
+        }
+      }
+      
+      // Apply search term filter
+      return firstProject.projectInstitutionName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase().trim());
+    })
+  );
+}, [projectBinsByInstitution, searchTerm, stateFilterMode, chosenState, classificationFilterMode]);
 
-  const mapPinData: ProjectPinProps[] = useMemo(() => {
-    return Object.values(projectBinsByInstitution).map((bin) => ({
-      name: bin[0].projectInstitutionName,
-      num: bin.length,
-      lat: bin[0].projectInstitutionLatitude,
-      lon: bin[0].projectInstitutionLongitude,
-      onClick: () => { dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName }) },
-    }));
-  }, [projectBinsByInstitution]);
+  // const mapPinData: ProjectPinProps[] = useMemo(() => {
+  //   return Object.values(projectBinsByInstitution).map((bin) => ({
+  //     name: bin[0].projectInstitutionName,
+  //     num: bin.length,
+  //     lat: bin[0].projectInstitutionLatitude,
+  //     lon: bin[0].projectInstitutionLongitude,
+  //     onClick: () => { dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName }) },
+  //   }));
+  // }, [projectBinsByInstitution]);
 
 
   const projectSearchParam = searchParams.get('project')
 
   useEffect(() => {
-    if (!projectSearchParam || !filteredProjectsData[projectSearchParam]) return
-    dispatch({ type: "load-from-search-params", institution: filteredProjectsData[projectSearchParam].projectInstitutionName, project: projectSearchParam })
-  }, [projectSearchParam, filteredProjectsData])
+    if (!projectSearchParam || !validProjectsData[projectSearchParam]) return
+    dispatch({ type: "load-from-search-params", institution: validProjectsData[projectSearchParam].projectInstitutionName, project: projectSearchParam })
+  }, [projectSearchParam, validProjectsData])
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
@@ -129,12 +158,17 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
   return (
     <>
       {
-        isSelectingInstitution ?
-          <ProjectPins pins={mapPinData.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase().trim()))} hidden={isViewingProject} />
-        : isSelectingProject ?
-          <ProjectPins pins={mapPinData.filter(p => p.name == state.institution)} hidden={isViewingProject} />
-        : // isViewingProject
-          <InstitutionPinsDataLoader mainPin={filteredProjectsData[state.project]} />
+        isViewingProject ?
+          <InstitutionPinsDataLoader mainPin={validProjectsData[state.project]} />
+        :
+          Object.values(searchedBinnedProjects).map((bin) => {
+            return <ProjectsPin
+              key={ bin[0].projectInstitutionName }
+              projects={bin}
+              onClick={() => { dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName }) }}
+              hidden={isViewingProject}
+            />
+          })
       }
 
       {isViewingProject ?
@@ -155,17 +189,16 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
         <Box 
           sx={{ 
             display: 'grid', 
-            gridTemplateColumns: isSelectingInstitution ? '40px auto 0px' : '40px auto 40px',
+            gridTemplateColumns: '40px auto 40px',
             alignItems: 'center',
             mb: 1
           }}
         >
-          <Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
             <Link href={isSelectingInstitution ? "../" : ""}>
               <IconButton
                 size="small"
                 onClick={() => isSelectingInstitution ? {} :dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
-                sx={{ alignSelf: 'flex-start' }}
               >
                 <ArrowBackIcon />
               </IconButton> 
@@ -188,17 +221,35 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
             }
           </Box>
 
-          <Box />
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}> 
+            {
+              isSelectingInstitution ?
+                <DropdownPopover icon={<FilterAlt />}>
+                  <InstitutionFilterMenu
+                    classificationFilterMode={classificationFilterMode}
+                    setClassificationFilterMode={setClassificationFilterMode}
+                    stateFilterMode={stateFilterMode}
+                    setStateFilterMode={setStateFilterMode}
+                    chosenState={chosenState}
+                    setChosenState={setChosenState}
+                  />
+                </DropdownPopover>
+              : <></>  
+            }
+          </Box>
         </Box>
 
         <SidebarStack>
           {
             isSelectingInstitution ?
               (
-                mapPinData
-                  .sort((a, b) => a.name.localeCompare(b.name))
-                  .filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase().trim()))
-                  .map((pin) => <InsitutionListCard key={pin.name} institution={pin} />)
+                Object.values(searchedBinnedProjects).map((bin) =>
+                  <ProjectInsitutionListCard
+                    key={bin[0].projectInstitutionName}
+                    onClick={() => dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName })}
+                    project={bin[0]}
+                  />
+                )
               )
             : isSelectingProject ?
               (
@@ -214,7 +265,7 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
                 )
               : // isViewingProject
                 ( 
-                  < ProjectStats date={ date } stats={filteredProjectsData[state.project]} />
+                  < ProjectStats date={ date } stats={validProjectsData[state.project]} />
                 )
           }
         </SidebarStack>

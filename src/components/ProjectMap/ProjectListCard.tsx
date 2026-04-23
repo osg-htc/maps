@@ -2,8 +2,9 @@ import { ProjectData } from '@/src/utils/adstash';
 import { Typography, Stack, Chip } from '@mui/material';
 import { addSpacesToUnderscores, formatNumber } from '@/src/utils/helpers';
 import ListCardBase from '../ListCardBase';
+import React from 'react';
 
-export default function ProjectListCard({ project, click }: { project: ProjectData, click: (arg0: string) => void } ) {
+function ProjectListCard({ project, click }: { project: ProjectData, click: (arg0: string) => void } ) {
   return (
     <ListCardBase listKey={ project.projectName } onClick={ () => click( project.projectName )}>
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
@@ -33,3 +34,5 @@ export default function ProjectListCard({ project, click }: { project: ProjectDa
     </ListCardBase>
   )   
 }
+
+export default React.memo(ProjectListCard)
