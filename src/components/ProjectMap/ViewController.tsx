@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Card, IconButton, Link, Popover, Stack, TextField, Typography } from '@mui/material';
+import { Badge, Box, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
@@ -14,8 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { addSpacesToUnderscores } from '@/src/utils/helpers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Legend from '../Legend';
-import { Circle, FilterAlt, LocationPin } from '@mui/icons-material';
-import MapPin from '../MapPin';
+import { FilterAlt } from '@mui/icons-material';
 import MapPinContents from '../MapPinContents';
 import DropdownPopover from '../DropdownPopover';
 import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from './InstitutionFilterMenu';
@@ -97,42 +96,33 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
     );
   }, [validProjectsData]);
 
-const searchedBinnedProjects: Record<string, ProjectData[]> = useMemo(() => {
-  return Object.fromEntries(
-    Object.entries(projectBinsByInstitution).filter(([_, projects]) => {
-      const firstProject = projects[0];
-      
-      if (stateFilterMode === 'EPSCOR' && !firstProject.projectEpscorState) {
-        return false;
-      }
-      if (stateFilterMode === 'Specific' && firstProject.projectInstitutionState !== chosenState) {
-        return false;
-      }
-      if (classificationFilterMode === 'NonR1') {
-        const classification = firstProject.projectInstitutionCarnegieClassification2025;
-        if (!classification || classification.includes("Research 1:")) {
+  const searchedBinnedProjects: Record<string, ProjectData[]> = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(projectBinsByInstitution).filter(([_, projects]) => {
+        const firstProject = projects[0];
+        
+        if (state.institution && firstProject.projectInstitutionName != state.institution) {
+          return false
+        }
+        if (stateFilterMode === 'EPSCOR' && !firstProject.projectEpscorState) {
           return false;
         }
-      }
-      
-      // Apply search term filter
-      return firstProject.projectInstitutionName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase().trim());
-    })
-  );
-}, [projectBinsByInstitution, searchTerm, stateFilterMode, chosenState, classificationFilterMode]);
-
-  // const mapPinData: ProjectPinProps[] = useMemo(() => {
-  //   return Object.values(projectBinsByInstitution).map((bin) => ({
-  //     name: bin[0].projectInstitutionName,
-  //     num: bin.length,
-  //     lat: bin[0].projectInstitutionLatitude,
-  //     lon: bin[0].projectInstitutionLongitude,
-  //     onClick: () => { dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName }) },
-  //   }));
-  // }, [projectBinsByInstitution]);
-
+        if (stateFilterMode === 'Specific' && firstProject.projectInstitutionState !== chosenState) {
+          return false;
+        }
+        if (classificationFilterMode === 'NonR1') {
+          const classification = firstProject.projectInstitutionCarnegieClassification2025;
+          if (!classification || classification.includes("Research 1:")) {
+            return false;
+          }
+        }
+        
+        return firstProject.projectInstitutionName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase().trim());
+      })
+    );
+  }, [projectBinsByInstitution, searchTerm, stateFilterMode, chosenState, classificationFilterMode, state.institution]);
 
   const projectSearchParam = searchParams.get('project')
 
@@ -149,7 +139,7 @@ const searchedBinnedProjects: Record<string, ProjectData[]> = useMemo(() => {
       params.delete('project')
     }
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [state.step, projectSearchParam])
+  }, [state.step, projectSearchParam, pathname, router, searchParams, state.project])
 
   const isSelectingInstitution = state.step === MapSteps.SelectingInstitution;
   const isSelectingProject = state.step === MapSteps.SelectingProject;
@@ -224,7 +214,11 @@ const searchedBinnedProjects: Record<string, ProjectData[]> = useMemo(() => {
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}> 
             {
               isSelectingInstitution ?
-                <DropdownPopover icon={<FilterAlt />}>
+                <DropdownPopover icon={
+                  <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
+                    <FilterAlt />
+                  </Badge>
+                }>
                   <InstitutionFilterMenu
                     classificationFilterMode={classificationFilterMode}
                     setClassificationFilterMode={setClassificationFilterMode}

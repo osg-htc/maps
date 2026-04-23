@@ -1,2 +1,3 @@
 - Change contributor pins to bars with contribution representation
-- filter isntitutions by r1, r2 or epschor states
+- Add view to see contributions of resource institutions
+- Add totals pane to filtered side bar

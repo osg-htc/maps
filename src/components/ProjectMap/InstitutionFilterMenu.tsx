@@ -1,4 +1,4 @@
-import { Box, Checkbox, Divider, FormControl, FormControlLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent } from "@mui/material";
+import { Box, Divider, FormControl, FormControlLabel, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent } from "@mui/material";
 import { US_STATES } from "@/src/utils/helpers"
 
 export type ClassificationFilterMode = "All" | "NonR1"

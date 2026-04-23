@@ -9,7 +9,6 @@ import {
 async function buildBackupMap() {
   const recordEnd = await getDateOfLatestData();
   if (!recordEnd) throw new Error('recordEnd was undefined');
-  const oneYearAgo = new Date(new Date(recordEnd).setFullYear(new Date(recordEnd).getFullYear() - 1));
 
   return [
     { function: getLatestOSPoolOverview, args: [] },
