@@ -167,10 +167,15 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
       {
         isViewingProject ?
           <InstitutionPinsDataLoader mainPin={validProjectsData[state.project]} />
-        :
+          :
+          // Having these projects pins have the same parent as our cards and buttons 
+          // means when those clickables are hovered for the first time and they 
+          // generate their "highlight" elements, it adds styles here which causes 
+          // mapbox to re render the pins, not a big performance impact through so 
+          // it doesnt really matter
           searchedBinnedProjectsArray.map((bin) => {
             return <ProjectsPin
-              key={ bin[0].projectInstitutionName }
+              key={bin[0].projectInstitutionName}
               projects={bin}
               onClick={handleInstitutionSelect}
               hidden={isViewingProject}
@@ -203,7 +208,7 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
         >
           <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
             <Link href={isSelectingInstitution ? "../" : ""}>
-              <IconButton disableRipple
+              <IconButton
                 size="small"
                 onClick={() => isSelectingInstitution ? {} :dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
               >

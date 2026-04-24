@@ -5,7 +5,6 @@ import MapPin from '../MapPin'
 import ArrowPopUp from '../ArrowPopUp'
 import React from 'react'
 import { ProjectData } from '@/src/utils/adstash'
-import { useEffect, useRef } from 'react';
 
 function ProjectsPin(props: { projects: ProjectData[], onClick: (arg0: string) => void, hidden?: boolean }) {
   const { projects, onClick, hidden = false } = props;

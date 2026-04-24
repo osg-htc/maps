@@ -4,9 +4,6 @@ import { LocationPin, Circle } from '@mui/icons-material';
 import { Box } from '@mui/material';
 
 export default function MapPin({ color, size }: { color: string, size: number }) {
-
-  console.log("new contents")
-
   return (
     <>
       <Box sx={{ position: 'relative', width: 'fit-content' }}>

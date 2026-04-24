@@ -10,11 +10,6 @@ export default function ViewControllerLoader() {
     const { data, isLoading } = useSWR(
       [getProjects], 
       () => fetchWithBackup(getProjects),
-      {
-        revalidateOnFocus: false, // prevents useSWR from fetching a new array when we click 
-        // around the page, which we need to to because that new fetched data would have a 
-        // new data which triggers unnecessary re-renders
-      }
     );
 
   if (isLoading || !data) {
