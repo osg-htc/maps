@@ -1,7 +1,7 @@
 'use client'
 
 import { Badge, Box, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
@@ -124,6 +124,10 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
     );
   }, [projectBinsByInstitution, searchTerm, stateFilterMode, chosenState, classificationFilterMode, state.institution]);
 
+  const searchedBinnedProjectsArray = useMemo(() => {
+    return Object.values(searchedBinnedProjects);
+  }, [searchedBinnedProjects]);
+
   const projectSearchParam = searchParams.get('project')
 
   useEffect(() => {
@@ -133,17 +137,30 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
+    const currentProject = params.get('project');
+    
     if (state.step == MapSteps.ViewingProject) {
-      params.set('project', state.project)
+      // Only update if the URL doesn't already have the correct project
+      if (currentProject !== state.project) {
+        params.set('project', state.project);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      }
     } else {
-      params.delete('project')
+      // Only update if there's a project param to remove
+      if (currentProject !== null) {
+        params.delete('project');
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      }
     }
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
-  }, [state.step, projectSearchParam, pathname, router, searchParams, state.project])
+  }, [state.step, pathname, router, searchParams, state.project])
 
   const isSelectingInstitution = state.step === MapSteps.SelectingInstitution;
   const isSelectingProject = state.step === MapSteps.SelectingProject;
   const isViewingProject = state.step === MapSteps.ViewingProject;
+
+  const handleInstitutionSelect = useCallback((institution: string) => {
+    dispatch({ type: "institution-select", institution });
+  }, []);
 
   return (
     <>
@@ -151,11 +168,11 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
         isViewingProject ?
           <InstitutionPinsDataLoader mainPin={validProjectsData[state.project]} />
         :
-          Object.values(searchedBinnedProjects).map((bin) => {
+          searchedBinnedProjectsArray.map((bin) => {
             return <ProjectsPin
               key={ bin[0].projectInstitutionName }
               projects={bin}
-              onClick={() => { dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName }) }}
+              onClick={handleInstitutionSelect}
               hidden={isViewingProject}
             />
           })
@@ -186,7 +203,7 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
         >
           <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
             <Link href={isSelectingInstitution ? "../" : ""}>
-              <IconButton
+              <IconButton disableRipple
                 size="small"
                 onClick={() => isSelectingInstitution ? {} :dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
               >
@@ -237,7 +254,7 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
           {
             isSelectingInstitution ?
               (
-                Object.values(searchedBinnedProjects).map((bin) =>
+                searchedBinnedProjectsArray.map((bin) =>
                   <ProjectInsitutionListCard
                     key={bin[0].projectInstitutionName}
                     onClick={() => dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName })}

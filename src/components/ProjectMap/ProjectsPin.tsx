@@ -1,12 +1,15 @@
+'use client'
+
 import { Typography } from '@mui/material'
 import MapPin from '../MapPin'
 import ArrowPopUp from '../ArrowPopUp'
 import React from 'react'
 import { ProjectData } from '@/src/utils/adstash'
+import { useEffect, useRef } from 'react';
 
-function ProjectsPin({ projects, onClick, hidden = false }: { projects: ProjectData[], onClick: () => void, hidden?: boolean }) {
+function ProjectsPin(props: { projects: ProjectData[], onClick: (arg0: string) => void, hidden?: boolean }) {
+  const { projects, onClick, hidden = false } = props;
   const p = projects[0]
-
   return (
     <MapPin
       key={p.projectInstitutionName}
@@ -17,7 +20,7 @@ function ProjectsPin({ projects, onClick, hidden = false }: { projects: ProjectD
       lat={p.projectInstitutionLatitude}
       lon={p.projectInstitutionLongitude}
       hidden={hidden}
-      onClick={onClick}
+      onClick={() => onClick(p.projectInstitutionName)}
     >
       <ArrowPopUp>
         <Typography align="center" noWrap variant="subtitle2" lineHeight={ 1 } color={"secondary.main"}>

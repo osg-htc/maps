@@ -13,13 +13,18 @@ export default function ListCardBase({ children, listKey, onClick, link }: { chi
         },
       }}
     >
-      <Link underline='none' href={ link ?? "" }>
+      { link ? <Link underline='none' href={link}>
+        <CardActionArea onClick={onClick}>
+          <CardContent sx={{ p: 1.5 }}>
+            {children}
+          </CardContent>
+        </CardActionArea>
+      </Link> :
         <CardActionArea onClick={onClick}>
           <CardContent sx={{ p: 1.5 }}>
             { children }
           </CardContent>
-        </CardActionArea>
-      </Link>
+        </CardActionArea>}
     </Card>
   )   
 }

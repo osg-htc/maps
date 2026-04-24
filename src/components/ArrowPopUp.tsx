@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Card } from '@mui/material';
 
-function ArrowPopUp({children, left}: {children: ReactNode, left?: boolean}) {
+function ArrowPopUp({ children, left }: { children: ReactNode, left?: boolean }) {
   return (
     <Card
       variant="outlined"
