@@ -9,6 +9,7 @@ import { numberWithCommas } from '@/src/utils/helpers';
 import MapPinContents from '../MapPinContents';
 import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
+import InstitutionContributionBar from './InstitutionContributionBar';
 
 export default function ProjectMapContributorPins({ mainPin }: { mainPin: ProjectData }) {
   const { data: projectOverviewResponse } = useSWR(
@@ -42,7 +43,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
             key={pin.institutionName}
             lat={pin.institutionLatitude}
             lon={pin.institutionLongitude}
-            content={<MapPinContents color='secondary.main' size={30} />}
+            content={<InstitutionContributionBar backgroundColor='secondary.main' width={15} height={15} />}
             popUp={
               <ArrowPopUp left={true}>
                 <Typography noWrap variant="body1" color={"secondary.main"}>
