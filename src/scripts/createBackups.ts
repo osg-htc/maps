@@ -21,7 +21,7 @@ async function buildBackupMap() {
   ];
 }
 
-async function fetchBackup(fetcher: (...args: any[]) => Promise<any>, ...args: any[]) {
+async function fetchBackup(fetcher: (...args: any[]) => Promise<any>, args: any[]) {
   const data = await fetcher(...args);
   const backupData = { data, date: new Date().toISOString() };
   
@@ -36,7 +36,7 @@ async function main() {
   const tasks = await buildBackupMap();
   const BATCH_SIZE = 10;
   for (let i = 0; i < tasks.length; i += BATCH_SIZE) {
-    await Promise.all(tasks.slice(i, i + BATCH_SIZE).map(t => fetchBackup(t.function, ...(t.args || []))));
+    await Promise.all(tasks.slice(i, i + BATCH_SIZE).map(t => fetchBackup(t.function, t.args)));
     console.log(`Batch ${i / BATCH_SIZE + 1} of ${Math.ceil(tasks.length / BATCH_SIZE)} done`);
   }
 }

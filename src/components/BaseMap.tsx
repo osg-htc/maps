@@ -4,7 +4,7 @@ import {ReactNode, useState} from "react";
 import Map from "react-map-gl/mapbox"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {Box} from '@mui/material';
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 function BaseMap({children}: {children: ReactNode}) {
   const [mounted, setMounted] = useState(true);

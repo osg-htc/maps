@@ -4,7 +4,6 @@ import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Box } from '@mui/material';
 import { ReactNode, useRef, useState } from 'react';
-import MapPinContents from './MapPinContents';
 
 export type MapPinProps = {
   lat: number,
