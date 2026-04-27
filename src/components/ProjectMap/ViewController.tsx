@@ -198,7 +198,7 @@ export default function ViewController() {
         <Legend left={sidebarHiddenSearchParam ? 0 : 400}>
           <Stack direction="row" alignItems="center" spacing={0}>
             <MapPinContents color='primary.main' size={30} />
-            <Typography variant="subtitle1">Selected institution</Typography>
+            <Typography variant="subtitle1">Project institution</Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={0}>
             <MapPinContents color='secondary.main' size={30} />
