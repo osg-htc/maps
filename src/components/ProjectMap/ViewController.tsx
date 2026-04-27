@@ -128,7 +128,7 @@ export default function ViewController() {
         return firstProject.projectInstitutionName
           .toLowerCase()
           .includes(searchTerm.toLowerCase().trim());
-      })
+      }).sort()
     );
   }, [projectBinsByInstitution, searchTerm, stateFilterMode, chosenState, classificationFilterMode, state.institution]);
 
