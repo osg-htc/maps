@@ -11,7 +11,7 @@ import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
 
 export default function ProjectMapContributorPins({ mainPin }: { mainPin: ProjectData }) {
-  const { data } = useSWR(
+  const { data: projectOverviewResponse } = useSWR(
     [mainPin, getProjectOverview],
     () => fetchWithBackup(getProjectOverview, mainPin.projectName),
     { suspense: true }
@@ -19,14 +19,14 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
   
   const filteredProjectContributors: Record<string, InstitutionData> = useMemo(() => {
     return Object.fromEntries(
-      Object.entries(data.data).filter(([_, p]) =>
+      Object.entries(projectOverviewResponse.data).filter(([_, p]) =>
         p.institutionName &&
         p.institutionName !== mainPin.projectInstitutionName &&
         p.institutionLatitude &&
         p.institutionLongitude
       )
     ) as Record<string, InstitutionData>;
-  }, [data.data, mainPin])
+  }, [projectOverviewResponse.data, mainPin])
 
   return (
       <>
@@ -37,7 +37,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
           content={<MapPinContents color='primary.main' size={40}/>}
           
         />
-        {Object.values(filteredProjectContributors).map((pin, i) => (
+        {Object.values(filteredProjectContributors).map((pin, _) => (
           <MapPin
             key={pin.institutionName}
             lat={pin.institutionLatitude}

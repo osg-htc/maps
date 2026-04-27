@@ -75,26 +75,23 @@ export default function ViewController() {
   const [chosenState, setChosenState] = useState<string>("WI")
   const [stateFilterMode, setStateFilterMode] = useState<StateFilterMode>("All");
   const [classificationFilterMode, setClassificationFilterMode] = useState<ClassificationFilterMode>("All");
-  const { data, isLoading } = useSWR(
+  const { data: getProjectsResponse } = useSWR(
       [getProjects], 
       () => fetchWithBackup(getProjects),
       { suspense: true }
   );
-  
-  const date = data.date
-  const rawProjectsData = data.data
 
   // remove all projects that are falsy in specific fields that we need
   const validProjectsData: Record<string, ProjectData> = useMemo(() => {
     return Object.fromEntries(
-      Object.entries(rawProjectsData ?? {}).filter(([_, p]) =>
+      Object.entries(getProjectsResponse.data ?? {}).filter(([_, p]) =>
         p.projectInstitutionName &&
         p.projectName &&
         p.projectInstitutionLatitude &&
         p.projectInstitutionLongitude
       )
     ) as Record<string, ProjectData>;
-  }, [rawProjectsData])
+  }, [getProjectsResponse.data])
   
   const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
     return Object.values(validProjectsData ?? {}).reduce<Record<string, ProjectData[]>>(
@@ -296,7 +293,7 @@ export default function ViewController() {
                   )
                   : // isViewingProject
                   (
-                    < ProjectStats date={date} stats={validProjectsData[state.project]} />
+                    < ProjectStats date={getProjectsResponse.date} stats={validProjectsData[state.project]} />
                   )
             }
           </SidebarStack>
