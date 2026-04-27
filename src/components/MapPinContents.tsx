@@ -1,9 +1,7 @@
-'use client';
-
 import { LocationPin, Circle } from '@mui/icons-material';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-export default function MapPin({ color, size }: { color: string, size: number }) {
+export default function MapPin({ color, size, text }: { color: string, size: number, text?: string }) {
   return (
     <>
       <Box sx={{ position: 'relative', width: 'fit-content' }}>
@@ -20,6 +18,16 @@ export default function MapPin({ color, size }: { color: string, size: number })
           transform: "translate(-50%, -50%)"
         }} />
       </Box>
+      <Typography sx={{
+        color: "white",
+        fontSize: size / 2,
+        position: "absolute",
+        top: "35%",
+        left: "50%",
+        transform: "translate(-50%, -50%)"
+      }}>
+        {text}
+      </Typography>
     </>
   )
 }

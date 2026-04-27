@@ -4,9 +4,13 @@ import {ReactNode, useState} from "react";
 import Map from "react-map-gl/mapbox"
 import 'mapbox-gl/dist/mapbox-gl.css';
 import {Box} from '@mui/material';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 function BaseMap({children}: {children: ReactNode}) {
   const [mounted, setMounted] = useState(true);
+  const searchParams = useSearchParams();
+
+  const sidebarHiddenSearchParam = searchParams.get('sidebarHidden')
 
   return (
     <>
@@ -28,7 +32,7 @@ function BaseMap({children}: {children: ReactNode}) {
             latitude: 37.8,
             zoom: 3,
             padding: {
-              left: 400
+              left: sidebarHiddenSearchParam ? 0 : 400
             }
           }}
           projection={'globe'}

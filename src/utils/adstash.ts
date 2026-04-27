@@ -7,6 +7,7 @@ const ADSTASH_ENDPOINT: string = "https://elastic.osg.chtc.io/q"
 
 async function elasticSearch<T = unknown>(body: object = {}): Promise<T> {
   const url = `${ADSTASH_ENDPOINT}/${ADSTASH_SUMMARY_INDEX}/_search`
+  //const url = `FAKE_URL_IN_ADSTASH.TS`
 
   const response = await Promise.race([
     fetch(url, {

@@ -1,12 +1,12 @@
 'use client'
 
 import { Badge, Box, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { ProjectData } from '@/src/utils/adstash';
+import { Suspense, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
 import ProjectsPin from "./ProjectsPin"
-import InstitutionPinsDataLoader from "./InstitutionPinsDataLoader"
+import InstitutionPins from "./InstitutionPins"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
 import ProjectInsitutionListCard from './ProjectInsitutionListCard';
@@ -18,6 +18,9 @@ import { FilterAlt } from '@mui/icons-material';
 import MapPinContents from '../MapPinContents';
 import DropdownPopover from '../DropdownPopover';
 import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from './InstitutionFilterMenu';
+import LoadingScreen from '../LoadingScreen';
+import useSWR from 'swr';
+import fetchWithBackup from '@/src/utils/fetchWithBackup';
 
 enum MapSteps {
   SelectingInstitution,
@@ -63,7 +66,7 @@ function reducer(state: MapStates, action: MapActions): MapStates {
   }
 }
 
-export default function ViewController({ date, rawProjectsData }: { date: Date, rawProjectsData: Record<string, Partial<ProjectData>>  }) {
+export default function ViewController() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const searchParams = useSearchParams();
@@ -72,6 +75,14 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
   const [chosenState, setChosenState] = useState<string>("WI")
   const [stateFilterMode, setStateFilterMode] = useState<StateFilterMode>("All");
   const [classificationFilterMode, setClassificationFilterMode] = useState<ClassificationFilterMode>("All");
+  const { data, isLoading } = useSWR(
+      [getProjects], 
+      () => fetchWithBackup(getProjects),
+      { suspense: true }
+  );
+  
+  const date = data.date
+  const rawProjectsData = data.data
 
   // remove all projects that are falsy in specific fields that we need
   const validProjectsData: Record<string, ProjectData> = useMemo(() => {
@@ -129,6 +140,7 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
   }, [searchedBinnedProjects]);
 
   const projectSearchParam = searchParams.get('project')
+  const sidebarHiddenSearchParam = searchParams.get('sidebarHidden')
 
   useEffect(() => {
     if (!projectSearchParam || !validProjectsData[projectSearchParam]) return
@@ -166,7 +178,9 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
     <>
       {
         isViewingProject ?
-          <InstitutionPinsDataLoader mainPin={validProjectsData[state.project]} />
+          <Suspense fallback={<LoadingScreen />}>
+            <InstitutionPins mainPin={validProjectsData[state.project]} />
+          </Suspense>
           :
           // Having these projects pins have the same parent as our cards and buttons 
           // means when those clickables are hovered for the first time and they 
@@ -184,7 +198,7 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
       }
 
       {isViewingProject ?
-        <Legend>
+        <Legend left={sidebarHiddenSearchParam ? 0 : 400}>
           <Stack direction="row" alignItems="center" spacing={0}>
             <MapPinContents color='primary.main' size={30} />
             <Typography variant="subtitle1">Selected institution</Typography>
@@ -197,95 +211,97 @@ export default function ViewController({ date, rawProjectsData }: { date: Date, 
         : <></>
       }
 
-      <Sidebar>
-        <Box 
-          sx={{ 
-            display: 'grid', 
-            gridTemplateColumns: '40px auto 40px',
-            alignItems: 'center',
-            mb: 1
-          }}
-        >
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <Link href={isSelectingInstitution ? "../" : ""}>
-              <IconButton
-                size="small"
-                onClick={() => isSelectingInstitution ? {} :dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
-              >
-                <ArrowBackIcon />
-              </IconButton> 
-            </Link>
-          </Box>
-          <Box>
-            {
-              isSelectingInstitution ?
-                <TextField
-                  fullWidth
+      {sidebarHiddenSearchParam ? <></> :
+        <Sidebar>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: '40px auto 40px',
+              alignItems: 'top',
+              mb: 1
+            }}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.5 }}>
+              <Link href={isSelectingInstitution ? "../" : ""}>
+                <IconButton
                   size="small"
-                  placeholder="Search institutions..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              : isSelectingProject ? 
-                <Typography variant="h5" align='center' sx={{textWrap: 'balance'}}>{ state.institution }</Typography>
-              : // isViewing Project
-                <Typography variant="h5" align='center' sx={{textWrap: 'balance'}}>{ addSpacesToUnderscores(state.project) }</Typography>    
-            }
+                  onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+                >
+                  <ArrowBackIcon />
+                </IconButton>
+              </Link>
+            </Box>
+            <Box>
+              {
+                isSelectingInstitution ?
+                  <TextField
+                    fullWidth
+                    size="small"
+                    placeholder="Search institutions..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  : isSelectingProject ?
+                    <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>
+                    : // isViewing Project
+                    <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{addSpacesToUnderscores(state.project)}</Typography>
+              }
+            </Box>
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              {
+                isSelectingInstitution ?
+                  <DropdownPopover icon={
+                    <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
+                      <FilterAlt />
+                    </Badge>
+                  }>
+                    <InstitutionFilterMenu
+                      classificationFilterMode={classificationFilterMode}
+                      setClassificationFilterMode={setClassificationFilterMode}
+                      stateFilterMode={stateFilterMode}
+                      setStateFilterMode={setStateFilterMode}
+                      chosenState={chosenState}
+                      setChosenState={setChosenState}
+                    />
+                  </DropdownPopover>
+                  : <></>
+              }
+            </Box>
           </Box>
 
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}> 
+          <SidebarStack>
             {
               isSelectingInstitution ?
-                <DropdownPopover icon={
-                  <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
-                    <FilterAlt />
-                  </Badge>
-                }>
-                  <InstitutionFilterMenu
-                    classificationFilterMode={classificationFilterMode}
-                    setClassificationFilterMode={setClassificationFilterMode}
-                    stateFilterMode={stateFilterMode}
-                    setStateFilterMode={setStateFilterMode}
-                    chosenState={chosenState}
-                    setChosenState={setChosenState}
-                  />
-                </DropdownPopover>
-              : <></>  
-            }
-          </Box>
-        </Box>
-
-        <SidebarStack>
-          {
-            isSelectingInstitution ?
-              (
-                searchedBinnedProjectsArray.map((bin) =>
-                  <ProjectInsitutionListCard
-                    key={bin[0].projectInstitutionName}
-                    onClick={() => dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName })}
-                    project={bin[0]}
-                  />
-                )
-              )
-            : isSelectingProject ?
-              (
-                projectBinsByInstitution[state.institution]
-                  .sort((a, b) => b.numJobs - a.numJobs)
-                  .map((project: ProjectData) => (
-                    <ProjectListCard 
-                      key={project.projectName} 
-                      project={project} 
-                      click={(p) => dispatch({ type: "project-select", project: p })} 
+                (
+                  searchedBinnedProjectsArray.map((bin) =>
+                    <ProjectInsitutionListCard
+                      key={bin[0].projectInstitutionName}
+                      onClick={() => dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName })}
+                      project={bin[0]}
                     />
-                  ))
+                  )
                 )
-              : // isViewingProject
-                ( 
-                  < ProjectStats date={ date } stats={validProjectsData[state.project]} />
-                )
-          }
-        </SidebarStack>
-      </Sidebar>
+                : isSelectingProject ?
+                  (
+                    projectBinsByInstitution[state.institution]
+                      .sort((a, b) => b.numJobs - a.numJobs)
+                      .map((project: ProjectData) => (
+                        <ProjectListCard
+                          key={project.projectName}
+                          project={project}
+                          click={(p) => dispatch({ type: "project-select", project: p })}
+                        />
+                      ))
+                  )
+                  : // isViewingProject
+                  (
+                    < ProjectStats date={date} stats={validProjectsData[state.project]} />
+                  )
+            }
+          </SidebarStack>
+        </Sidebar>
+      }
     </>
   );
 }

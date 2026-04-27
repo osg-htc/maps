@@ -1,3 +1,4 @@
 - Change contributor pins to bars with contribution representation
 - Add view to see contributions of resource institutions
 - Add totals pane to filtered side bar
+- Hide side bar option

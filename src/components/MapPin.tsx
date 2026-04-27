@@ -2,21 +2,19 @@
 
 import { Marker } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Box, Typography } from '@mui/material';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { Box } from '@mui/material';
+import { ReactNode, useRef, useState } from 'react';
 import MapPinContents from './MapPinContents';
 
 export type MapPinProps = {
-  name?: string
-  text?: number,
-  color: string,
-  size: number,
   lat: number,
   lon: number,
   hidden?: boolean,
-  onClick?: () => void,
+  extraZ?: number,
   onTop?: boolean,
-  children?: ReactNode
+  onClick?: () => void,
+  popUp?: ReactNode
+  content: ReactNode
 }
 
 export default function MapPin(props: MapPinProps) {
@@ -38,13 +36,13 @@ export default function MapPin(props: MapPinProps) {
 
   return (
     <Marker
-      key={ props.name }
+      // key={ props.listKey }
       latitude={ props.lat }
       longitude={ props.lon }
       anchor="bottom"
       onClick={ props.onClick }
       style={{
-        zIndex: hovered ? 1000 : props.onTop ? 500 : (props.text ?? 1)
+        zIndex: hovered ? 1000 : props.onTop ? 500 : (props.extraZ)
       }}
     >
       <Box
@@ -56,18 +54,8 @@ export default function MapPin(props: MapPinProps) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        <MapPinContents color={props.color} size={props.size}/>
-        <Typography sx={{
-          color: "white",
-          fontSize: props.size / 2,
-          position: "absolute",
-          top: "35%",
-          left: "50%",
-          transform: "translate(-50%, -50%)"
-        }}>
-          {props.text}
-        </Typography>
-        {hovered && props.children}
+        {props.content}
+        {hovered && props.popUp}
       </Box>
     </Marker>
   )
