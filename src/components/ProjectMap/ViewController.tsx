@@ -21,6 +21,8 @@ import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from
 import LoadingScreen from '../LoadingScreen';
 import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import InstitutionContributionBar from './InstitutionContributionBar';
 
 enum MapSteps {
   SelectingInstitution,
@@ -197,11 +199,15 @@ export default function ViewController() {
       {isViewingProject ?
         <Legend left={sidebarHiddenSearchParam ? 0 : 400}>
           <Stack direction="row" alignItems="center" spacing={0}>
-            <MapPinContents color='primary.main' size={30} />
+            <Box width={30} height={40} sx={{ display: 'flex', justifyContent: 'center'}}>
+              <MapPinContents color='secondary.main' size={30} />
+            </Box>
             <Typography variant="subtitle1">Project institution</Typography>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={0}>
-            <MapPinContents color='secondary.main' size={30} />
+            <Box width={30} height={40} sx={{ display: 'flex', justifyContent: 'center'}}>
+              <InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={30} />
+            </Box>
             <Typography variant="subtitle1">Contributing institution</Typography>
           </Stack>
         </Legend>
@@ -263,6 +269,14 @@ export default function ViewController() {
                     />
                   </DropdownPopover>
                   : <></>
+                  // : isViewingProject ? 
+                  //   <IconButton
+                  //     size="small"
+                  //     onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+                  //   >
+                  //     <FileDownloadIcon />
+                  //   </IconButton>
+                  // : <></>
               }
             </Box>
           </Box>

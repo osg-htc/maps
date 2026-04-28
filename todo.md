@@ -2,3 +2,5 @@
 - Add view to see contributions of resource institutions
 - Add totals pane to filtered side bar
 - Hide side bar option
+- Add colors for epscor and non-r1 pins
+- Add download button for contributors map -> csv

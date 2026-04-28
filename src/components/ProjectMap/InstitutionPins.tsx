@@ -29,6 +29,10 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
     ) as Record<string, InstitutionData>;
   }, [projectOverviewResponse.data, mainPin])
 
+  const largestContributor = Object.values(filteredProjectContributors).reduce((max, current) => 
+    current.numJobs > max.numJobs ? current : max
+  );
+
   return (
       <>
         <MapPin
@@ -44,7 +48,7 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
           lat={pin.institutionLatitude}
           lon={pin.institutionLongitude}
           extraZ={Math.floor(pin.institutionLatitude)}
-          content={<InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={((pin.numJobs / mainPin.numJobs) * 500) + 10} />}
+          content={<InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={((pin.numJobs / largestContributor.numJobs) * 150) + 10} />}
             popUp={
               <ArrowPopUp left={true}>
                 <Typography noWrap variant="body1" color={"secondary.main"}>
