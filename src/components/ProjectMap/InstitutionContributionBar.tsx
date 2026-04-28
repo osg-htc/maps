@@ -5,10 +5,9 @@ export default function InstitutionContributionBar({ backgroundColor, height, wi
     <Box sx={{
       position: 'relative',
       border: '2px solid black',
-      backgroundColor,
-      width,
-      height,
-      zIndex: height,
+      backgroundColor: backgroundColor,
+      width: width,
+      height: height,
     }} />
   )
 }

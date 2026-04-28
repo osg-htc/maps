@@ -35,15 +35,16 @@ export default function ProjectMapContributorPins({ mainPin }: { mainPin: Projec
           lat={mainPin.projectInstitutionLatitude}
           lon={mainPin.projectInstitutionLongitude}
           onTop
-          content={<MapPinContents color='primary.main' size={40}/>}
+          content={<MapPinContents color='secndary.main' size={40}/>}
           
         />
-        {Object.values(filteredProjectContributors).map((pin, _) => (
-          <MapPin
-            key={pin.institutionName}
-            lat={pin.institutionLatitude}
-            lon={pin.institutionLongitude}
-            content={<InstitutionContributionBar backgroundColor='secondary.main' width={15} height={15} />}
+      {Object.values(filteredProjectContributors).map((pin, _) => (
+        <MapPin
+          key={pin.institutionName}
+          lat={pin.institutionLatitude}
+          lon={pin.institutionLongitude}
+          extraZ={Math.floor(pin.institutionLatitude)}
+          content={<InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={((pin.numJobs / mainPin.numJobs) * 500) + 10} />}
             popUp={
               <ArrowPopUp left={true}>
                 <Typography noWrap variant="body1" color={"secondary.main"}>
