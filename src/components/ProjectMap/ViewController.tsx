@@ -2,7 +2,7 @@
 
 import { Badge, Box, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
 import { Suspense, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { getProjects, ProjectData } from '@/src/utils/adstash';
+import { getProjectOverview, getProjects, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
 import ProjectsPin from "./ProjectsPin"
@@ -82,7 +82,7 @@ export default function ViewController() {
       () => fetchWithBackup(getProjects),
       { suspense: true }
   );
-
+  
   // remove all projects that are falsy in specific fields that we need
   const validProjectsData: Record<string, ProjectData> = useMemo(() => {
     return Object.fromEntries(
@@ -95,6 +95,15 @@ export default function ViewController() {
     ) as Record<string, ProjectData>;
   }, [getProjectsResponse.data])
   
+  // Gets the pins for the selected project if there is one
+  const { data: projectOverviewResponse } = useSWR(
+    // having null as the key makes SWR always instantly return { data: undefined, error: undefined, isLoading: false }
+    state.project != "" ? [validProjectsData[state.project], getProjectOverview] : null, 
+    () => fetchWithBackup(getProjectOverview, validProjectsData[state.project].projectName),
+    { suspense: true }
+  ) 
+
+
   const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
     return Object.values(validProjectsData ?? {}).reduce<Record<string, ProjectData[]>>(
       (bins, project) => {
@@ -177,10 +186,11 @@ export default function ViewController() {
     <>
       {
         isViewingProject ?
-          <Suspense fallback={<LoadingScreen />}>
-            <InstitutionPins mainPin={validProjectsData[state.project]} />
-          </Suspense>
+          projectOverviewResponse ?
+            <InstitutionPins mainPin={validProjectsData[state.project]} institutionPins={projectOverviewResponse.data} />
           :
+            <LoadingScreen />
+        :
           // Having these projects pins have the same parent as our cards and buttons 
           // means when those clickables are hovered for the first time and they 
           // generate their "highlight" elements, it adds styles here which causes 
@@ -234,6 +244,7 @@ export default function ViewController() {
                 </IconButton>
               </Link>
             </Box>
+            
             <Box>
               {
                 isSelectingInstitution ?
@@ -246,38 +257,39 @@ export default function ViewController() {
                   />
                   : isSelectingProject ?
                     <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>
-                    : // isViewing Project
+                  : // isViewing Project
                     <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{addSpacesToUnderscores(state.project)}</Typography>
               }
             </Box>
 
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              {
-                isSelectingInstitution ?
-                  <DropdownPopover icon={
-                    <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
-                      <FilterAlt />
-                    </Badge>
-                  }>
-                    <InstitutionFilterMenu
-                      classificationFilterMode={classificationFilterMode}
-                      setClassificationFilterMode={setClassificationFilterMode}
-                      stateFilterMode={stateFilterMode}
-                      setStateFilterMode={setStateFilterMode}
-                      chosenState={chosenState}
-                      setChosenState={setChosenState}
-                    />
-                  </DropdownPopover>
-                  : <></>
-                  // : isViewingProject ? 
-                  //   <IconButton
-                  //     size="small"
-                  //     onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
-                  //   >
-                  //     <FileDownloadIcon />
-                  //   </IconButton>
-                  // : <></>
-              }
+            <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.5 }}>
+              <Box>
+                {
+                  isSelectingInstitution ?
+                    <DropdownPopover icon={
+                      <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
+                        <FilterAlt />
+                      </Badge>
+                    }>
+                      <InstitutionFilterMenu
+                        classificationFilterMode={classificationFilterMode}
+                        setClassificationFilterMode={setClassificationFilterMode}
+                        stateFilterMode={stateFilterMode}
+                        setStateFilterMode={setStateFilterMode}
+                        chosenState={chosenState}
+                        setChosenState={setChosenState}
+                      />
+                    </DropdownPopover>
+                    : isViewingProject ? 
+                        <IconButton
+                          size="small"
+                          onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+                        >
+                          <FileDownloadIcon />
+                        </IconButton>
+                    : <></>
+                }
+              </Box>
             </Box>
           </Box>
 
