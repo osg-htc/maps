@@ -203,7 +203,10 @@ export default function ViewController() {
       ...rows.map(row => row.join(","))
     ].join("\n");
 
-    const url = URL.createObjectURL(new Blob([csvContent], { type: 'text/csv' }));
+    // this Uint8Array is the "UTF-8 Byte Order Mark (BOM)", it forces Excel to read the file correctly 
+    // to avoid garbled text that you would otherwise get on older machines with special characters
+    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+    const url = URL.createObjectURL(new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' }));
     
     const link = document.createElement('a');
     link.href = url;
