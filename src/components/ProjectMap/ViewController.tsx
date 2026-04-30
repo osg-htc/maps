@@ -2,7 +2,7 @@
 
 import { Badge, Box, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
 import { Suspense, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { getProjectOverview, getProjects, ProjectData } from '@/src/utils/adstash';
+import { getProjectOverview, getProjects, InstitutionData, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
 import ProjectsPin from "./ProjectsPin"
@@ -94,15 +94,6 @@ export default function ViewController() {
       )
     ) as Record<string, ProjectData>;
   }, [getProjectsResponse.data])
-  
-  // Gets the pins for the selected project if there is one
-  const { data: projectOverviewResponse } = useSWR(
-    // having null as the key makes SWR always instantly return { data: undefined, error: undefined, isLoading: false }
-    state.project != "" ? [validProjectsData[state.project], getProjectOverview] : null, 
-    () => fetchWithBackup(getProjectOverview, validProjectsData[state.project].projectName),
-    { suspense: true }
-  ) 
-
 
   const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
     return Object.values(validProjectsData ?? {}).reduce<Record<string, ProjectData[]>>(
@@ -181,6 +172,49 @@ export default function ViewController() {
   const handleInstitutionSelect = useCallback((institution: string) => {
     dispatch({ type: "institution-select", institution });
   }, []);
+
+  // Gets the pins for the selected project if there is one
+  const { data: projectOverviewResponse } = useSWR(
+    // having null as the key makes SWR always instantly return { data: undefined, error: undefined, isLoading: false }
+    state.project != "" ? [validProjectsData[state.project], getProjectOverview] : null, 
+    () => fetchWithBackup(getProjectOverview, validProjectsData[state.project].projectName),
+    { suspense: true }
+  ) 
+
+  function downloadCSV() {
+    const headers: (keyof InstitutionData)[] =[
+      "institutionName", 
+      "numJobs", 
+      "cpuHours", 
+      "gpuHours", 
+      "osdfFileTransferCount", 
+      "osdfByteTransferCount"
+    ];
+
+    const rows = Object.values(projectOverviewResponse.data).map((institution) => 
+      headers.map(header => {
+        const value = institution[header] ?? "";
+        return typeof value === 'string' ? `"${value}"` : value;
+      })
+    );
+
+    const csvContent =[
+      headers.join(","),
+      ...rows.map(row => row.join(","))
+    ].join("\n");
+
+    const url = URL.createObjectURL(new Blob([csvContent], { type: 'text/csv' }));
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = state.project + '.csv';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    URL.revokeObjectURL(url);
+  }
 
   return (
     <>
@@ -283,7 +317,7 @@ export default function ViewController() {
                     : isViewingProject ? 
                         <IconButton
                           size="small"
-                          onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+                          onClick={downloadCSV}
                         >
                           <FileDownloadIcon />
                         </IconButton>
