@@ -1,18 +1,16 @@
 'use client'
 
 import MapPin from '../MapPin'
-import { getProjectOverview, InstitutionData, ProjectData } from '@/src/utils/adstash';
+import { InstitutionData, ProjectData } from '@/src/utils/adstash';
 import ArrowPopUp from '../ArrowPopUp';
 import { Typography } from '@mui/material';
 import { numberWithCommas } from '@/src/utils/helpers';
 import MapPinContents from '../MapPinContents';
-import useSWR from 'swr';
-import fetchWithBackup from '@/src/utils/fetchWithBackup';
 import InstitutionContributionBar from './InstitutionContributionBar';
 
 export default function InstitutionPins({ mainPin, institutionPins }: { mainPin: ProjectData, institutionPins: Record<string, Partial<InstitutionData>> | undefined }) {  
   const filteredProjectContributors: Record<string, InstitutionData> = Object.fromEntries(
-    Object.entries(institutionPins ?? []).filter(([_, p]) =>
+    Object.entries(institutionPins ?? []).filter(([, p]) =>
       p.institutionName &&
       p.institutionName !== mainPin.projectInstitutionName &&
       p.institutionLatitude &&
@@ -33,7 +31,7 @@ export default function InstitutionPins({ mainPin, institutionPins }: { mainPin:
           content={<MapPinContents color='secndary.main' size={40}/>}
           
         />
-      {Object.values(filteredProjectContributors).map((pin, _) => (
+      {Object.values(filteredProjectContributors).map((pin) => (
         <MapPin
           key={pin.institutionName}
           lat={pin.institutionLatitude}

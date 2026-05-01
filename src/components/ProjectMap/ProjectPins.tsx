@@ -16,7 +16,7 @@ function ProjectPins({ bins, onClick, hidden} : { bins: ProjectData[][], onClick
     <>
       {
         bins.map((bin) => {
-          let p = bin[0] // first project > reprasentative of the institution itself
+          const p = bin[0] // first project > reprasentative of the institution itself
 
           const classification = p.projectInstitutionCarnegieClassification2025;
           const nonR1 = (classification && !classification.includes("Research 1:")) 

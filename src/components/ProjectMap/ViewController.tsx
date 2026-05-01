@@ -1,7 +1,7 @@
 'use client'
 
-import { Badge, Box, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
-import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { Badge, Box, IconButton, Link, TextField, Typography } from '@mui/material';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { getProjectOverview, getProjects, InstitutionData, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
@@ -89,7 +89,7 @@ export default function ViewController() {
   // remove all projects that are falsy in specific fields that we need
   const validProjectsData = useMemo(() => { // breaks without this explicit memo for some reason
     return Object.fromEntries(
-      Object.entries(getProjectsResponse.data ?? {}).filter(([_, p]) =>
+      Object.entries(getProjectsResponse.data ?? {}).filter(([, p]) =>
         p.projectInstitutionName &&
         p.projectName &&
         p.projectInstitutionLatitude &&
@@ -109,7 +109,7 @@ export default function ViewController() {
     );
 
   const searchedBinnedProjects: Record<string, ProjectData[]> = Object.fromEntries(
-    Object.entries(projectBinsByInstitution).filter(([_, projects]) => {
+    Object.entries(projectBinsByInstitution).filter(([, projects]) => {
       const firstProject = projects[0];
       
       if (state.institution && firstProject.projectInstitutionName != state.institution) {

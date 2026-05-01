@@ -1,5 +1,3 @@
 - Add view to see contributions of resource institutions
 - Add totals pane to filtered side bar
 - Hide side bar button
-- Add colors for epscor and non-r1 pins
-- React compiler

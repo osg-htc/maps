@@ -1,10 +1,10 @@
 import { getBackupPath, BACKUP_URL_PATH } from './helpers';
 
-export default async function fetchWithBackup<T>(
-  fetcher: (...args: any[]) => Promise<T>,
-  ...args: any[]
+export default async function fetchWithBackup<T extends unknown[], K>(
+  fetcher: (...args: T) => Promise<K>,
+  ...args: T
 ): Promise<{
-  data: T,
+  data: K,
   date: Date,
   fromBackup: boolean
 }> {
@@ -18,7 +18,12 @@ export default async function fetchWithBackup<T>(
 
     const response = await fetch(backupUrl);
     if (!response.ok) throw new Error(`Backup not found: ${response.statusText}`);
-    const data = await response.json();
-    return { data: data['data'], date: new Date(data['date']), fromBackup: true };
+
+    const backup = (await response.json()) as { data: K, date: string };
+    return { 
+      data: backup.data, 
+      date: new Date(backup.date), 
+      fromBackup: true 
+    };
   }
 }
