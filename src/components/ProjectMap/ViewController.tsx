@@ -5,7 +5,7 @@ import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getProjectOverview, getProjects, InstitutionData, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
-import ProjectsPin from "./ProjectsPin"
+import ProjectPins, { epscorColor, epscorNonR1Color, nonR1Color } from "./ProjectPins"
 import InstitutionPins from "./InstitutionPins"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
@@ -23,6 +23,7 @@ import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import InstitutionContributionBar from './InstitutionContributionBar';
+import LegendEntry from '../LegendEntry';
 
 enum MapSteps {
   SelectingInstitution,
@@ -223,38 +224,29 @@ export default function ViewController() {
           :
             <LoadingScreen />
         :
-          // Having these projects pins have the same parent as our cards and buttons 
-          // means when those clickables are hovered for the first time and they 
-          // generate their "highlight" elements, it adds styles here which causes 
-          // mapbox to re render the pins, not a big performance impact through so 
-          // it doesnt really matter
-          searchedBinnedProjectsArray.map((bin) => {
-            return <ProjectsPin
-              key={bin[0].projectInstitutionName}
-              projects={bin}
-              onClick={handleInstitutionSelect}
-              hidden={isViewingProject}
-            />
-          })
+          <ProjectPins
+            bins={searchedBinnedProjectsArray}
+            onClick={handleInstitutionSelect}
+            hidden={isViewingProject}
+          />
       }
 
-      {isViewingProject ?
-        <Legend left={sidebarHiddenSearchParam ? 0 : 400}>
-          <Stack direction="row" alignItems="center" spacing={0}>
-            <Box width={30} height={40} sx={{ display: 'flex', justifyContent: 'center'}}>
-              <MapPinContents color='secondary.main' size={30} />
-            </Box>
-            <Typography variant="subtitle1">Project institution</Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center" spacing={0}>
-            <Box width={30} height={40} sx={{ display: 'flex', justifyContent: 'center'}}>
-              <InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={30} />
-            </Box>
-            <Typography variant="subtitle1">Contributing institution</Typography>
-          </Stack>
-        </Legend>
-        : <></>
-      }
+      
+      <Legend left={sidebarHiddenSearchParam ? 0 : 400}>
+        {isViewingProject ?
+          <>
+            <LegendEntry text='Project institution' icon={<MapPinContents color='secondary.main' size={30} />} />
+            <LegendEntry text='Contributing institution' icon={<InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={30} />} />
+          </>
+        : <>
+            <LegendEntry text='Project institutions' icon={<MapPinContents color='primary.main' size={30} />} />
+            <LegendEntry text='Non-R1 Universities' icon={<MapPinContents color={nonR1Color} size={30} />} />
+            <LegendEntry text='Project institutions in EPSCOR states' icon={<MapPinContents color={epscorColor} size={30} />} />
+            <LegendEntry text='Non-R1 Universities in EPSCOR states' icon={<MapPinContents color={epscorNonR1Color} size={30} />} />
+          </>
+        }
+      </Legend>
+
 
       {sidebarHiddenSearchParam ? <></> :
         <Sidebar>
