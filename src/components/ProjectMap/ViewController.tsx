@@ -1,7 +1,7 @@
 'use client'
 
 import { Badge, Box, IconButton, Link, Stack, TextField, Typography } from '@mui/material';
-import { Suspense, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { getProjectOverview, getProjects, InstitutionData, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
 import SidebarStack from '../SidebarStack';
@@ -69,6 +69,8 @@ function reducer(state: MapStates, action: MapActions): MapStates {
 }
 
 export default function ViewController() {
+  'use memo';
+
   const [state, dispatch] = useReducer(reducer, initialState);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const searchParams = useSearchParams();
@@ -82,9 +84,9 @@ export default function ViewController() {
       () => fetchWithBackup(getProjects),
       { suspense: true }
   );
-  
+
   // remove all projects that are falsy in specific fields that we need
-  const validProjectsData: Record<string, ProjectData> = useMemo(() => {
+  const validProjectsData = useMemo(() => { // breaks without this explicit memo for some reason
     return Object.fromEntries(
       Object.entries(getProjectsResponse.data ?? {}).filter(([_, p]) =>
         p.projectInstitutionName &&
@@ -93,10 +95,10 @@ export default function ViewController() {
         p.projectInstitutionLongitude
       )
     ) as Record<string, ProjectData>;
-  }, [getProjectsResponse.data])
+  }, [getProjectsResponse.data]);
 
-  const projectBinsByInstitution: Record<string, ProjectData[]> = useMemo(() => {
-    return Object.values(validProjectsData ?? {}).reduce<Record<string, ProjectData[]>>(
+  const projectBinsByInstitution: Record<string, ProjectData[]> =
+    Object.values(validProjectsData ?? {}).reduce<Record<string, ProjectData[]>>(
       (bins, project) => {
         bins[project.projectInstitutionName] ??= [];
         bins[project.projectInstitutionName].push(project as ProjectData);
@@ -104,39 +106,34 @@ export default function ViewController() {
       },
       {}
     );
-  }, [validProjectsData]);
 
-  const searchedBinnedProjects: Record<string, ProjectData[]> = useMemo(() => {
-    return Object.fromEntries(
-      Object.entries(projectBinsByInstitution).filter(([_, projects]) => {
-        const firstProject = projects[0];
-        
-        if (state.institution && firstProject.projectInstitutionName != state.institution) {
-          return false
-        }
-        if (stateFilterMode === 'EPSCOR' && !firstProject.projectEpscorState) {
+  const searchedBinnedProjects: Record<string, ProjectData[]> = Object.fromEntries(
+    Object.entries(projectBinsByInstitution).filter(([_, projects]) => {
+      const firstProject = projects[0];
+      
+      if (state.institution && firstProject.projectInstitutionName != state.institution) {
+        return false
+      }
+      if (stateFilterMode === 'EPSCOR' && !firstProject.projectEpscorState) {
+        return false;
+      }
+      if (stateFilterMode === 'Specific' && firstProject.projectInstitutionState !== chosenState) {
+        return false;
+      }
+      if (classificationFilterMode === 'NonR1') {
+        const classification = firstProject.projectInstitutionCarnegieClassification2025;
+        if (!classification || classification.includes("Research 1:")) {
           return false;
         }
-        if (stateFilterMode === 'Specific' && firstProject.projectInstitutionState !== chosenState) {
-          return false;
-        }
-        if (classificationFilterMode === 'NonR1') {
-          const classification = firstProject.projectInstitutionCarnegieClassification2025;
-          if (!classification || classification.includes("Research 1:")) {
-            return false;
-          }
-        }
-        
-        return firstProject.projectInstitutionName
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase().trim());
-      }).sort()
-    );
-  }, [projectBinsByInstitution, searchTerm, stateFilterMode, chosenState, classificationFilterMode, state.institution]);
+      }
+      
+      return firstProject.projectInstitutionName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase().trim());
+    }).sort()
+  );
 
-  const searchedBinnedProjectsArray = useMemo(() => {
-    return Object.values(searchedBinnedProjects);
-  }, [searchedBinnedProjects]);
+  const searchedBinnedProjectsArray = Object.values(searchedBinnedProjects);
 
   const projectSearchParam = searchParams.get('project')
   const sidebarHiddenSearchParam = searchParams.get('sidebarHidden')
@@ -169,10 +166,8 @@ export default function ViewController() {
   const isSelectingProject = state.step === MapSteps.SelectingProject;
   const isViewingProject = state.step === MapSteps.ViewingProject;
 
-  const handleInstitutionSelect = useCallback((institution: string) => {
-    dispatch({ type: "institution-select", institution });
-  }, []);
-
+  const handleInstitutionSelect = (institution: string) => { dispatch({ type: "institution-select", institution }); }
+  
   // Gets the pins for the selected project if there is one
   const { data: projectOverviewResponse } = useSWR(
     // having null as the key makes SWR always instantly return { data: undefined, error: undefined, isLoading: false }
@@ -344,7 +339,7 @@ export default function ViewController() {
                 )
                 : isSelectingProject ?
                   (
-                    projectBinsByInstitution[state.institution]
+                    [...projectBinsByInstitution[state.institution]]
                       .sort((a, b) => b.numJobs - a.numJobs)
                       .map((project: ProjectData) => (
                         <ProjectListCard

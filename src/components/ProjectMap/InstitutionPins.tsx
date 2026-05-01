@@ -2,7 +2,6 @@
 
 import MapPin from '../MapPin'
 import { getProjectOverview, InstitutionData, ProjectData } from '@/src/utils/adstash';
-import { useMemo } from 'react';
 import ArrowPopUp from '../ArrowPopUp';
 import { Typography } from '@mui/material';
 import { numberWithCommas } from '@/src/utils/helpers';
@@ -11,17 +10,15 @@ import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
 import InstitutionContributionBar from './InstitutionContributionBar';
 
-export default function ProjectMapContributorPins({ mainPin, institutionPins }: { mainPin: ProjectData, institutionPins: Record<string, Partial<InstitutionData>> | undefined }) {  
-  const filteredProjectContributors: Record<string, InstitutionData> = useMemo(() => {
-    return Object.fromEntries(
-      Object.entries(institutionPins ?? []).filter(([_, p]) =>
-        p.institutionName &&
-        p.institutionName !== mainPin.projectInstitutionName &&
-        p.institutionLatitude &&
-        p.institutionLongitude
-      )
-    ) as Record<string, InstitutionData>;
-  }, [institutionPins, mainPin])
+export default function InstitutionPins({ mainPin, institutionPins }: { mainPin: ProjectData, institutionPins: Record<string, Partial<InstitutionData>> | undefined }) {  
+  const filteredProjectContributors: Record<string, InstitutionData> = Object.fromEntries(
+    Object.entries(institutionPins ?? []).filter(([_, p]) =>
+      p.institutionName &&
+      p.institutionName !== mainPin.projectInstitutionName &&
+      p.institutionLatitude &&
+      p.institutionLongitude
+    )
+  ) as Record<string, InstitutionData>;
 
   const largestContributor = Object.values(filteredProjectContributors).reduce((max, current) => 
     current.numJobs > max.numJobs ? current : max

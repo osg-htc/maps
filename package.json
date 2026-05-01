@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "prebuild": "npx tsx src/scripts/createBackups.ts",
     "build": "next build",
     "postbuild": "next-image-export-optimizer && next-sitemap",
@@ -39,6 +39,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "15.4.6",
+    "eslint-plugin-react-compiler": "19.1.0-rc.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
