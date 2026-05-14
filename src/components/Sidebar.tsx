@@ -16,7 +16,7 @@ export default function Sidebar({children}: {children: ReactNode}) {
         borderRadius: 3,
         p: 2,
 
-        zIndex: 2000,
+        zIndex: 9003,
 
         display: 'flex',
         flexDirection: 'column',

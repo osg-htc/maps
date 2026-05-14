@@ -8,7 +8,9 @@ import { numberWithCommas } from '@/src/utils/helpers';
 import MapPinContents from '../MapPinContents';
 import InstitutionContributionBar from './InstitutionContributionBar';
 
-export default function InstitutionPins({ mainPin, institutionPins }: { mainPin: ProjectData, institutionPins: Record<string, Partial<InstitutionData>> | undefined }) {  
+export default function InstitutionPins({ mainPin, institutionPins }: { mainPin: ProjectData, institutionPins: Record<string, Partial<InstitutionData>> | undefined }) {
+  console.log(institutionPins)
+
   const filteredProjectContributors: Record<string, InstitutionData> = Object.fromEntries(
     Object.entries(institutionPins ?? []).filter(([, p]) =>
       p.institutionName &&
@@ -17,6 +19,8 @@ export default function InstitutionPins({ mainPin, institutionPins }: { mainPin:
       p.institutionLongitude
     )
   ) as Record<string, InstitutionData>;
+
+  console.log(filteredProjectContributors)
 
   const largestContributor = Object.values(filteredProjectContributors).reduce((max, current) => 
     current.numJobs > max.numJobs ? current : max
@@ -36,7 +40,7 @@ export default function InstitutionPins({ mainPin, institutionPins }: { mainPin:
           key={pin.institutionName}
           lat={pin.institutionLatitude}
           lon={pin.institutionLongitude}
-          extraZ={Math.floor(pin.institutionLatitude)}
+          extraZ={9000 - Math.floor(pin.institutionLatitude*100)} // must be an integer
           content={<InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={((pin.numJobs / largestContributor.numJobs) * 150) + 10} />}
             popUp={
               <ArrowPopUp left={true}>

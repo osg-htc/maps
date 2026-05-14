@@ -177,6 +177,8 @@ export default function ViewController() {
     { suspense: true }
   ) 
 
+  console.log(projectOverviewResponse)
+
   function downloadCSV() {
     const headers: (keyof InstitutionData)[] =[
       "institutionName", 

@@ -36,7 +36,7 @@ export default function DropdownPopover({ icon, children }: {icon: ReactNode, ch
           horizontal: 'left',
         }}
         sx={{
-          zIndex: 3100
+          zIndex: 9003
         }}
       >
         {children}

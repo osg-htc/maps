@@ -14,7 +14,7 @@ export default function Legend({children, left}: {children: ReactNode, left: num
         borderRadius: 3,
         p: 2,
 
-        zIndex: 2000,
+        zIndex: 9100,
       }}
     >
       { children }

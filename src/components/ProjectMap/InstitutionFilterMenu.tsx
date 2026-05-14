@@ -56,7 +56,7 @@ export default function FilterMenuContent({
                 sx={{ ml: 1 }}
                 MenuProps={{
                   sx: {
-                    zIndex: 3200, 
+                    zIndex: 9004, 
                     maxHeight: '50vh',
                   } 
                 }}
