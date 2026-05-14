@@ -20,9 +20,23 @@ export default function InstitutionPins({ mainPin, institutionPins }: { mainPin:
     )
   ) as Record<string, InstitutionData>;
 
-  console.log(filteredProjectContributors)
+  const filteredProjectContributorsArray = Object.values(filteredProjectContributors)
 
-  const largestContributor = Object.values(filteredProjectContributors).reduce((max, current) => 
+
+  // A project that has jobs should never be able to have no contributing institutions, 
+  // but if it does, we just return the main pin here and ignore the bars
+  if (filteredProjectContributorsArray.length < 1) {
+    return (
+      <MapPin
+        lat={mainPin.projectInstitutionLatitude}
+        lon={mainPin.projectInstitutionLongitude}
+        onTop
+        content={<MapPinContents color='secndary.main' size={40}/>}
+      />
+    )
+  }
+
+  const largestContributor = filteredProjectContributorsArray.reduce((max, current) => 
     current.numJobs > max.numJobs ? current : max
   );
 
@@ -35,12 +49,12 @@ export default function InstitutionPins({ mainPin, institutionPins }: { mainPin:
           content={<MapPinContents color='secndary.main' size={40}/>}
           
         />
-      {Object.values(filteredProjectContributors).map((pin) => (
+      {filteredProjectContributorsArray.map((pin) => (
         <MapPin
           key={pin.institutionName}
           lat={pin.institutionLatitude}
           lon={pin.institutionLongitude}
-          extraZ={9000 - Math.floor(pin.institutionLatitude*100)} // must be an integer
+          extraZ={9000 - Math.floor(pin.institutionLatitude*100)} // must be an integer, have to scale to capture decimals
           content={<InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={((pin.numJobs / largestContributor.numJobs) * 150) + 10} />}
             popUp={
               <ArrowPopUp left={true}>
