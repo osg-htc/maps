@@ -1,6 +1,7 @@
 import { getBackupPath, BACKUP_URL_PATH } from './helpers';
 
 export default async function fetchWithBackup<T extends unknown[], K>(
+  functionKey: string,
   fetcher: (...args: T) => Promise<K>,
   ...args: T
 ): Promise<{
@@ -12,7 +13,7 @@ export default async function fetchWithBackup<T extends unknown[], K>(
     const data = await fetcher(...args);
     return { data, date: new Date(), fromBackup: false };
   } catch {
-    const fileName = getBackupPath(fetcher, args);
+    const fileName = getBackupPath(functionKey, args);
     const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
     const backupUrl = `${basePath}${BACKUP_URL_PATH}/${fileName}`;
 

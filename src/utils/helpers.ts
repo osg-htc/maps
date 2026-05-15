@@ -46,8 +46,8 @@ export function generateHash(string: string) {
 export const BACKUP_DIRECTORY = './public/fallbacks'; // filesystem path for script
 export const BACKUP_URL_PATH = '/fallbacks'; // HTTP path for runtime
 
-export function getBackupPath<T extends unknown[]>(fetcher: (...args: T) => unknown, args: T): string {
-  const hash = generateHash(`${fetcher.name}:${JSON.stringify(args)}`);
+export function getBackupPath(functionKey: string, args: unknown[]): string {
+  const hash = generateHash(`${functionKey}:${JSON.stringify(args)}`);
   return `${hash}.json`;
 }
 
