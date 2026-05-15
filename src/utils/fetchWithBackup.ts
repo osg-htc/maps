@@ -18,7 +18,18 @@ export default async function fetchWithBackup<T extends unknown[], K>(
     const backupUrl = `${basePath}${BACKUP_URL_PATH}/${fileName}`;
 
     const response = await fetch(backupUrl);
-    if (!response.ok) throw new Error(`Backup not found: ${response.statusText}`);
+    if (!response.ok) {
+      let errorMessage = [
+        `Backup not found: ${response.statusText}`,
+        `fileName: ${fileName}`,
+        `basePath: ${basePath}`,
+        `backupUrl: ${backupUrl}`,
+        `functionKey: ${functionKey}`,
+        `fetcher: ${fetcher}`,
+        `args: ${JSON.stringify(args)}`
+      ].join('\n\t')
+      throw new Error(errorMessage);
+    }
 
     const backup = (await response.json()) as { data: K, date: string };
     return { 
