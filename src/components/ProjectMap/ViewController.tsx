@@ -24,6 +24,8 @@ import fetchWithBackup from '@/src/utils/fetchWithBackup';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import InstitutionContributionBar from './InstitutionContributionBar';
 import LegendEntry from '../LegendEntry';
+import LogoContainer from '../LogoContainer';
+import LinkLogoImage from '../LinkLogoImage';
 
 enum MapSteps {
   SelectingInstitution,
@@ -249,6 +251,11 @@ export default function ViewController() {
         }
       </Legend>
 
+      <LogoContainer>
+        <LinkLogoImage src={'/maps/images/OSDF_logo_round.png'} alt={'OSDF logo'} href={'https://osg-htc.org/services/osdf'} size={75} />
+        <LinkLogoImage src={'/maps/images/OSPool_logo_round.png'} alt={'OSPool logo'} href={'https://osg-htc.org/services/ospool/'} size={75} />
+        <LinkLogoImage src={'/maps/images/PATh_logo_round.png'} alt={'PATh logo'} href={'https://path-cc.io/'} size={75} />
+      </LogoContainer>
 
       {sidebarHiddenSearchParam ? <></> :
         <Sidebar>
