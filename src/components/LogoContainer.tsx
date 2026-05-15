@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 export default function LogoContainer({children}: {children: ReactNode}) {
   return (
     <Paper
-      elevation={2}
+      elevation={0}
       sx={{
         position: 'absolute',
         boxSizing: 'border-box',
