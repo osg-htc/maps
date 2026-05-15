@@ -6,13 +6,27 @@ import theme, {fonts} from "@chtc/web-components/themes/osg"
 import "@/src/app/globals.css"
 import Analytics from "@/src/components/Analytics";
 import BaseMap from "@/src/components/BaseMap";
-import { Suspense } from "react";
+import { Suspense, useCallback } from "react";
 import LoadingScreen from "../components/LoadingScreen";
 
 export const metadata: Metadata = {
-  title: "Website Template",
-  description: "Website template for CHTC projects",
-	metadataBase: new URL(`https://${process.env.HOSTNAME}`),
+  title: "Maps",
+  description: 'A collection of maps',
+  metadataBase: new URL(`https://${process.env.HOSTNAME}`),
+  openGraph: {
+    title: 'Maps',
+    description: 'A collection of maps',
+    type: 'website',
+    url: `https://${process.env.HOSTNAME}/maps/`,
+    images: [
+      {
+        url: '/maps/images/globe-thumbnail-wide.png',
+        width: 1200,
+        height: 630,
+        alt: 'A blank globe'
+      }
+    ]
+  }
 };
 
 export default function RootLayout({
