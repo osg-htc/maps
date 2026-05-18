@@ -3,7 +3,7 @@ import ListCardBase from '../ListCardBase';
 import { InstitutionData, ProjectData } from '@/src/utils/adstash';
 import React from 'react';
 
-function InsitutionListCard({ institution, onClick }: { institution: InstitutionData, onClick: () => void }) {
+function InstitutionListCard({ institution, onClick }: { institution: InstitutionData, onClick: () => void }) {
   return (
     <ListCardBase onClick={ onClick }>
       <Typography color="secondary.main" variant="body1" lineHeight={1.2}>
@@ -13,4 +13,4 @@ function InsitutionListCard({ institution, onClick }: { institution: Institution
   )   
 }
 
-export default React.memo(InsitutionListCard)
+export default React.memo(InstitutionListCard)

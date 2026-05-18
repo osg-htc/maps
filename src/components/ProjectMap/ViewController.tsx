@@ -8,7 +8,7 @@ import ProjectPins from "./ProjectPins"
 import InstitutionPins from "./InstitutionPins"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
-import ProjectInsitutionListCard from './ProjectInsitutionListCard';
+import ProjectInstitutionListCard from './ProjectInstitutionListCard';
 import { addSpacesToUnderscores, epscorColor, epscorNonR1Color, nonR1Color } from '@/src/utils/helpers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Legend from '../Legend';
@@ -318,7 +318,7 @@ export default function ViewController() {
             isSelectingInstitution ?
               (
                 searchedBinnedProjectsArray.map((bin) =>
-                  <ProjectInsitutionListCard
+                  <ProjectInstitutionListCard
                     key={bin[0].projectInstitutionName}
                     onClick={() => dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName })}
                     project={bin[0]}
