@@ -23,6 +23,9 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import InstitutionContributionBar from './InstitutionContributionBar';
 import LegendEntry from '../LegendEntry';
 import BackButton from '../BackButton';
+import LogoContainer from '../LogoContainer';
+import LinkLogoImage from '../LinkLogoImage';
+
 
 enum MapSteps {
   SelectingInstitution,
@@ -81,7 +84,7 @@ export default function ViewController() {
   const [classificationFilterMode, setClassificationFilterMode] = useState<ClassificationFilterMode>("All");
   const { data: getProjectsResponse } = useSWR(
       [getProjects], 
-      () => fetchWithBackup(getProjects),
+      () => fetchWithBackup('getProjects', getProjects),
       { suspense: true }
   );
 
@@ -172,7 +175,7 @@ export default function ViewController() {
   const { data: projectOverviewResponse } = useSWR(
     // having null as the key makes SWR always instantly return { data: undefined, error: undefined, isLoading: false }
     state.project != "" ? [validProjectsData[state.project], getProjectOverview] : null, 
-    () => fetchWithBackup(getProjectOverview, validProjectsData[state.project].projectName),
+    () => fetchWithBackup('getProjectOverview', getProjectOverview, validProjectsData[state.project].projectName),
     { suspense: true }
   ) 
 
@@ -248,6 +251,11 @@ export default function ViewController() {
         }
       </Legend>
 
+      <LogoContainer>
+        <LinkLogoImage src={'/maps/images/OSDF_logo_round.png'} alt={'OSDF logo'} href={'https://osg-htc.org/services/osdf'} size={75} />
+        <LinkLogoImage src={'/maps/images/OSPool_logo_round.png'} alt={'OSPool logo'} href={'https://osg-htc.org/services/ospool/'} size={75} />
+        <LinkLogoImage src={'/maps/images/PATh_logo_round.png'} alt={'PATh logo'} href={'https://path-cc.io/'} size={75} />
+      </LogoContainer>
 
       {sidebarHiddenSearchParam ? <></> :
         <Sidebar

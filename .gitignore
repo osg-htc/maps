@@ -36,3 +36,7 @@ next-env.d.ts
 
 # fallback files
 public/fallbacks/*
+
+# Optimized images
+public/images/nextImageExportOptimizer
+public/images/next-image-export-optimizer-hashes.json
