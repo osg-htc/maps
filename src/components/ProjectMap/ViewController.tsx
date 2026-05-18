@@ -4,12 +4,12 @@ import { Badge, Box, IconButton, Link, TextField, Typography } from '@mui/materi
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { getProjectOverview, getProjects, InstitutionData, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
-import ProjectPins, { epscorColor, epscorNonR1Color, nonR1Color } from "./ProjectPins"
+import ProjectPins from "./ProjectPins"
 import InstitutionPins from "./InstitutionPins"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
 import ProjectInsitutionListCard from './ProjectInsitutionListCard';
-import { addSpacesToUnderscores } from '@/src/utils/helpers';
+import { addSpacesToUnderscores, epscorColor, epscorNonR1Color, nonR1Color } from '@/src/utils/helpers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Legend from '../Legend';
 import { FilterAlt } from '@mui/icons-material';

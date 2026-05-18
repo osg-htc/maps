@@ -51,6 +51,25 @@ export function getBackupPath(functionKey: string, args: unknown[]): string {
   return `${hash}.json`;
 }
 
+export const epscorColor = '#B61F24' // PATh red
+export const nonR1Color = '#0885ff' // Pelican blue
+export const epscorNonR1Color = '#8a84d6' // iris purple 
+
+export function getPinColor(classification: string, isEpscorState: boolean) {
+  const nonR1 = (classification && !classification.includes("Research 1:"))
+  let color = 'primary.main'
+
+  if (isEpscorState && nonR1) {
+    color = epscorColor
+  } else if (isEpscorState) {
+    color = epscorColor
+  } else if (nonR1) {
+    color = nonR1Color
+  }
+
+  return color;
+}
+
 export const US_STATES: string[] = [
   "AL", // Alabama
   "AK", // Alaska

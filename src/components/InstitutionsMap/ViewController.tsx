@@ -3,22 +3,40 @@
 import { Typography } from "@mui/material";
 import Sidebar from "../Sidebar";
 import useSWR from "swr";
-import { getInstitutions } from "@/src/utils/adstash";
+import { getInstitutions, InstitutionData } from "@/src/utils/adstash";
 import fetchWithBackup from "@/src/utils/fetchWithBackup";
+import { useMemo } from "react";
+import InstitutionPins from "./InstitutionPins";
 
 export default function ViewController() {
-
   const { data: getInstitutionsResponse } = useSWR(
     [getInstitutions], 
     () => fetchWithBackup("getInstitutions", getInstitutions),
     { suspense: true }
   );
 
-  console.log(getInstitutionsResponse)
+  const validInstitutions = useMemo(() => {
+    return Object.fromEntries(
+      Object.entries(getInstitutionsResponse.data ?? {}).filter(([, i]) =>
+        i.institutionName &&
+        i.institutionName &&
+        i.institutionLatitude &&
+        i.institutionLongitude
+      )
+    ) as Record<string, InstitutionData>;
+  }, [getInstitutionsResponse.data]);
+
+  const validInstitutionsArray = Object.values(validInstitutions)
+
+  console.log(validInstitutionsArray)
 
   return (
-    <Sidebar body={
-      <Typography>Hello, World!</Typography>
-    } />
+    <>
+      <InstitutionPins institutions={validInstitutionsArray} />
+
+      <Sidebar body={
+        <Typography>Hello, World!</Typography>
+      } />
+    </>
   )
 }

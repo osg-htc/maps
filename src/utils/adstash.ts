@@ -48,6 +48,7 @@ export type OverviewStats = ComputeStats & {
 
 export type InstitutionData = OverviewStats & {
   institutionCarnegieClassification2025: string 
+  institutionEpscorState: boolean
   institutionIpedsHistoricallyBlackCollegeOrUniversity: boolean 
   institutionIpedsTribalCollegeOrUniversity: boolean 
   institutionIpedsWebsiteAddress: string 
@@ -296,6 +297,7 @@ export async function getInstitutions(
       institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
       institutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "tribal_college_or_university"),
       institutionCarnegieClassification2025: getFromCommonField<string>(v, "ResourceInstitution", "carnegie_metadata", "classification2025"),
+      institutionEpscorState: EPSCOR_STATES.includes(getFromCommonField<string>(v, 'ResourceInstitution', 'state') ?? '')
     }
     return p
   }, {})
