@@ -14,7 +14,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Legend from '../Legend';
 import { FilterAlt } from '@mui/icons-material';
 import DropdownPopover from '../DropdownPopover';
-import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from './InstitutionFilterMenu';
+import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from '../InstitutionFilterMenu';
 import LoadingScreen from '../LoadingScreen';
 import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
@@ -26,46 +26,46 @@ import LegendContentInstitutions from '../LegendContentInstitutions';
 import LegendContentProjects from '../LegendContentProjects';
 
 
-enum MapSteps {
+enum ProjectMapSteps {
   SelectingInstitution,
   SelectingProject,
   ViewingProject,
 }
 
-type MapStates =
-  | { step: MapSteps.SelectingInstitution, institution: "", project: "" }
-  | { step: MapSteps.SelectingProject, institution: string, project: "" }
-  | { step: MapSteps.ViewingProject, institution: string, project: string }
+type ProjectMapStates =
+  | { step: ProjectMapSteps.SelectingInstitution, institution: "", project: "" }
+  | { step: ProjectMapSteps.SelectingProject, institution: string, project: "" }
+  | { step: ProjectMapSteps.ViewingProject, institution: string, project: string }
 
-type MapActions =
+type ProjectMapActions =
   | { type: "institution-select", institution: string }
   | { type: "institution-deselect" }
   | { type: "project-select", project: string }
   | { type: "project-deselect" }
   | { type: "load-from-search-params", institution: string, project: string }
 
-const initialState: MapStates = {
-  step: MapSteps.SelectingInstitution, 
+const initialState: ProjectMapStates = {
+  step: ProjectMapSteps.SelectingInstitution, 
   institution: "",
   project: ""
 }
 
-function reducer(state: MapStates, action: MapActions): MapStates {
+function reducer(state: ProjectMapStates, action: ProjectMapActions): ProjectMapStates {
   switch (action.type) {
     case "institution-select": {
-      return { step: MapSteps.SelectingProject, institution: action.institution, project: "" };
+      return { step: ProjectMapSteps.SelectingProject, institution: action.institution, project: "" };
     }
     case "institution-deselect":{
-      return { step: MapSteps.SelectingInstitution, institution: "", project: "" };
+      return { step: ProjectMapSteps.SelectingInstitution, institution: "", project: "" };
     }
     case "project-select":{
-      return { step: MapSteps.ViewingProject, institution: state.institution, project: action.project };
+      return { step: ProjectMapSteps.ViewingProject, institution: state.institution, project: action.project };
     }
     case "project-deselect":{
-      return { step: MapSteps.SelectingProject, institution: state.institution, project: "" };
+      return { step: ProjectMapSteps.SelectingProject, institution: state.institution, project: "" };
     }
     case "load-from-search-params": {
-      return { step: MapSteps.ViewingProject, institution: action.institution, project: action.project }
+      return { step: ProjectMapSteps.ViewingProject, institution: action.institution, project: action.project }
     }
   }
 }
@@ -149,7 +149,7 @@ export default function ViewController() {
     const params = new URLSearchParams(searchParams);
     const currentProject = params.get('project');
     
-    if (state.step == MapSteps.ViewingProject) {
+    if (state.step == ProjectMapSteps.ViewingProject) {
       // Only update if the URL doesn't already have the correct project
       if (currentProject !== state.project) {
         params.set('project', state.project);
@@ -164,9 +164,9 @@ export default function ViewController() {
     }
   }, [state.step, pathname, router, searchParams, state.project])
 
-  const isSelectingInstitution = state.step === MapSteps.SelectingInstitution;
-  const isSelectingProject = state.step === MapSteps.SelectingProject;
-  const isViewingProject = state.step === MapSteps.ViewingProject;
+  const isSelectingInstitution = state.step === ProjectMapSteps.SelectingInstitution;
+  const isSelectingProject = state.step === ProjectMapSteps.SelectingProject;
+  const isViewingProject = state.step === ProjectMapSteps.ViewingProject;
 
   const handleInstitutionSelect = (institution: string) => { dispatch({ type: "institution-select", institution }); }
   
