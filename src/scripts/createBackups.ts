@@ -7,13 +7,14 @@ import {
 } from '../utils/adstash';
 
 async function fetchBackup<T extends unknown[], K>(
+  functionKey: string,
   fetcher: (...args: T) => Promise<K>,
   args: T
 ): Promise<void> {
   const data = await fetcher(...args);
   const backupData = { data, date: new Date().toISOString() };
   
-  const fileName = getBackupPath(fetcher, args);
+  const fileName = getBackupPath(functionKey, args);
   const backupFilePath = path.join(BACKUP_DIRECTORY, fileName);
 
   fs.mkdirSync(path.dirname(backupFilePath), { recursive: true });
@@ -28,18 +29,18 @@ async function buildBackupMap(): Promise<(() => Promise<void>)[]> {
   const institutions = await getInstitutions();
 
   return [
-    () => fetchBackup(getLatestOSPoolOverview, []),
-    () => fetchBackup(getDateOfLatestData, []),
-    () => fetchBackup(getProjects, []),
-    () => fetchBackup(getInstitutions, []),
-    () => fetchBackup(getInstitutionsOverview, []),
+    () => fetchBackup("getLatestOSPoolOverview", getLatestOSPoolOverview, []),
+    () => fetchBackup("getDateOfLatestData", getDateOfLatestData, []),
+    () => fetchBackup("getProjects", getProjects, []),
+    () => fetchBackup("getInstitutions", getInstitutions, []),
+    () => fetchBackup("getInstitutionsOverview", getInstitutionsOverview, []),
     ...Object.values(projects).map(p => {
       const name = p.projectName ?? "";
-      return () => fetchBackup(getProjectOverview, [name]);
+      return () => fetchBackup("getProjectOverview", getProjectOverview, [name]);
     }),
     ...Object.values(institutions).map(i => {
       const name = i.institutionName ?? "";
-      return () => fetchBackup(getInstitutionOverview, [name]);
+      return () => fetchBackup("getInstitutionOverview", getInstitutionOverview, [name]);
     }),
   ];
 }
