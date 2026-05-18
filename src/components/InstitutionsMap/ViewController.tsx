@@ -1,6 +1,6 @@
 'use client';
 
-import { Typography } from "@mui/material";
+import { Badge, Box, TextField, Typography } from "@mui/material";
 import Sidebar from "../Sidebar";
 import useSWR from "swr";
 import { getInstitutions, InstitutionData } from "@/src/utils/adstash";
@@ -10,6 +10,10 @@ import InstitutionPins from "./InstitutionPins";
 import InstitutionListCard from "./InstitutionListCard";
 import Legend from "../Legend";
 import LegendContentInstitutions from "../LegendContentInstitutions";
+import BackButton from "../BackButton";
+import DropdownPopover from "../DropdownPopover";
+import { FilterAlt } from "@mui/icons-material";
+import InstitutionFilterMenu from "../ProjectMap/InstitutionFilterMenu";
 
 export default function ViewController() {
   const { data: getInstitutionsResponse } = useSWR(
@@ -41,15 +45,52 @@ export default function ViewController() {
         <LegendContentInstitutions />
       </Legend>
 
-      <Sidebar body={
-        validInstitutionsArray.map((institution) =>
-          <InstitutionListCard
-            key={institution.institutionName}
-            onClick={() => { }}
-            institution={institution}
-          />
-        )
-      } />
+      <Sidebar
+        header={
+          <>
+              <BackButton link={"../"}/>
+              
+              <Box>
+                <TextField
+                  fullWidth
+                  size="small"
+                  placeholder="Search institutions..."
+                  value={""}
+                  onChange={() => {}}
+                />
+              </Box>
+
+              <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.5 }}>
+                <Box>
+                  <DropdownPopover icon={
+                    <Badge variant="dot" color="primary" invisible={true}>
+                      <FilterAlt />
+                    </Badge>
+                  }>
+                    <></>
+                    {/* <InstitutionFilterMenu
+                      classificationFilterMode={classificationFilterMode}
+                      setClassificationFilterMode={setClassificationFilterMode}
+                      stateFilterMode={stateFilterMode}
+                      setStateFilterMode={setStateFilterMode}
+                      chosenState={chosenState}
+                      setChosenState={setChosenState}
+                    /> */}
+                  </DropdownPopover>
+                </Box>
+              </Box>
+            </>
+        }
+        body={
+          validInstitutionsArray.map((institution) =>
+            <InstitutionListCard
+              key={institution.institutionName}
+              onClick={() => { }}
+              institution={institution}
+            />
+          )
+        }
+      />
     </>
   )
 }
