@@ -290,6 +290,8 @@ export async function getInstitutions(
       numBroadFieldOfScience: v.NumBroadFieldOfScience.buckets.length,
       numDetailedFieldOfScience: v.NumDetailedFieldOfScience.buckets.length,
       institutionState: getFromCommonField<string>(v, "ResourceInstitution", "state"),
+      institutionLatitude: getFromCommonField<number>(v, "ResourceInstitution", "latitude"),
+      institutionLongitude: getFromCommonField<number>(v, "ResourceInstitution", "longitude"),
       institutionIpedsWebsiteAddress: getFromCommonField<string>(v, "ResourceInstitution", "ipeds_metadata", "website_address"),
       institutionIpedsHistoricallyBlackCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "historically_black_college_or_university"),
       institutionIpedsTribalCollegeOrUniversity: getFromCommonField<boolean>(v, "ResourceInstitution", "ipeds_metadata", "tribal_college_or_university"),

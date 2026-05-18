@@ -1,10 +1,11 @@
-import Sidebar from '../Sidebar/';
+import { Suspense } from 'react';
 import ViewController from './ViewController';
+import LoadingScreen from '../LoadingScreen';
 
-export default function Map() {
+export default function InstitutionsMap() {
   return (
-    <Sidebar body={
+    <Suspense fallback={<LoadingScreen />}>
       <ViewController></ViewController>
-    } />
+    </Suspense>
   );
 }
