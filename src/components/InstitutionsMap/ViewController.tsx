@@ -7,6 +7,7 @@ import { getInstitutions, InstitutionData } from "@/src/utils/adstash";
 import fetchWithBackup from "@/src/utils/fetchWithBackup";
 import { useMemo } from "react";
 import InstitutionPins from "./InstitutionPins";
+import InstitutionListCard from "./InstitutionListCard";
 
 export default function ViewController() {
   const { data: getInstitutionsResponse } = useSWR(
@@ -35,7 +36,13 @@ export default function ViewController() {
       <InstitutionPins institutions={validInstitutionsArray} />
 
       <Sidebar body={
-        <Typography>Hello, World!</Typography>
+        validInstitutionsArray.map((institution) =>
+          <InstitutionListCard
+            key={institution.institutionName}
+            onClick={() => { }}
+            institution={institution}
+          />
+        )
       } />
     </>
   )
