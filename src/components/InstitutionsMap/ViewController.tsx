@@ -8,6 +8,8 @@ import fetchWithBackup from "@/src/utils/fetchWithBackup";
 import { useMemo } from "react";
 import InstitutionPins from "./InstitutionPins";
 import InstitutionListCard from "./InstitutionListCard";
+import Legend from "../Legend";
+import LegendContentInstitutions from "../LegendContentInstitutions";
 
 export default function ViewController() {
   const { data: getInstitutionsResponse } = useSWR(
@@ -34,6 +36,10 @@ export default function ViewController() {
   return (
     <>
       <InstitutionPins institutions={validInstitutionsArray} />
+
+      <Legend left={400}>
+        <LegendContentInstitutions />
+      </Legend>
 
       <Sidebar body={
         validInstitutionsArray.map((institution) =>

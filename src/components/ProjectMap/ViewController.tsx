@@ -1,6 +1,6 @@
 'use client'
 
-import { Badge, Box, IconButton, Link, TextField, Typography } from '@mui/material';
+import { Badge, Box, IconButton, TextField, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { getProjectOverview, getProjects, InstitutionData, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
@@ -9,22 +9,21 @@ import InstitutionPins from "./InstitutionPins"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
 import ProjectInstitutionListCard from './ProjectInstitutionListCard';
-import { addSpacesToUnderscores, epscorColor, epscorNonR1Color, nonR1Color } from '@/src/utils/helpers';
+import { addSpacesToUnderscores } from '@/src/utils/helpers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Legend from '../Legend';
 import { FilterAlt } from '@mui/icons-material';
-import MapPinContents from '../MapPinContents';
 import DropdownPopover from '../DropdownPopover';
 import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from './InstitutionFilterMenu';
 import LoadingScreen from '../LoadingScreen';
 import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import InstitutionContributionBar from './InstitutionContributionBar';
-import LegendEntry from '../LegendEntry';
 import BackButton from '../BackButton';
 import LogoContainer from '../LogoContainer';
 import LinkLogoImage from '../LinkLogoImage';
+import LegendContentInstitutions from '../LegendContentInstitutions';
+import LegendContentProjects from '../LegendContentProjects';
 
 
 enum MapSteps {
@@ -237,18 +236,7 @@ export default function ViewController() {
 
       
       <Legend left={sidebarHiddenSearchParam ? 0 : 400}>
-        {isViewingProject ?
-          <>
-            <LegendEntry text='Project institution' icon={<MapPinContents color='secondary.main' size={30} />} />
-            <LegendEntry text='Contributing institution' icon={<InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={30} />} />
-          </>
-        : <>
-            <LegendEntry text='Project institutions' icon={<MapPinContents color='primary.main' size={30} />} />
-            <LegendEntry text='Non-R1 Universities' icon={<MapPinContents color={nonR1Color} size={30} />} />
-            <LegendEntry text='Project institutions in EPSCOR states' icon={<MapPinContents color={epscorColor} size={30} />} />
-            <LegendEntry text='Non-R1 Universities in EPSCOR states' icon={<MapPinContents color={epscorNonR1Color} size={30} />} />
-          </>
-        }
+        {isViewingProject ? <LegendContentProjects />: <LegendContentInstitutions /> }
       </Legend>
 
       <LogoContainer>

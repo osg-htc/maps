@@ -60,7 +60,7 @@ export function getPinColor(classification: string, isEpscorState: boolean) {
   let color = 'primary.main'
 
   if (isEpscorState && nonR1) {
-    color = epscorColor
+    color = epscorNonR1Color
   } else if (isEpscorState) {
     color = epscorColor
   } else if (nonR1) {
