@@ -1,10 +1,10 @@
-import Sidebar from '../Sidebar';
-import Example from './Example';
+import Sidebar from '../Sidebar/';
+import ViewController from './ViewController';
 
 export default function Map() {
   return (
-    <Sidebar>
-      <Example></Example>
-    </Sidebar>
+    <Sidebar body={
+      <ViewController></ViewController>
+    } />
   );
 }
