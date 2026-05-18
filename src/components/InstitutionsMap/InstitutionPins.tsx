@@ -23,6 +23,7 @@ export default function InstitutionPins({ institutions, onClick, hidden} : { ins
               <MapPinContents
                 color={getPinColor(i.institutionCarnegieClassification2025, i.institutionEpscorState)}
                 size={40}
+                showPinhole
               />
             }
             popUp={

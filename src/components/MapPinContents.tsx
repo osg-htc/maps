@@ -1,7 +1,7 @@
 import { LocationPin, Circle } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 
-export default function MapPin({ color, size, text }: { color: string, size: number, text?: string }) {
+export default function MapPin({ color, size, text, showPinhole }: { color: string, size: number, text?: string, showPinhole?: boolean }) {
   return (
     <>
       <Box sx={{ position: 'relative', width: 'fit-content' }}>
@@ -9,14 +9,14 @@ export default function MapPin({ color, size, text }: { color: string, size: num
           color: color,
           fontSize: size,
         }} />
-        <Circle sx={{ // ...so we just fill it with a circle
+        {!showPinhole ? <Circle sx={{ // ...so we just fill it with a circle
           color: color,
           fontSize: size / 2,
           position: "absolute",
           top: "35%",
           left: "50%",
           transform: "translate(-50%, -50%)"
-        }} />
+        }} /> : <></>}
       </Box>
       <Typography sx={{
         color: "white",
