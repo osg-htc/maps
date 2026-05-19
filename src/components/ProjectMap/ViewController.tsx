@@ -244,7 +244,7 @@ export default function ViewController() {
           header={
             <>
               <BackButton
-                link={isSelectingInstitution ? "../" : ""}
+                link={isSelectingInstitution ? "../" : undefined}
                 onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
               />
               
@@ -265,7 +265,7 @@ export default function ViewController() {
                 }
               </Box>
 
-              <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.5 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 0.5 }}>
                 <Box>
                   {
                     isSelectingInstitution ?

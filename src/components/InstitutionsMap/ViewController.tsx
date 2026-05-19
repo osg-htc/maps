@@ -98,7 +98,6 @@ export default function ViewController() {
   const filteredInstitutionsArray: InstitutionData[] = Object.values(filteredInstitutions)
   
   const isSelectingInstitution = state.step === InstitutionMapSteps.SelectingInstitution;
-  const isViewingProject = state.step === InstitutionMapSteps.ViewingInstitution;
 
   return (
     <>
@@ -111,7 +110,7 @@ export default function ViewController() {
       <Sidebar
         header={
           <>
-              <BackButton link={"../"}/>
+            {isSelectingInstitution ? <BackButton link={"../"} /> : <BackButton onClick={() => { dispatch({type: "institution-deselect"})}} /> }
               
               <Box>
                 <TextField
@@ -123,7 +122,7 @@ export default function ViewController() {
                 />
               </Box>
 
-              <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.5 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 0.5 }}>
                 <Box>
                   <DropdownPopover icon={
                     <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
