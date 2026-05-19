@@ -6,6 +6,7 @@ import ArrowPopUp from '../ArrowPopUp'
 import { InstitutionData, ProjectData } from '@/src/utils/adstash'
 import MapPinContents from '../MapPinContents'
 import { getPinColor } from '@/src/utils/helpers'
+import { Circle } from '@mui/icons-material'
 
 export default function InstitutionPins({ institutions, onClick, hidden} : { institutions: InstitutionData[], onClick: (arg0: string) => void, hidden?: boolean }) {
   return (
@@ -22,8 +23,12 @@ export default function InstitutionPins({ institutions, onClick, hidden} : { ins
               <MapPinContents
                 color={getPinColor(i.institutionCarnegieClassification2025, i.institutionEpscorState)}
                 size={40}
-                showPinhole
-              />
+              >
+                <Circle sx={{ 
+                  color: 'white', 
+                  fontSize: 10,
+                }} />
+              </MapPinContents>
             }
             popUp={
               <ArrowPopUp>

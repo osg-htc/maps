@@ -25,8 +25,14 @@ function ProjectPins({ bins, onClick, hidden} : { bins: ProjectData[][], onClick
               <MapPinContents
                 color={getPinColor(p.projectInstitutionCarnegieClassification2025, p.projectEpscorState)}
                 size={40}
-                text={`${bin.length}`}
-              />
+              >
+                <Typography sx={{
+                  color: "white", 
+                  fontSize: 20, 
+                }}>
+                  {bin.length}
+                </Typography>
+              </MapPinContents>
             }
             popUp={
               <ArrowPopUp>

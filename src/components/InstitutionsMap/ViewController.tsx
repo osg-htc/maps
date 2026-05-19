@@ -1,11 +1,11 @@
 'use client';
 
-import { Badge, Box, TextField, Typography } from "@mui/material";
+import { Badge, TextField, Typography } from "@mui/material";
 import Sidebar from "../Sidebar";
 import useSWR from "swr";
-import { getInstitutions, InstitutionData } from "@/src/utils/adstash";
+import { getInstitutions, getInstitutionOverview, InstitutionData, ProjectData } from "@/src/utils/adstash";
 import fetchWithBackup from "@/src/utils/fetchWithBackup";
-import { useMemo, useReducer, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import InstitutionPins from "./InstitutionPins";
 import InstitutionListCard from "./InstitutionListCard";
 import Legend from "../Legend";
@@ -15,6 +15,9 @@ import DropdownPopover from "../DropdownPopover";
 import { FilterAlt } from "@mui/icons-material";
 import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from '../InstitutionFilterMenu';
 import InstitutionStats from "./InstitutionStats";
+import ProjectPins from "./ProjectPins";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import LegendContentContributions from "../LegendContentContributions";
 
 enum InstitutionMapSteps {
   SelectingInstitution,
@@ -55,6 +58,9 @@ export default function ViewController() {
   const [chosenState, setChosenState] = useState<string>("WI")
   const [stateFilterMode, setStateFilterMode] = useState<StateFilterMode>("All");
   const [classificationFilterMode, setClassificationFilterMode] = useState<ClassificationFilterMode>("All");
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
   const { data: getInstitutionsResponse } = useSWR(
     [getInstitutions], 
     () => fetchWithBackup("getInstitutions", getInstitutions),
@@ -94,65 +100,105 @@ export default function ViewController() {
           .toLowerCase()
           .includes(searchTerm.toLowerCase().trim());
       }).sort()
-    );
+  );
 
   const filteredInstitutionsArray: InstitutionData[] = Object.values(filteredInstitutions)
+
   
+  const institutionSearchParam = searchParams.get('institution')
+  const sidebarHiddenSearchParam = searchParams.get('sidebarHidden')
+  
+  useEffect(() => {
+    if (!institutionSearchParam || !validInstitutions[institutionSearchParam]) return
+    dispatch({ type: "load-from-search-params", institution: validInstitutions[institutionSearchParam].institutionName })
+  }, [institutionSearchParam, validInstitutions])
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    const currentProject = params.get('institution');
+    
+    if (state.step == InstitutionMapSteps.ViewingInstitution) {
+      // Only update if the URL doesn't already have the correct project
+      if (currentProject !== state.institution) {
+        params.set('institution', state.institution);
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      }
+    } else {
+      // Only update if there's a project param to remove
+      if (currentProject !== null) {
+        params.delete('institution');
+        router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      }
+    }
+  }, [state.step, pathname, router, searchParams, state.institution])
+  
+  // Gets the projects contributed to for the selected institution if there is one
+  const { data: institutionOverviewResponse } = useSWR(
+    // having null as the key makes SWR always instantly return { data: undefined, error: undefined, isLoading: false }
+    state.institution != "" ? [validInstitutions[state.institution], getInstitutionOverview] : null, 
+    () => fetchWithBackup('getInstitutionOverview', getInstitutionOverview, validInstitutions[state.institution].institutionName),
+    { suspense: true }
+  ) 
+
   const isSelectingInstitution = state.step === InstitutionMapSteps.SelectingInstitution;
 
   return (
     <>
-      <InstitutionPins institutions={filteredInstitutionsArray} onClick={(e) => { dispatch({ type: "institution-select", institution: e }) }} />
+      <InstitutionPins institutions={filteredInstitutionsArray} hidden={!isSelectingInstitution} onClick={(e) => { dispatch({ type: "institution-select", institution: e }) }} />
+      
+      {isSelectingInstitution ? <></> : <ProjectPins mainPin={validInstitutions[state.institution]} data={institutionOverviewResponse.data} /> }
 
-      <Legend left={400}>
-        <LegendContentInstitutions />
+      <Legend left={sidebarHiddenSearchParam ? 0 : 400}>
+        {isSelectingInstitution ? <LegendContentInstitutions /> : <LegendContentContributions /> }
       </Legend>
 
-      <Sidebar
-        leftButton={
-          isSelectingInstitution ? <BackButton link={"../"} /> : <BackButton onClick={() => { dispatch({ type: "institution-deselect" }) }} />
-        }
-        header={
-          isSelectingInstitution ?
-            <TextField
-              fullWidth
-              size="small"
-              placeholder="Search institutions..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          :
-            <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>  
-        }
-        rightButton={
-          <DropdownPopover icon={
-            <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
-              <FilterAlt />
-            </Badge>
-          }>
-            <InstitutionFilterMenu
-              classificationFilterMode={classificationFilterMode}
-              setClassificationFilterMode={setClassificationFilterMode}
-              stateFilterMode={stateFilterMode}
-              setStateFilterMode={setStateFilterMode}
-              chosenState={chosenState}
-              setChosenState={setChosenState}
-            />
-          </DropdownPopover>
-        }
-        body={
-          isSelectingInstitution ?
-            filteredInstitutionsArray.map((institution) =>
-              <InstitutionListCard
-                key={institution.institutionName}
-                onClick={() => { dispatch({ type: "institution-select", institution: institution.institutionName }) }}
-                institution={institution}
+      {sidebarHiddenSearchParam ? <></> :
+        <Sidebar
+          leftButton={
+            isSelectingInstitution ? <BackButton link={"../"} /> : <BackButton onClick={() => { dispatch({ type: "institution-deselect" }) }} />
+          }
+          header={
+            isSelectingInstitution ?
+              <TextField
+                fullWidth
+                size="small"
+                placeholder="Search institutions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-            )
-          :
-            <InstitutionStats stats={validInstitutions[state.institution]} date={getInstitutionsResponse.date} />  
-        }
-      />
+              :
+              <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>
+          }
+          rightButton={
+            <DropdownPopover icon={
+              <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
+                <FilterAlt />
+              </Badge>
+            }>
+              <InstitutionFilterMenu
+                classificationFilterMode={classificationFilterMode}
+                setClassificationFilterMode={setClassificationFilterMode}
+                stateFilterMode={stateFilterMode}
+                setStateFilterMode={setStateFilterMode}
+                chosenState={chosenState}
+                setChosenState={setChosenState}
+              />
+            </DropdownPopover>
+          }
+          body={
+            isSelectingInstitution ?
+              filteredInstitutionsArray.map((institution) =>
+                <InstitutionListCard
+                  key={institution.institutionName}
+                  onClick={() => { dispatch({ type: "institution-select", institution: institution.institutionName }) }}
+                  institution={institution}
+                />
+              )
+              :
+              <InstitutionStats stats={validInstitutions[state.institution]} date={getInstitutionsResponse.date} />
+          }
+        />
+      }
     </>
   )
 }
