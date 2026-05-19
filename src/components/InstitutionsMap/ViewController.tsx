@@ -60,7 +60,7 @@ export default function ViewController() {
     { suspense: true }
   );
 
-  const validInstitutions = useMemo(() => {
+  const validInstitutions: Record<string, InstitutionData> = useMemo(() => {
     return Object.fromEntries(
       Object.entries(getInstitutionsResponse.data ?? {}).filter(([, i]) =>
         i.institutionName &&
@@ -71,13 +71,38 @@ export default function ViewController() {
     ) as Record<string, InstitutionData>;
   }, [getInstitutionsResponse.data]);
 
-  const validInstitutionsArray = Object.values(validInstitutions)
+  const filteredInstitutions: Record<string, InstitutionData> = Object.fromEntries(
+      Object.entries(validInstitutions).filter(([, institution]) => {
+        if (state.institution && institution.institutionName != state.institution) {
+          return false
+        }
+        if (stateFilterMode === 'EPSCOR' && !institution.institutionEpscorState) {
+          return false;
+        }
+        if (stateFilterMode === 'Specific' && institution.institutionState !== chosenState) {
+          return false;
+        }
+        if (classificationFilterMode === 'NonR1') {
+          const classification = institution.institutionCarnegieClassification2025;
+          if (!classification || classification.includes("Research 1:")) {
+            return false;
+          }
+        }
+        
+        return institution.institutionName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase().trim());
+      }).sort()
+    );
 
-  console.log(validInstitutionsArray)
+  const filteredInstitutionsArray: InstitutionData[] = Object.values(filteredInstitutions)
+  
+  const isSelectingInstitution = state.step === InstitutionMapSteps.SelectingInstitution;
+  const isViewingProject = state.step === InstitutionMapSteps.ViewingInstitution;
 
   return (
     <>
-      <InstitutionPins institutions={validInstitutionsArray} />
+      <InstitutionPins institutions={filteredInstitutionsArray} />
 
       <Legend left={400}>
         <LegendContentInstitutions />
@@ -119,10 +144,10 @@ export default function ViewController() {
             </>
         }
         body={
-          validInstitutionsArray.map((institution) =>
+          filteredInstitutionsArray.map((institution) =>
             <InstitutionListCard
               key={institution.institutionName}
-              onClick={() => { }}
+              onClick={() => { dispatch({ type: "institution-select", institution: institution.institutionName }) }}
               institution={institution}
             />
           )
