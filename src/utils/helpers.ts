@@ -51,6 +51,12 @@ export function getBackupPath(functionKey: string, args: unknown[]): string {
   return `${hash}.json`;
 }
 
+export function pastYearDateRange(date: Date) {
+  const currentMonth = date.toLocaleString('default', { month: 'long' });
+  const currentYear = date.getFullYear();
+  return `${currentMonth} ${currentYear - 1} to ${currentMonth} ${currentYear}`;
+}
+
 export const epscorColor = '#B61F24' // PATh red
 export const nonR1Color = '#0885ff' // Pelican blue
 export const epscorNonR1Color = '#8a84d6' // iris purple 

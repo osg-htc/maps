@@ -14,7 +14,7 @@ export default function Sidebar({leftButton, rightButton, header, body}: {leftBu
           mb: 1
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'flex-start'}}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
           <Box>
             { leftButton }
           </Box>
@@ -22,7 +22,7 @@ export default function Sidebar({leftButton, rightButton, header, body}: {leftBu
         <Box>           
           {header}
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center'}}>
           <Box>
             { rightButton }
           </Box>

@@ -14,6 +14,7 @@ import BackButton from "../BackButton";
 import DropdownPopover from "../DropdownPopover";
 import { FilterAlt } from "@mui/icons-material";
 import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from '../InstitutionFilterMenu';
+import InstitutionStats from "./InstitutionStats";
 
 enum InstitutionMapSteps {
   SelectingInstitution,
@@ -137,13 +138,16 @@ export default function ViewController() {
           </DropdownPopover>
         }
         body={
-          filteredInstitutionsArray.map((institution) =>
-            <InstitutionListCard
-              key={institution.institutionName}
-              onClick={() => { dispatch({ type: "institution-select", institution: institution.institutionName }) }}
-              institution={institution}
-            />
-          )
+          isSelectingInstitution ?
+            filteredInstitutionsArray.map((institution) =>
+              <InstitutionListCard
+                key={institution.institutionName}
+                onClick={() => { dispatch({ type: "institution-select", institution: institution.institutionName }) }}
+                institution={institution}
+              />
+            )
+          :
+            <InstitutionStats stats={validInstitutions[state.institution]} date={getInstitutionsResponse.date} />  
         }
       />
     </>
