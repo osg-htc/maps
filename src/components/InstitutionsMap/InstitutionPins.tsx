@@ -7,18 +7,17 @@ import { InstitutionData, ProjectData } from '@/src/utils/adstash'
 import MapPinContents from '../MapPinContents'
 import { getPinColor } from '@/src/utils/helpers'
 
-export default function InstitutionPins({ institutions, onClick, hidden} : { institutions: InstitutionData[], onClick?: (arg0: string) => void, hidden?: boolean }) {
+export default function InstitutionPins({ institutions, onClick, hidden} : { institutions: InstitutionData[], onClick: (arg0: string) => void, hidden?: boolean }) {
   return (
     <>
       {
         institutions.map((i) => {
-         
           return <MapPin
             key={i.institutionName}
             lat={i.institutionLatitude}
             lon={i.institutionLongitude}
             hidden={hidden}
-            onClick={() => { }}
+            onClick={() => { onClick(i.institutionName) }}
             content={
               <MapPinContents
                 color={getPinColor(i.institutionCarnegieClassification2025, i.institutionEpscorState)}

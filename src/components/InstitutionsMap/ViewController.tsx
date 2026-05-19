@@ -102,7 +102,7 @@ export default function ViewController() {
 
   return (
     <>
-      <InstitutionPins institutions={filteredInstitutionsArray} />
+      <InstitutionPins institutions={filteredInstitutionsArray} onClick={(e) => { dispatch({ type: "institution-select", institution: e }) }} />
 
       <Legend left={400}>
         <LegendContentInstitutions />
