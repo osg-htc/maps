@@ -40,7 +40,7 @@ export default async function Home() {
               </Typography>
             </Stack>
             <Image
-              src="/maps/images/project-map-thumbnail.png"
+              src="/maps/images/institution-map-thumbnail.png"
               alt="Institution Map Thumbnail"
               width={100}
               height={100}
