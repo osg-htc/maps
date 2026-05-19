@@ -3,7 +3,7 @@
 import { Typography } from '@mui/material'
 import MapPin from '../MapPin'
 import ArrowPopUp from '../ArrowPopUp'
-import { InstitutionData, ProjectData } from '@/src/utils/adstash'
+import { InstitutionData } from '@/src/utils/adstash'
 import MapPinContents from '../MapPinContents'
 import { getPinColor } from '@/src/utils/helpers'
 import { Circle } from '@mui/icons-material'

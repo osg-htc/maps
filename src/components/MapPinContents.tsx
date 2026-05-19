@@ -1,5 +1,5 @@
 import { LocationPin, Circle } from '@mui/icons-material';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 
 export default function MapPin({ color, size, children }: { 

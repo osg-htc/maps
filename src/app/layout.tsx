@@ -6,7 +6,7 @@ import theme, {fonts} from "@chtc/web-components/themes/osg"
 import "@/src/app/globals.css"
 import Analytics from "@/src/components/Analytics";
 import BaseMap from "@/src/components/BaseMap";
-import { Suspense, useCallback } from "react";
+import { Suspense } from "react";
 import LoadingScreen from "../components/LoadingScreen";
 import LogoContainer from "../components/LogoContainer";
 import LinkLogoImage from "../components/LinkLogoImage";

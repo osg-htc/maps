@@ -3,7 +3,7 @@
 import { Badge, TextField, Typography } from "@mui/material";
 import Sidebar from "../Sidebar";
 import useSWR from "swr";
-import { getInstitutions, getInstitutionOverview, InstitutionData, ProjectData } from "@/src/utils/adstash";
+import { getInstitutions, getInstitutionOverview, InstitutionData } from "@/src/utils/adstash";
 import fetchWithBackup from "@/src/utils/fetchWithBackup";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import InstitutionPins from "./InstitutionPins";

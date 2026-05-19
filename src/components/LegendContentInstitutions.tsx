@@ -1,5 +1,3 @@
-import Image from 'next-image-export-optimizer';
-import Link from 'next/link';
 import LegendEntry from './LegendEntry';
 import MapPinContents from './MapPinContents';
 import { epscorColor, epscorNonR1Color, nonR1Color } from '../utils/helpers';

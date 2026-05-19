@@ -1,6 +1,6 @@
 'use client'
 
-import { Badge, Box, IconButton, TextField, Typography } from '@mui/material';
+import { Badge, IconButton, TextField, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { getProjectOverview, getProjects, InstitutionData, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
@@ -20,8 +20,6 @@ import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import BackButton from '../BackButton';
-import LogoContainer from '../LogoContainer';
-import LinkLogoImage from '../LinkLogoImage';
 import LegendContentInstitutions from '../LegendContentInstitutions';
 import LegendContentProjects from '../LegendContentProjects';
 

@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import ListCardBase from '../ListCardBase';
-import { InstitutionData, ProjectData } from '@/src/utils/adstash';
+import { InstitutionData } from '@/src/utils/adstash';
 import React from 'react';
 
 function InstitutionListCard({ institution, onClick }: { institution: InstitutionData, onClick: () => void }) {

@@ -5,7 +5,6 @@ import MapPin from '../MapPin'
 import ArrowPopUp from '../ArrowPopUp'
 import { InstitutionData, ProjectData } from '@/src/utils/adstash'
 import MapPinContents from '../MapPinContents'
-import { getPinColor } from '@/src/utils/helpers'
 import PersonIcon from '@mui/icons-material/Person';
 
 function ProjectPins({ mainPin, data }: { mainPin: InstitutionData, data: Record<string, Partial<ProjectData>> | undefined}) {
