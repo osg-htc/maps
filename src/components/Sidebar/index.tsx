@@ -1,23 +1,36 @@
 import { ReactNode } from 'react';
 import SidebarPaper from './SidebarPaper';
-import SidebarHeader from './SidebarHeader';
 import SidebarStack from './SidebarStack';
+import { Box } from '@mui/material';
 
-export default function Sidebar({header, body}: {header?: ReactNode, body?: ReactNode}) {
+export default function Sidebar({leftButton, rightButton, header, body}: {leftButton?: ReactNode, rightButton?: ReactNode,header?: ReactNode, body?: ReactNode}) {
   return (
     <SidebarPaper>
-      {header ? 
-        <SidebarHeader>
-          { header }
-        </SidebarHeader>
-        : ""
-      }
-      {body ?
-        <SidebarStack>
-          {body}
-        </SidebarStack>
-        : ""
-      }
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: '40px auto 40px',
+          alignItems: 'top',
+          mb: 1
+        }}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start'}}>
+          <Box>
+            { leftButton }
+          </Box>
+        </Box>   
+        <Box>           
+          {header}
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end'}}>
+          <Box>
+            { rightButton }
+          </Box>
+        </Box>   
+      </Box>
+      <SidebarStack>
+        {body}
+      </SidebarStack>
     </SidebarPaper>
   );
 }

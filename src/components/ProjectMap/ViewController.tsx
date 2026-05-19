@@ -241,60 +241,50 @@ export default function ViewController() {
 
       {sidebarHiddenSearchParam ? <></> :
         <Sidebar
+          leftButton={
+            <BackButton
+              link={isSelectingInstitution ? "../" : undefined}
+              onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+            />
+          }
           header={
-            <>
-              <BackButton
-                link={isSelectingInstitution ? "../" : undefined}
-                onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+            isSelectingInstitution ?
+              <TextField
+                fullWidth
+                size="small"
+                placeholder="Search institutions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-              
-              <Box>
-                {
-                  isSelectingInstitution ?
-                    <TextField
-                      fullWidth
-                      size="small"
-                      placeholder="Search institutions..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    : isSelectingProject ?
-                      <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>
-                    : // isViewing Project
-                      <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{addSpacesToUnderscores(state.project)}</Typography>
-                }
-              </Box>
-
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 0.5 }}>
-                <Box>
-                  {
-                    isSelectingInstitution ?
-                      <DropdownPopover icon={
-                        <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
-                          <FilterAlt />
-                        </Badge>
-                      }>
-                        <InstitutionFilterMenu
-                          classificationFilterMode={classificationFilterMode}
-                          setClassificationFilterMode={setClassificationFilterMode}
-                          stateFilterMode={stateFilterMode}
-                          setStateFilterMode={setStateFilterMode}
-                          chosenState={chosenState}
-                          setChosenState={setChosenState}
-                        />
-                      </DropdownPopover>
-                      : isViewingProject ? 
-                          <IconButton
-                            size="small"
-                            onClick={downloadCSV}
-                          >
-                            <FileDownloadIcon />
-                          </IconButton>
-                      : <></>
-                  }
-                </Box>
-              </Box>
-            </>
+            : isSelectingProject ?
+              <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>
+            : // isViewing Project
+              <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{addSpacesToUnderscores(state.project)}</Typography>
+          }
+          rightButton={
+            isSelectingInstitution ?
+              <DropdownPopover icon={
+                <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
+                  <FilterAlt />
+                </Badge>
+              }>
+                <InstitutionFilterMenu
+                  classificationFilterMode={classificationFilterMode}
+                  setClassificationFilterMode={setClassificationFilterMode}
+                  stateFilterMode={stateFilterMode}
+                  setStateFilterMode={setStateFilterMode}
+                  chosenState={chosenState}
+                  setChosenState={setChosenState}
+                />
+              </DropdownPopover>
+              : isViewingProject ? 
+                  <IconButton
+                    size="small"
+                    onClick={downloadCSV}
+                  >
+                    <FileDownloadIcon />
+                  </IconButton>
+              : <></>
           }
           body={
             isSelectingInstitution ?

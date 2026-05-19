@@ -108,39 +108,33 @@ export default function ViewController() {
       </Legend>
 
       <Sidebar
+        leftButton={
+          isSelectingInstitution ? <BackButton link={"../"} /> : <BackButton onClick={() => { dispatch({ type: "institution-deselect" }) }} />
+        }
         header={
-          <>
-            {isSelectingInstitution ? <BackButton link={"../"} /> : <BackButton onClick={() => { dispatch({type: "institution-deselect"})}} /> }
-              
-              <Box>
-                <TextField
-                  fullWidth
-                  size="small"
-                  placeholder="Search institutions..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </Box>
-
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 0.5 }}>
-                <Box>
-                  <DropdownPopover icon={
-                    <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
-                      <FilterAlt />
-                    </Badge>
-                  }>
-                    <InstitutionFilterMenu
-                      classificationFilterMode={classificationFilterMode}
-                      setClassificationFilterMode={setClassificationFilterMode}
-                      stateFilterMode={stateFilterMode}
-                      setStateFilterMode={setStateFilterMode}
-                      chosenState={chosenState}
-                      setChosenState={setChosenState}
-                    />
-                  </DropdownPopover>
-                </Box>
-              </Box>
-            </>
+          <TextField
+            fullWidth
+            size="small"
+            placeholder="Search institutions..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        }
+        rightButton={
+          <DropdownPopover icon={
+            <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
+              <FilterAlt />
+            </Badge>
+          }>
+            <InstitutionFilterMenu
+              classificationFilterMode={classificationFilterMode}
+              setClassificationFilterMode={setClassificationFilterMode}
+              stateFilterMode={stateFilterMode}
+              setStateFilterMode={setStateFilterMode}
+              chosenState={chosenState}
+              setChosenState={setChosenState}
+            />
+          </DropdownPopover>
         }
         body={
           filteredInstitutionsArray.map((institution) =>
