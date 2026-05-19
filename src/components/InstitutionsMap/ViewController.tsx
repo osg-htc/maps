@@ -113,13 +113,16 @@ export default function ViewController() {
           isSelectingInstitution ? <BackButton link={"../"} /> : <BackButton onClick={() => { dispatch({ type: "institution-deselect" }) }} />
         }
         header={
-          <TextField
-            fullWidth
-            size="small"
-            placeholder="Search institutions..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          isSelectingInstitution ?
+            <TextField
+              fullWidth
+              size="small"
+              placeholder="Search institutions..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          :
+            <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>  
         }
         rightButton={
           <DropdownPopover icon={
