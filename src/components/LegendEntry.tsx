@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 export default function LegendEntry({ icon, text }: { icon: ReactNode, text: string }) { 
   return ( 
     <Stack direction="row" alignItems="center" spacing={1}>
-      <Box sx={{ 
+      <Box width={20} height={30} sx={{ 
         display: 'flex', 
         alignItems: 'center',
         justifyContent: 'center',

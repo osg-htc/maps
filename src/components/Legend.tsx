@@ -1,4 +1,4 @@
-import { Paper } from '@mui/material';
+import { Paper, Stack } from '@mui/material';
 import { ReactNode } from 'react';
 
 export default function Legend({children, left}: {children: ReactNode, left: number}) {
@@ -17,7 +17,9 @@ export default function Legend({children, left}: {children: ReactNode, left: num
         zIndex: 9100,
       }}
     >
-      { children }
+      <Stack spacing={0.5}>
+        { children }
+      </Stack>
     </Paper>
   )
 }
