@@ -170,20 +170,23 @@ export default function ViewController() {
               <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>
           }
           rightButton={
-            <DropdownPopover icon={
-              <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
-                <FilterAlt />
-              </Badge>
-            }>
-              <InstitutionFilterMenu
-                classificationFilterMode={classificationFilterMode}
-                setClassificationFilterMode={setClassificationFilterMode}
-                stateFilterMode={stateFilterMode}
-                setStateFilterMode={setStateFilterMode}
-                chosenState={chosenState}
-                setChosenState={setChosenState}
-              />
-            </DropdownPopover>
+            isSelectingInstitution ? 
+              <DropdownPopover icon={
+                <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
+                  <FilterAlt />
+                </Badge>
+              }>
+                <InstitutionFilterMenu
+                  classificationFilterMode={classificationFilterMode}
+                  setClassificationFilterMode={setClassificationFilterMode}
+                  stateFilterMode={stateFilterMode}
+                  setStateFilterMode={setStateFilterMode}
+                  chosenState={chosenState}
+                  setChosenState={setChosenState}
+                />
+              </DropdownPopover>
+            :
+              <></>
           }
           body={
             isSelectingInstitution ?
