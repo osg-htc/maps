@@ -41,7 +41,7 @@ export default function MapPin(props: MapPinProps) {
       anchor="bottom"
       onClick={ props.onClick }
       style={{
-        zIndex: hovered ? 9002 : props.onTop ? 9001 : (props.extraZ)
+        zIndex: hovered ? 9002 : props.onTop ? 9001 : (props.extraZ ?? 0)
       }}
     >
       <Box

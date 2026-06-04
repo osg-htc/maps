@@ -19,7 +19,7 @@ export default async function fetchWithBackup<T extends unknown[], K>(
 
     const response = await fetch(backupUrl);
     if (!response.ok) {
-      let errorMessage = [
+      const errorMessage = [
         `Backup not found: ${response.statusText}`,
         `fileName: ${fileName}`,
         `basePath: ${basePath}`,

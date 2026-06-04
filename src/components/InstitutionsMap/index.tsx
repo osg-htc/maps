@@ -1,11 +1,11 @@
 import { Suspense } from 'react';
 import ViewController from './ViewController';
-import LoadingScreen from '../LoadingScreen'; 
+import LoadingScreen from '../LoadingScreen';
 
-export default function ProjectMap() {
+export default function InstitutionsMap() {
   return (
     <Suspense fallback={<LoadingScreen />}>
-      <ViewController />
+      <ViewController></ViewController>
     </Suspense>
   );
 }

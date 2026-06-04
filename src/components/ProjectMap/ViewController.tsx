@@ -1,72 +1,69 @@
 'use client'
 
-import { Badge, Box, IconButton, Link, TextField, Typography } from '@mui/material';
+import { Badge, IconButton, TextField, Typography } from '@mui/material';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { getProjectOverview, getProjects, InstitutionData, ProjectData } from '@/src/utils/adstash';
 import Sidebar from '../Sidebar';
-import SidebarStack from '../SidebarStack';
-import ProjectPins, { epscorColor, epscorNonR1Color, nonR1Color } from "./ProjectPins"
+import ProjectPins from "./ProjectPins"
 import InstitutionPins from "./InstitutionPins"
 import ProjectStats from "./ProjectStats"
 import ProjectListCard from './ProjectListCard';
-import ProjectInsitutionListCard from './ProjectInsitutionListCard';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ProjectInstitutionListCard from './ProjectInstitutionListCard';
 import { addSpacesToUnderscores } from '@/src/utils/helpers';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import Legend from '../Legend';
 import { FilterAlt } from '@mui/icons-material';
-import MapPinContents from '../MapPinContents';
 import DropdownPopover from '../DropdownPopover';
-import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from './InstitutionFilterMenu';
+import InstitutionFilterMenu, { ClassificationFilterMode, StateFilterMode } from '../InstitutionFilterMenu';
 import LoadingScreen from '../LoadingScreen';
 import useSWR from 'swr';
 import fetchWithBackup from '@/src/utils/fetchWithBackup';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import InstitutionContributionBar from './InstitutionContributionBar';
-import LegendEntry from '../LegendEntry';
-import LogoContainer from '../LogoContainer';
-import LinkLogoImage from '../LinkLogoImage';
+import BackButton from '../BackButton';
+import LegendContentInstitutions from '../LegendContentInstitutions';
+import LegendContentProjects from '../LegendContentProjects';
 
-enum MapSteps {
+
+enum ProjectMapSteps {
   SelectingInstitution,
   SelectingProject,
   ViewingProject,
 }
 
-type MapStates =
-  | { step: MapSteps.SelectingInstitution, institution: "", project: "" }
-  | { step: MapSteps.SelectingProject, institution: string, project: "" }
-  | { step: MapSteps.ViewingProject, institution: string, project: string }
+type ProjectMapStates =
+  | { step: ProjectMapSteps.SelectingInstitution, institution: "", project: "" }
+  | { step: ProjectMapSteps.SelectingProject, institution: string, project: "" }
+  | { step: ProjectMapSteps.ViewingProject, institution: string, project: string }
 
-type MapActions =
+type ProjectMapActions =
   | { type: "institution-select", institution: string }
   | { type: "institution-deselect" }
   | { type: "project-select", project: string }
   | { type: "project-deselect" }
   | { type: "load-from-search-params", institution: string, project: string }
 
-const initialState: MapStates = {
-  step: MapSteps.SelectingInstitution, 
+const initialState: ProjectMapStates = {
+  step: ProjectMapSteps.SelectingInstitution, 
   institution: "",
   project: ""
 }
 
-function reducer(state: MapStates, action: MapActions): MapStates {
+function reducer(state: ProjectMapStates, action: ProjectMapActions): ProjectMapStates {
   switch (action.type) {
     case "institution-select": {
-      return { step: MapSteps.SelectingProject, institution: action.institution, project: "" };
+      return { step: ProjectMapSteps.SelectingProject, institution: action.institution, project: "" };
     }
     case "institution-deselect":{
-      return { step: MapSteps.SelectingInstitution, institution: "", project: "" };
+      return { step: ProjectMapSteps.SelectingInstitution, institution: "", project: "" };
     }
     case "project-select":{
-      return { step: MapSteps.ViewingProject, institution: state.institution, project: action.project };
+      return { step: ProjectMapSteps.ViewingProject, institution: state.institution, project: action.project };
     }
     case "project-deselect":{
-      return { step: MapSteps.SelectingProject, institution: state.institution, project: "" };
+      return { step: ProjectMapSteps.SelectingProject, institution: state.institution, project: "" };
     }
     case "load-from-search-params": {
-      return { step: MapSteps.ViewingProject, institution: action.institution, project: action.project }
+      return { step: ProjectMapSteps.ViewingProject, institution: action.institution, project: action.project }
     }
   }
 }
@@ -150,7 +147,7 @@ export default function ViewController() {
     const params = new URLSearchParams(searchParams);
     const currentProject = params.get('project');
     
-    if (state.step == MapSteps.ViewingProject) {
+    if (state.step == ProjectMapSteps.ViewingProject) {
       // Only update if the URL doesn't already have the correct project
       if (currentProject !== state.project) {
         params.set('project', state.project);
@@ -165,9 +162,9 @@ export default function ViewController() {
     }
   }, [state.step, pathname, router, searchParams, state.project])
 
-  const isSelectingInstitution = state.step === MapSteps.SelectingInstitution;
-  const isSelectingProject = state.step === MapSteps.SelectingProject;
-  const isViewingProject = state.step === MapSteps.ViewingProject;
+  const isSelectingInstitution = state.step === ProjectMapSteps.SelectingInstitution;
+  const isSelectingProject = state.step === ProjectMapSteps.SelectingProject;
+  const isViewingProject = state.step === ProjectMapSteps.ViewingProject;
 
   const handleInstitutionSelect = (institution: string) => { dispatch({ type: "institution-select", institution }); }
   
@@ -237,126 +234,85 @@ export default function ViewController() {
 
       
       <Legend left={sidebarHiddenSearchParam ? 0 : 400}>
-        {isViewingProject ?
-          <>
-            <LegendEntry text='Project institution' icon={<MapPinContents color='secondary.main' size={30} />} />
-            <LegendEntry text='Contributing institution' icon={<InstitutionContributionBar backgroundColor={`primary.main`} width={10} height={30} />} />
-          </>
-        : <>
-            <LegendEntry text='Project institutions' icon={<MapPinContents color='primary.main' size={30} />} />
-            <LegendEntry text='Non-R1 Universities' icon={<MapPinContents color={nonR1Color} size={30} />} />
-            <LegendEntry text='Project institutions in EPSCOR states' icon={<MapPinContents color={epscorColor} size={30} />} />
-            <LegendEntry text='Non-R1 Universities in EPSCOR states' icon={<MapPinContents color={epscorNonR1Color} size={30} />} />
-          </>
-        }
+        {isViewingProject ? <LegendContentProjects />: <LegendContentInstitutions /> }
       </Legend>
 
-      <LogoContainer>
-        <LinkLogoImage src={'/maps/images/OSDF_logo_round.png'} alt={'OSDF logo'} href={'https://osg-htc.org/services/osdf'} size={75} />
-        <LinkLogoImage src={'/maps/images/OSPool_logo_round.png'} alt={'OSPool logo'} href={'https://osg-htc.org/services/ospool/'} size={75} />
-        <LinkLogoImage src={'/maps/images/PATh_logo_round.png'} alt={'PATh logo'} href={'https://path-cc.io/'} size={75} />
-      </LogoContainer>
-
       {sidebarHiddenSearchParam ? <></> :
-        <Sidebar>
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: '40px auto 40px',
-              alignItems: 'top',
-              mb: 1
-            }}
-          >
-            <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.5 }}>
-              <Link href={isSelectingInstitution ? "../" : ""}>
-                <IconButton
-                  size="small"
-                  onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
-                >
-                  <ArrowBackIcon />
-                </IconButton>
-              </Link>
-            </Box>
-            
-            <Box>
-              {
-                isSelectingInstitution ?
-                  <TextField
-                    fullWidth
+        <Sidebar
+          leftButton={
+            <BackButton
+              link={isSelectingInstitution ? "../" : undefined}
+              onClick={() => isSelectingInstitution ? {} : dispatch({ type: isSelectingProject ? "institution-deselect" : "project-deselect" })}
+            />
+          }
+          header={
+            isSelectingInstitution ?
+              <TextField
+                fullWidth
+                size="small"
+                placeholder="Search institutions..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            : isSelectingProject ?
+              <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>
+            : // isViewing Project
+              <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{addSpacesToUnderscores(state.project)}</Typography>
+          }
+          rightButton={
+            isSelectingInstitution ?
+              <DropdownPopover icon={
+                <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
+                  <FilterAlt />
+                </Badge>
+              }>
+                <InstitutionFilterMenu
+                  classificationFilterMode={classificationFilterMode}
+                  setClassificationFilterMode={setClassificationFilterMode}
+                  stateFilterMode={stateFilterMode}
+                  setStateFilterMode={setStateFilterMode}
+                  chosenState={chosenState}
+                  setChosenState={setChosenState}
+                />
+              </DropdownPopover>
+              : isViewingProject ? 
+                  <IconButton
                     size="small"
-                    placeholder="Search institutions..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onClick={downloadCSV}
+                  >
+                    <FileDownloadIcon />
+                  </IconButton>
+              : <></>
+          }
+          body={
+            isSelectingInstitution ?
+              (
+                searchedBinnedProjectsArray.map((bin) =>
+                  <ProjectInstitutionListCard
+                    key={bin[0].projectInstitutionName}
+                    onClick={() => dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName })}
+                    project={bin[0]}
                   />
-                  : isSelectingProject ?
-                    <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{state.institution}</Typography>
-                  : // isViewing Project
-                    <Typography variant="h5" align='center' sx={{ textWrap: 'balance' }}>{addSpacesToUnderscores(state.project)}</Typography>
-              }
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 0.5 }}>
-              <Box>
-                {
-                  isSelectingInstitution ?
-                    <DropdownPopover icon={
-                      <Badge variant="dot" color="primary" invisible={stateFilterMode == 'All' && classificationFilterMode == 'All'}>
-                        <FilterAlt />
-                      </Badge>
-                    }>
-                      <InstitutionFilterMenu
-                        classificationFilterMode={classificationFilterMode}
-                        setClassificationFilterMode={setClassificationFilterMode}
-                        stateFilterMode={stateFilterMode}
-                        setStateFilterMode={setStateFilterMode}
-                        chosenState={chosenState}
-                        setChosenState={setChosenState}
-                      />
-                    </DropdownPopover>
-                    : isViewingProject ? 
-                        <IconButton
-                          size="small"
-                          onClick={downloadCSV}
-                        >
-                          <FileDownloadIcon />
-                        </IconButton>
-                    : <></>
-                }
-              </Box>
-            </Box>
-          </Box>
-
-          <SidebarStack>
-            {
-              isSelectingInstitution ?
-                (
-                  searchedBinnedProjectsArray.map((bin) =>
-                    <ProjectInsitutionListCard
-                      key={bin[0].projectInstitutionName}
-                      onClick={() => dispatch({ type: "institution-select", institution: bin[0].projectInstitutionName })}
-                      project={bin[0]}
-                    />
-                  )
                 )
-                : isSelectingProject ?
-                  (
-                    [...projectBinsByInstitution[state.institution]]
-                      .sort((a, b) => b.numJobs - a.numJobs)
-                      .map((project: ProjectData) => (
-                        <ProjectListCard
-                          key={project.projectName}
-                          project={project}
-                          click={(p) => dispatch({ type: "project-select", project: p })}
-                        />
-                      ))
-                  )
-                  : // isViewingProject
-                  (
-                    < ProjectStats date={getProjectsResponse.date} stats={validProjectsData[state.project]} />
-                  )
-            }
-          </SidebarStack>
-        </Sidebar>
+              )
+            : isSelectingProject ?
+              (
+                [...projectBinsByInstitution[state.institution]]
+                  .sort((a, b) => b.numJobs - a.numJobs)
+                  .map((project: ProjectData) => (
+                    <ProjectListCard
+                      key={project.projectName}
+                      project={project}
+                      click={(p) => dispatch({ type: "project-select", project: p })}
+                    />
+                  ))
+              )
+            : // isViewingProject
+              (
+                < ProjectStats date={getProjectsResponse.date} stats={validProjectsData[state.project]} />
+              )
+          }
+        />
       }
     </>
   );

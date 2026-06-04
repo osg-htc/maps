@@ -6,8 +6,10 @@ import theme, {fonts} from "@chtc/web-components/themes/osg"
 import "@/src/app/globals.css"
 import Analytics from "@/src/components/Analytics";
 import BaseMap from "@/src/components/BaseMap";
-import { Suspense, useCallback } from "react";
+import { Suspense } from "react";
 import LoadingScreen from "../components/LoadingScreen";
+import LogoContainer from "../components/LogoContainer";
+import LinkLogoImage from "../components/LinkLogoImage";
 
 export const metadata: Metadata = {
   title: "Maps",
@@ -46,6 +48,11 @@ export default function RootLayout({
               <Suspense fallback={<LoadingScreen />}>
                 <BaseMap>
                   {children}
+                  <LogoContainer>
+                    <LinkLogoImage src={'/maps/images/OSDF_logo_round.png'} alt={'OSDF logo'} href={'https://osg-htc.org/services/osdf'} size={75} />
+                    <LinkLogoImage src={'/maps/images/OSPool_logo_round.png'} alt={'OSPool logo'} href={'https://osg-htc.org/services/ospool/'} size={75} />
+                    <LinkLogoImage src={'/maps/images/PATh_logo_round.png'} alt={'PATh logo'} href={'https://path-cc.io/'} size={75} />
+                  </LogoContainer>
                 </BaseMap>
               </Suspense>
             </Box>
