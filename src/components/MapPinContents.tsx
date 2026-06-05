@@ -18,14 +18,14 @@ export default function MapPin({ color, size, children }: {
         fontSize: size,
         display: 'block'  // Removes inline gap
       }} />
-      <Circle sx={{ 
+      {/* <Circle sx={{ 
         color: color, 
         fontSize: size / 4, 
         position: "absolute", 
         top: "38.5%", 
         left: "50%", 
         transform: "translate(-50%, -50%)" 
-      }} />
+      }} /> */}
       <Box sx={{
         position: "absolute", 
         top: "38.5%", 

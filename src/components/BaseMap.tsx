@@ -32,10 +32,10 @@ function BaseMap({children}: {children: ReactNode}) {
             latitude: 37.8,
             zoom: 3,
             padding: {
-              left: sidebarHiddenSearchParam ? 0 : 400
+              left: 0
             }
           }}
-          projection={'globe'}
+          projection={'mercator'}
           style={{width: "100%", height: "100%"}}
           mapStyle={"mapbox://styles/mapbox/light-v11"} // "mapbox://styles/cannon-lock/cm9u8lv2400fd01qt9yvj8nyz/draft"
           onLoad={() => setMounted(true)}

@@ -39,6 +39,7 @@ export default function MapPin(props: MapPinProps) {
       latitude={ props.lat }
       longitude={ props.lon }
       anchor="bottom"
+      offset={[0, 10]}
       onClick={ props.onClick }
       style={{
         zIndex: hovered ? 9002 : props.onTop ? 9001 : (props.extraZ ?? 0)
