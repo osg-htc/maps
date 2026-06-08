@@ -59,7 +59,7 @@ export default function ViewController() {
 
         const id = institutionData["Institution ID"];
 
-        if (id === "N/A") return institutions;
+        if (id === "N/A" || id === "-") return institutions;
 
         if (!institutions[id]) {
           institutions[id] = { ...institutionData, Attendees: 0 };
