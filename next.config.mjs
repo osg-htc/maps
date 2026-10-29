@@ -8,6 +8,9 @@ const nextConfig = {
 	basePath: process.env.NEXT_PUBLIC_BASE_PATH,
 	output: "export",
 	trailingSlash: true,
+	// The cache selection page queries the director for thousands of locations at build time,
+	// which can exceed the default 60 seconds per page
+	staticPageGenerationTimeout: 600,
 	// Image Optimizer https://www.npmjs.com/package/next-image-export-optimizer?activeTab=readme
 	images: {
 		loader: "custom",
