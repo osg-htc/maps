@@ -4,16 +4,7 @@ import {
 import { Close } from "@mui/icons-material";
 import { addSpacesToUnderscores } from "@/src/utils/helpers";
 import type { CacheStats } from ".";
-import { CHOICES } from "./constants";
-
-function statusColor(status: string) {
-  switch (status.toLowerCase()) {
-    case "ok": return "success"
-    case "error":
-    case "critical": return "error"
-    default: return "warning"
-  }
-}
+import { CHOICES, statusColor } from "./constants";
 
 const formatArea = (km2: number) => `${(km2 / 1e6).toFixed(1)}M km²`
 

@@ -14,3 +14,12 @@ export const PALETTE = [
 export const CACHE_ICON_COLOR = "#FF7B00"
 
 export const NO_CACHE_COLOR = "#888888"
+
+export function statusColor(status: string) {
+  switch (status.toLowerCase()) {
+    case "ok": return "success"
+    case "error":
+    case "critical": return "error"
+    default: return "warning"
+  }
+}

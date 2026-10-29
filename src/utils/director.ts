@@ -5,6 +5,8 @@
  * which browsers are blocked from sending by CORS, so this runs at build time.
  */
 
+import { mkdir, readFile, writeFile } from "fs/promises";
+import path from "path";
 import { geoArea, geoContains } from "d3-geo";
 import { geoDelaunay, geoVoronoi } from "d3-geo-voronoi";
 import { feature } from "topojson-client";
@@ -13,6 +15,35 @@ import landTopology from "world-atlas/land-50m.json";
 const DIRECTOR_URL = "https://osdf-director.osg-htc.org"
 const DIRECTOR_TEST_OBJECT = "/pelicanplatform/test/hello-world.txt"
 const EARTH_RADIUS_KM = 6371.0088
+
+// Saves director responses to disk so repeated local runs don't hammer the director.
+// On by default in `next dev`, set DIRECTOR_CACHE=true to use it for `next build` too.
+// Delete the file to fetch fresh data.
+const DIRECTOR_CACHE_FILE = path.join(process.cwd(), ".cache", "director.json")
+const DIRECTOR_CACHE_ENABLED = process.env.DIRECTOR_CACHE
+  ? process.env.DIRECTOR_CACHE === "true"
+  : process.env.NODE_ENV === "development"
+
+type DirectorCache = {
+  servers?: DirectorServer[]
+  // Selected cache hosts keyed by "latitude,longitude"
+  hosts: Record<string, string[]>
+}
+
+async function readDirectorCache(): Promise<DirectorCache> {
+  if (!DIRECTOR_CACHE_ENABLED) return { hosts: {} }
+  try {
+    return JSON.parse(await readFile(DIRECTOR_CACHE_FILE, "utf8")) as DirectorCache
+  } catch {
+    return { hosts: {} }
+  }
+}
+
+async function writeDirectorCache(cache: DirectorCache) {
+  if (!DIRECTOR_CACHE_ENABLED) return
+  await mkdir(path.dirname(DIRECTOR_CACHE_FILE), { recursive: true })
+  await writeFile(DIRECTOR_CACHE_FILE, JSON.stringify(cache))
+}
 
 export type LatLong = {
   latitude: number
@@ -228,7 +259,9 @@ async function getSelectedCacheHosts(point: LatLong): Promise<string[]> {
 }
 
 export async function getCacheSelectionData(pointCount: number, choiceCount = 3, concurrency = 10): Promise<CacheSelectionData> {
-  const servers = await getDirectorServers()
+  const directorCache = await readDirectorCache()
+  const servers = directorCache.servers ?? await getDirectorServers()
+  directorCache.servers = servers
 
   // List every cache, including ones the director never picks, and refer to them by index
   const caches = servers.filter(server => server.type === "Cache")
@@ -241,7 +274,14 @@ export async function getCacheSelectionData(pointCount: number, choiceCount = 3,
   let lastPercent = 0
   for (let i = 0; i < cells.length; i += concurrency) {
     const batch = cells.slice(i, i + concurrency)
-    hostLists.push(...await Promise.all(batch.map(x => getSelectedCacheHosts(x.point))))
+    hostLists.push(...await Promise.all(batch.map(async x => {
+      const key = `${x.point.latitude},${x.point.longitude}`
+      if (directorCache.hosts[key]) return directorCache.hosts[key]
+      const hosts = await getSelectedCacheHosts(x.point)
+      // Leave failed lookups out so they are retried next time
+      if (hosts.length) directorCache.hosts[key] = hosts
+      return hosts
+    })))
 
     // Log progress every 5% since this takes a while during the build
     const percent = Math.floor(hostLists.length / cells.length * 20) * 5
@@ -250,6 +290,8 @@ export async function getCacheSelectionData(pointCount: number, choiceCount = 3,
       console.log(`Cache selection: queried director for ${hostLists.length}/${cells.length} locations (${percent}%)`)
     }
   }
+
+  await writeDirectorCache(directorCache)
 
   const choices = hostLists.map(hosts => hosts.slice(0, choiceCount).map(host => cacheIndexByHost.get(host) ?? null))
 

@@ -40,3 +40,6 @@ public/fallbacks/*
 # Optimized images
 public/images/nextImageExportOptimizer
 public/images/next-image-export-optimizer-hashes.json
+
+# director responses cached for local testing
+/.cache/
