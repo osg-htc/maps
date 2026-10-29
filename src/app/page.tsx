@@ -50,6 +50,27 @@ export default async function Home() {
             />
           </Stack>
         </ListCardBase>
+        <ListCardBase listKey="cacheSelectionMap" link="./cache-selection">
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
+            <Stack spacing={0.5}>
+              <Typography variant="h6" lineHeight={1.2}>
+                Cache Selection Map
+              </Typography>
+              <Typography variant="subtitle2" color="secondary.main" lineHeight={1}>
+                A map of which OSDF caches the director chooses for clients around the world
+              </Typography>
+            </Stack>
+            <Image
+              src="/maps/images/cache-selection-map-thumbnail.png"
+              alt="Cache Selection Map Thumbnail"
+              width={100}
+              height={100}
+              style={{
+                borderRadius: 16
+              }}
+            />
+          </Stack>
+        </ListCardBase>
       </>
     } />
   );
