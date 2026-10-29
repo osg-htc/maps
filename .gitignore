@@ -43,3 +43,6 @@ public/images/next-image-export-optimizer-hashes.json
 
 # director responses cached for local testing
 /.cache/
+
+# JetBrains IDE settings
+/.idea/
