@@ -1,13 +1,16 @@
-// The director's choices in priority order. The 1st fills each cell and has lines to its cache,
-// the 2nd is a border just inside the cell and the 3rd a border around that one.
+// The director's choices in priority order. The 1st fills each cell,
+// the 2nd is a border just inside the cell and the 3rd a dot in its middle.
 export const CHOICES = [
   { label: "1st" },
   { label: "2nd" },
   { label: "3rd" },
 ]
 
-// Width in pixels of each border drawn inside a cell
+// Width in pixels of the 2nd choice border drawn inside a cell
 export const BORDER_WIDTH = 2
+
+// Radius in pixels of the 3rd choice dot in the middle of a cell
+export const DOT_RADIUS = 3
 
 export const PALETTE = [
   "#E6194B", "#3CB44B", "#4363D8", "#F58231", "#911EB4", "#42D4F4", "#F032E6", "#BFEF45",

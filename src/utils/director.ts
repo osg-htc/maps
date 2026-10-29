@@ -8,7 +8,7 @@
 import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
 import { geoArea, geoContains } from "d3-geo";
-import { geoDelaunay, geoVoronoi } from "d3-geo-voronoi";
+import { geoVoronoi } from "d3-geo-voronoi";
 import { feature } from "topojson-client";
 import landTopology from "world-atlas/land-50m.json";
 
@@ -81,29 +81,21 @@ export type DirectorServer = {
 }
 
 type LandCell = {
-  // Position of this point in the full globe grid
-  index: number
   point: LatLong
   // The part of the globe closest to this point, as an unwrapped [longitude, latitude] ring
   cell: [number, number][]
   areaKm2: number
 }
 
-export type CacheCell = Omit<LandCell, "index" | "point">
-
-export type CacheCluster = {
-  choice: number
-  cache: number
-  // A grid point near the middle of the cluster, its line to the cache is drawn from here
-  center: LatLong
+export type CacheCell = Omit<LandCell, "point"> & {
+  // The grid point the cell is built around, as [longitude, latitude]
+  center: [number, number]
 }
 
 export type CacheSelection = {
   // For each cell, an index into the caches list for each of the director's choices in priority order,
   // null where the director picked a host that isn't a known cache, empty where it gave no answer
   choices: (number | null)[][]
-  // Touching cells that share a first choice cache, so one line can stand in for many
-  clusters: CacheCluster[]
 }
 
 export type CacheSelectionSample = CacheSelection & {
@@ -184,80 +176,24 @@ function unwrapRing(ring: number[][], site: LatLong): [number, number][] {
 const round = (x: number) => Math.round(x * 1000) / 1000
 
 /**
- * Grid points that fall on land, each with the area of the globe closest to it,
- * plus which grid points neighbor each other.
+ * Grid points that fall on land, each with the area of the globe closest to it.
  * Cells are built from the whole grid so coastal cells don't spill out over the ocean.
  */
-export function getLandGrid(count: number): { cells: LandCell[], neighbors: number[][] } {
+export function getLandGrid(count: number): LandCell[] {
   const land = feature(landTopology as unknown as Parameters<typeof feature>[0], "land")
   const points = getGlobeGrid(count)
   const coordinates = points.map(x => [x.longitude, x.latitude] as [number, number])
   const polygons = geoVoronoi(coordinates).polygons().features
 
-  const cells = polygons.flatMap((polygon, index) => {
+  return polygons.flatMap((polygon, index) => {
     const point = points[index]
     if (!geoContains(land, [point.longitude, point.latitude])) return []
     return [{
-      index,
       point,
       cell: unwrapRing(polygon.geometry.coordinates[0], point).map(([lon, lat]) => [round(lon), round(lat)] as [number, number]),
       areaKm2: Math.round(geoArea(polygon) * EARTH_RADIUS_KM ** 2),
     }]
   })
-
-  return { cells, neighbors: geoDelaunay(coordinates).neighbors }
-}
-
-const toVector = ({ latitude, longitude }: LatLong) => {
-  const [lat, lon] = [latitude, longitude].map(x => x * Math.PI / 180)
-  return [Math.cos(lat) * Math.cos(lon), Math.cos(lat) * Math.sin(lon), Math.sin(lat)]
-}
-
-/**
- * Group touching cells that the director sends to the same cache for each choice
- */
-function clusterCells(cells: LandCell[], choices: (number | null)[][], neighbors: number[][], choiceCount: number): CacheCluster[] {
-  const positionByIndex = new Map(cells.map((cell, position) => [cell.index, position]))
-  const clusters: CacheCluster[] = []
-
-  for (let choice = 0; choice < choiceCount; choice++) {
-    const visited = new Set<number>()
-
-    cells.forEach((_, start) => {
-      const cache = choices[start][choice]
-      if (cache === null || cache === undefined || visited.has(start)) return
-
-      // Flood fill across neighboring land cells with the same cache
-      const members: number[] = []
-      const queue = [start]
-      visited.add(start)
-      while (queue.length) {
-        const position = queue.pop()!
-        members.push(position)
-        for (const neighbor of neighbors[cells[position].index] ?? []) {
-          const next = positionByIndex.get(neighbor)
-          if (next === undefined || visited.has(next) || choices[next][choice] !== cache) continue
-          visited.add(next)
-          queue.push(next)
-        }
-      }
-
-      // Use the member closest to the area weighted middle, so the line starts inside the cluster
-      const middle = [0, 0, 0]
-      for (const position of members) {
-        toVector(cells[position].point).forEach((v, axis) => middle[axis] += v * cells[position].areaKm2)
-      }
-      const center = members.reduce((best, position) => {
-        const dot = (p: number) => toVector(cells[p].point).reduce((acc, v, axis) => acc + v * middle[axis], 0)
-        return dot(position) > dot(best) ? position : best
-      })
-
-      const { latitude, longitude } = cells[center].point
-      clusters.push({ choice, cache, center: { latitude: round(latitude), longitude: round(longitude) } })
-    })
-  }
-
-  return clusters
 }
 
 /**
@@ -319,7 +255,7 @@ export async function getCacheSelectionData(pointCount: number, choiceCount = 3,
   const { snapshots } = directorCache
   const current = snapshots[0]
 
-  const { cells, neighbors } = getLandGrid(pointCount)
+  const cells = getLandGrid(pointCount)
 
   // Work through the grid in small batches to be gentle on the director
   let lastPercent = 0
@@ -358,7 +294,6 @@ export async function getCacheSelectionData(pointCount: number, choiceCount = 3,
 
   // Drop cells no snapshot has an answer for
   const answered = cells.map((_, i) => i).filter(i => sampleChoices.some(choices => choices[i].length))
-  const answeredCells = answered.map(i => cells[i])
 
   // Newest counts NEWEST_SNAPSHOT_WEIGHT times the oldest, scaling linearly between them
   const weights = snapshots.map((_, i) =>
@@ -366,19 +301,17 @@ export async function getCacheSelectionData(pointCount: number, choiceCount = 3,
   )
   const weightedChoices = answered.map(i => weightChoices(sampleChoices.map(choices => choices[i]), weights, choiceCount))
 
-  // Only the first choice is drawn as lines, the others are borders on each cell
-  const selection = (choices: (number | null)[][]): CacheSelection => ({
-    choices,
-    clusters: clusterCells(answeredCells, choices, neighbors, 1),
-  })
-
   return {
     caches,
-    cells: answeredCells.map(({ cell, areaKm2 }) => ({ cell, areaKm2 })),
+    cells: answered.map(i => cells[i]).map(({ point, cell, areaKm2 }) => ({
+      center: [round(point.longitude), round(point.latitude)] as [number, number],
+      cell,
+      areaKm2,
+    })),
     samples: snapshots.map((snapshot, s) => ({
       generatedAt: snapshot.createdAt,
-      ...selection(answered.map(i => sampleChoices[s][i])),
+      choices: answered.map(i => sampleChoices[s][i]),
     })),
-    weighted: selection(weightedChoices),
+    weighted: { choices: weightedChoices },
   }
 }

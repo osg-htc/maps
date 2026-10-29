@@ -100,8 +100,7 @@ export default function CacheSelectionMap({ data }: CacheSelectionMapProps) {
               <Typography variant="body2" color="secondary.main">
                 Each region is colored by the OSDF cache the director sends a client in it to first.
                 The director was asked about {data.cells.length} evenly spaced locations on land.
-                Each line joins a group of touching regions to the cache they share.
-                The director&apos;s 2nd choice is drawn as a border inside each region, and its 3rd choice as a border around that.
+                The director&apos;s 2nd choice is drawn as a border inside each region, and its 3rd choice as a dot in the middle.
               </Typography>
               <ToggleButtonGroup
                 fullWidth
@@ -115,12 +114,12 @@ export default function CacheSelectionMap({ data }: CacheSelectionMapProps) {
               >
                 {CHOICES.map((choice, i) => (
                   <ToggleButton key={choice.label} value={i} sx={{ gap: 1 }}>
-                    {/* A cell drawn the way this choice is shown: filled, inner border or outer border */}
+                    {/* A cell drawn the way this choice is shown: filled, bordered or with a dot */}
                     <svg width={16} height={12}>
                       <rect x={0.5} y={0.5} width={15} height={11} fill="none" stroke="currentColor" strokeOpacity={0.3} />
                       {i === 0 && <rect x={0.5} y={0.5} width={15} height={11} fill="currentColor" fillOpacity={0.5} />}
-                      {i === 1 && <rect x={3} y={3} width={10} height={6} fill="none" stroke="currentColor" strokeWidth={2} />}
-                      {i === 2 && <rect x={1} y={1} width={14} height={10} fill="none" stroke="currentColor" strokeWidth={2} />}
+                      {i === 1 && <rect x={1} y={1} width={14} height={10} fill="none" stroke="currentColor" strokeWidth={2} />}
+                      {i === 2 && <circle cx={8} cy={6} r={3} fill="currentColor" />}
                     </svg>
                     {choice.label}
                   </ToggleButton>
