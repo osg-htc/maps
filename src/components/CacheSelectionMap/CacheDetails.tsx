@@ -32,11 +32,11 @@ type CacheDetailsProps = {
   stats: CacheStats
   landArea: number
   color: string
-  generatedAt: string
+  snapshotText: string
   onClose: () => void
 }
 
-export default function CacheDetails({ stats, landArea, color, generatedAt, onClose }: CacheDetailsProps) {
+export default function CacheDetails({ stats, landArea, color, snapshotText, onClose }: CacheDetailsProps) {
   const { cache } = stats
 
   return (
@@ -128,7 +128,7 @@ export default function CacheDetails({ stats, landArea, color, generatedAt, onCl
       </Section>
 
       <Typography align="center" variant="subtitle2" fontStyle="italic" sx={{ mt: 0.5 }}>
-        Director snapshot from {new Date(generatedAt).toLocaleString()}
+        {snapshotText}
       </Typography>
     </Paper>
   )

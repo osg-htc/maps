@@ -6,7 +6,7 @@ const GRID_POINT_COUNT = 9000
 
 export default async function CacheSelectionPage() {
   // Don't fail the whole site build if the director is down, the page shows an error instead
-  let data: CacheSelectionData = { caches: [], cells: [], clusters: [] }
+  let data: CacheSelectionData = { caches: [], cells: [], samples: [], weighted: { choices: [], clusters: [] } }
   try {
     data = await getCacheSelectionData(GRID_POINT_COUNT)
   } catch (error) {
@@ -14,6 +14,6 @@ export default async function CacheSelectionPage() {
   }
 
   return (
-    <CacheSelectionMap data={data} generatedAt={new Date().toISOString()} />
+    <CacheSelectionMap data={data} />
   );
 }

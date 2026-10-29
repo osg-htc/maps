@@ -16,26 +16,40 @@ const DIRECTOR_URL = "https://osdf-director.osg-htc.org"
 const DIRECTOR_TEST_OBJECT = "/pelicanplatform/test/hello-world.txt"
 const EARTH_RADIUS_KM = 6371.0088
 
-// Saves director responses to disk so repeated local runs don't hammer the director.
-// On by default in `next dev`, set DIRECTOR_CACHE=true to use it for `next build` too.
-// Delete the file to fetch fresh data.
+// Saves director responses to disk so repeated runs don't hammer the director, and so the map
+// can show a history of them. On by default in `next dev`, set DIRECTOR_CACHE=true to use it
+// for `next build` too. Delete the file to start the history over.
 const DIRECTOR_CACHE_FILE = path.join(process.cwd(), ".cache", "director.json")
 const DIRECTOR_CACHE_ENABLED = process.env.DIRECTOR_CACHE
   ? process.env.DIRECTOR_CACHE === "true"
   : process.env.NODE_ENV === "development"
 
-type DirectorCache = {
-  servers?: DirectorServer[]
+// A new snapshot is taken once the latest is this old, until then its missing locations are filled in
+const SNAPSHOT_MAX_AGE_MS = 5 * 60 * 60 * 1000
+const SNAPSHOT_COUNT = 10
+// How much more the newest snapshot counts than the oldest in the weighted view
+const NEWEST_SNAPSHOT_WEIGHT = 10
+
+type DirectorSnapshot = {
+  createdAt: string
+  servers: DirectorServer[]
   // Selected cache hosts keyed by "latitude,longitude"
   hosts: Record<string, string[]>
 }
 
+type DirectorCache = {
+  // Newest first
+  snapshots: DirectorSnapshot[]
+}
+
 async function readDirectorCache(): Promise<DirectorCache> {
-  if (!DIRECTOR_CACHE_ENABLED) return { hosts: {} }
+  if (!DIRECTOR_CACHE_ENABLED) return { snapshots: [] }
   try {
-    return JSON.parse(await readFile(DIRECTOR_CACHE_FILE, "utf8")) as DirectorCache
+    const cache = JSON.parse(await readFile(DIRECTOR_CACHE_FILE, "utf8")) as Partial<DirectorCache>
+    // Files from before snapshots were kept are dropped
+    return { snapshots: cache.snapshots ?? [] }
   } catch {
-    return { hosts: {} }
+    return { snapshots: [] }
   }
 }
 
@@ -75,11 +89,7 @@ type LandCell = {
   areaKm2: number
 }
 
-export type CacheCell = Omit<LandCell, "index" | "point"> & {
-  // Index into the caches list for each of the director's choices in priority order,
-  // null where the director picked a host that isn't a known cache
-  choices: (number | null)[]
-}
+export type CacheCell = Omit<LandCell, "index" | "point">
 
 export type CacheCluster = {
   choice: number
@@ -88,11 +98,25 @@ export type CacheCluster = {
   center: LatLong
 }
 
+export type CacheSelection = {
+  // For each cell, an index into the caches list for each of the director's choices in priority order,
+  // null where the director picked a host that isn't a known cache, empty where it gave no answer
+  choices: (number | null)[][]
+  // Touching cells that share a first choice cache, so one line can stand in for many
+  clusters: CacheCluster[]
+}
+
+export type CacheSelectionSample = CacheSelection & {
+  generatedAt: string
+}
+
 export type CacheSelectionData = {
   caches: DirectorServer[]
   cells: CacheCell[]
-  // Touching cells that share a cache for a given choice, so one line can stand in for many
-  clusters: CacheCluster[]
+  // Each director snapshot, newest first
+  samples: CacheSelectionSample[]
+  // All the samples combined, with newer ones counting for more
+  weighted: CacheSelection
 }
 
 async function getDirectorServers(): Promise<DirectorServer[]> {
@@ -258,51 +282,103 @@ async function getSelectedCacheHosts(point: LatLong): Promise<string[]> {
   }
 }
 
+/**
+ * Combine one cell's choices from several samples, picking for each choice in turn the cache
+ * with the most weight that isn't already an earlier choice. Ties go to the earlier sample.
+ */
+function weightChoices(samples: (number | null)[][], weights: number[], choiceCount: number): (number | null)[] {
+  const picked: (number | null)[] = []
+  for (let choice = 0; choice < choiceCount; choice++) {
+    const totals = new Map<number | null, number>()
+    samples.forEach((choices, i) => {
+      if (choice >= choices.length) return
+      const cache = choices[choice]
+      if (cache !== null && picked.includes(cache)) return
+      totals.set(cache, (totals.get(cache) ?? 0) + weights[i])
+    })
+    if (!totals.size) break
+
+    let best: [number | null, number] = [null, -Infinity]
+    for (const total of totals) {
+      if (total[1] > best[1]) best = total
+    }
+    picked.push(best[0])
+  }
+  return picked
+}
+
 export async function getCacheSelectionData(pointCount: number, choiceCount = 3, concurrency = 10): Promise<CacheSelectionData> {
   const directorCache = await readDirectorCache()
-  const servers = directorCache.servers ?? await getDirectorServers()
-  directorCache.servers = servers
 
-  // List every cache, including ones the director never picks, and refer to them by index
-  const caches = servers.filter(server => server.type === "Cache")
-  const cacheIndexByHost = new Map(caches.map((cache, i) => [new URL(cache.url).host, i]))
+  // Start a new snapshot once the latest is too old, dropping the oldest past the limit
+  const latest = directorCache.snapshots[0]
+  if (!latest || Date.now() - new Date(latest.createdAt).getTime() > SNAPSHOT_MAX_AGE_MS) {
+    directorCache.snapshots.unshift({ createdAt: new Date().toISOString(), servers: await getDirectorServers(), hosts: {} })
+    directorCache.snapshots = directorCache.snapshots.slice(0, SNAPSHOT_COUNT)
+  }
+  const { snapshots } = directorCache
+  const current = snapshots[0]
 
   const { cells, neighbors } = getLandGrid(pointCount)
 
   // Work through the grid in small batches to be gentle on the director
-  const hostLists: string[][] = []
   let lastPercent = 0
   for (let i = 0; i < cells.length; i += concurrency) {
     const batch = cells.slice(i, i + concurrency)
-    hostLists.push(...await Promise.all(batch.map(async x => {
+    await Promise.all(batch.map(async x => {
       const key = `${x.point.latitude},${x.point.longitude}`
-      if (directorCache.hosts[key]) return directorCache.hosts[key]
+      if (current.hosts[key]) return
       const hosts = await getSelectedCacheHosts(x.point)
       // Leave failed lookups out so they are retried next time
-      if (hosts.length) directorCache.hosts[key] = hosts
-      return hosts
-    })))
+      if (hosts.length) current.hosts[key] = hosts
+    }))
 
     // Log progress every 5% since this takes a while during the build
-    const percent = Math.floor(hostLists.length / cells.length * 20) * 5
+    const done = Math.min(i + concurrency, cells.length)
+    const percent = Math.floor(done / cells.length * 20) * 5
     if (percent > lastPercent) {
       lastPercent = percent
-      console.log(`Cache selection: queried director for ${hostLists.length}/${cells.length} locations (${percent}%)`)
+      console.log(`Cache selection: queried director for ${done}/${cells.length} locations (${percent}%)`)
     }
   }
 
   await writeDirectorCache(directorCache)
 
-  const choices = hostLists.map(hosts => hosts.slice(0, choiceCount).map(host => cacheIndexByHost.get(host) ?? null))
+  // List every cache from any snapshot, including ones the director never picks, and refer to them by index.
+  // Newer snapshots come first so a cache is shown as it was most recently.
+  const caches = [...new Map(
+    snapshots.flatMap(x => x.servers).filter(x => x.type === "Cache").reverse().map(x => [x.name, x])
+  ).values()].reverse()
+  const cacheIndexByHost = new Map(caches.map((cache, i) => [new URL(cache.url).host, i]))
 
-  // Drop cells the director gave no answer for
-  const answered = cells.map((_, i) => i).filter(i => hostLists[i].length)
+  const keys = cells.map(x => `${x.point.latitude},${x.point.longitude}`)
+  const sampleChoices = snapshots.map(snapshot => keys.map(key =>
+    (snapshot.hosts[key] ?? []).slice(0, choiceCount).map(host => cacheIndexByHost.get(host) ?? null)
+  ))
+
+  // Drop cells no snapshot has an answer for
+  const answered = cells.map((_, i) => i).filter(i => sampleChoices.some(choices => choices[i].length))
   const answeredCells = answered.map(i => cells[i])
-  const answeredChoices = answered.map(i => choices[i])
+
+  // Newest counts NEWEST_SNAPSHOT_WEIGHT times the oldest, scaling linearly between them
+  const weights = snapshots.map((_, i) =>
+    snapshots.length === 1 ? 1 : NEWEST_SNAPSHOT_WEIGHT - (NEWEST_SNAPSHOT_WEIGHT - 1) * i / (snapshots.length - 1)
+  )
+  const weightedChoices = answered.map(i => weightChoices(sampleChoices.map(choices => choices[i]), weights, choiceCount))
+
+  // Only the first choice is drawn as lines, the others are borders on each cell
+  const selection = (choices: (number | null)[][]): CacheSelection => ({
+    choices,
+    clusters: clusterCells(answeredCells, choices, neighbors, 1),
+  })
 
   return {
     caches,
-    cells: answeredCells.map(({ cell, areaKm2 }, i) => ({ cell, areaKm2, choices: answeredChoices[i] })),
-    clusters: clusterCells(answeredCells, answeredChoices, neighbors, choiceCount),
+    cells: answeredCells.map(({ cell, areaKm2 }) => ({ cell, areaKm2 })),
+    samples: snapshots.map((snapshot, s) => ({
+      generatedAt: snapshot.createdAt,
+      ...selection(answered.map(i => sampleChoices[s][i])),
+    })),
+    weighted: selection(weightedChoices),
   }
 }

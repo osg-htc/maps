@@ -1,9 +1,13 @@
-// How each of the director's choices is drawn, in priority order
+// The director's choices in priority order. The 1st fills each cell and has lines to its cache,
+// the 2nd is a border just inside the cell and the 3rd a border around that one.
 export const CHOICES = [
-  { label: "1st", dasharray: [1, 0] },
-  { label: "2nd", dasharray: [4, 2] },
-  { label: "3rd", dasharray: [1, 2] },
+  { label: "1st" },
+  { label: "2nd" },
+  { label: "3rd" },
 ]
+
+// Width in pixels of each border drawn inside a cell
+export const BORDER_WIDTH = 2
 
 export const PALETTE = [
   "#E6194B", "#3CB44B", "#4363D8", "#F58231", "#911EB4", "#42D4F4", "#F032E6", "#BFEF45",

@@ -3,8 +3,8 @@
 import { Layer, Source, useMap } from "react-map-gl/mapbox";
 import type { ExpressionSpecification } from "mapbox-gl";
 import { useEffect, useState } from "react";
-import { CacheSelectionData, LatLong } from "@/src/utils/director";
-import { CHOICES, NO_CACHE_COLOR } from "./constants";
+import { CacheSelection, CacheSelectionData, LatLong } from "@/src/utils/director";
+import { BORDER_WIDTH, NO_CACHE_COLOR } from "./constants";
 
 const toRadians = (degrees: number) => degrees * Math.PI / 180
 const toDegrees = (radians: number) => radians * 180 / Math.PI
@@ -45,14 +45,27 @@ function greatCircle(a: LatLong, b: LatLong, steps = 64): [number, number][] {
   return coordinates
 }
 
+/**
+ * The ring wound counterclockwise, so a line offset has the same side of it inside for every cell
+ */
+function counterClockwise(ring: [number, number][]): [number, number][] {
+  // Shoelace formula, positive when counterclockwise. The rings are unwrapped so this works across the antimeridian
+  const area = ring.reduce((acc, [x1, y1], i) => {
+    const [x2, y2] = ring[(i + 1) % ring.length]
+    return acc + x1 * y2 - x2 * y1
+  }, 0)
+  return area < 0 ? [...ring].reverse() : ring
+}
+
 type CacheSelectionLayersProps = {
   data: CacheSelectionData
+  selection: CacheSelection
   shownChoices: number[]
   colors: Record<string, string>
   selectedCacheName?: string
 }
 
-export default function CacheSelectionLayers({ data, shownChoices, colors, selectedCacheName }: CacheSelectionLayersProps) {
+export default function CacheSelectionLayers({ data, selection, shownChoices, colors, selectedCacheName }: CacheSelectionLayersProps) {
 
   // Mapbox throws if sources are added before the style finishes loading
   const { current: map } = useMap()
@@ -70,10 +83,10 @@ export default function CacheSelectionLayers({ data, shownChoices, colors, selec
     }
   }, [map])
 
-  // One line per cluster of touching cells that share a cache, rather than one per cell
-  const linesFor = (choice: number) => ({
+  // One line per cluster of touching cells that share their first choice, rather than one per cell
+  const lines = {
     type: "FeatureCollection" as const,
-    features: data.clusters.filter(x => x.choice === choice).map(cluster => {
+    features: selection.clusters.filter(x => x.choice === 0).map(cluster => {
       const cache = data.caches[cluster.cache]
       return {
         type: "Feature" as const,
@@ -81,22 +94,26 @@ export default function CacheSelectionLayers({ data, shownChoices, colors, selec
         geometry: { type: "LineString" as const, coordinates: greatCircle(cluster.center, cache) },
       }
     })
-  })
+  }
 
-  // Color each cell by the highest priority choice currently shown
-  const firstShown = Math.min(...shownChoices)
-  const cells = {
+  // Color each cell by the cache the director picks for the given choice
+  const cellsFor = (choice: number) => ({
     type: "FeatureCollection" as const,
-    features: data.cells.map(x => {
-      const cacheIndex = x.choices[firstShown]
+    features: data.cells.map((x, i) => {
+      const cacheIndex = selection.choices[i][choice]
       const cache = cacheIndex === null || cacheIndex === undefined ? undefined : data.caches[cacheIndex]
       return {
         type: "Feature" as const,
         properties: { color: cache ? colors[cache.name] : NO_CACHE_COLOR, cache: cache?.name ?? "" },
-        geometry: { type: "Polygon" as const, coordinates: [x.cell] },
+        geometry: { type: "Polygon" as const, coordinates: [counterClockwise(x.cell)] },
       }
     })
-  }
+  })
+
+  // The 3rd choice border sits on the cell's edge when shown, with the 2nd choice border just inside it
+  const borders = [1, 2].filter(choice => shownChoices.includes(choice))
+  const borderOffset = (choice: number) =>
+    -BORDER_WIDTH * (choice === 1 && borders.includes(2) ? 1.5 : 0.5)
 
   // When a cache is selected, fade out everything that doesn't point to it
   const highlight = (selected: number, other: number, normal: number): ExpressionSpecification | number => selectedCacheName
@@ -107,28 +124,43 @@ export default function CacheSelectionLayers({ data, shownChoices, colors, selec
 
   return (
     <>
-      <Source id="cache-selection-cells" type="geojson" data={cells}>
-        <Layer
-          id="cache-selection-cells"
-          type="fill"
-          paint={{ "fill-color": ["get", "color"], "fill-opacity": highlight(0.6, 0.08, 0.35) }}
-        />
-      </Source>
-      {/* Draw lower priority choices first so the top choice sits on top */}
-      {[...shownChoices].sort((a, b) => b - a).map(choice => (
-        <Source key={choice} id={`cache-selection-lines-${choice}`} type="geojson" data={linesFor(choice)}>
+      {shownChoices.includes(0) &&
+        <Source id="cache-selection-cells" type="geojson" data={cellsFor(0)}>
           <Layer
-            id={`cache-selection-lines-${choice}`}
+            id="cache-selection-cells"
+            type="fill"
+            paint={{ "fill-color": ["get", "color"], "fill-opacity": highlight(0.6, 0.08, 0.35) }}
+          />
+        </Source>
+      }
+      {borders.map(choice => (
+        <Source key={choice} id={`cache-selection-borders-${choice}`} type="geojson" data={cellsFor(choice)}>
+          <Layer
+            id={`cache-selection-borders-${choice}`}
+            type="line"
+            paint={{
+              "line-color": ["get", "color"],
+              "line-width": BORDER_WIDTH,
+              // Negative offsets keep the border inside the cell, since the rings are counterclockwise
+              "line-offset": borderOffset(choice),
+              "line-opacity": highlight(0.95, 0.08, 0.8),
+            }}
+          />
+        </Source>
+      ))}
+      {shownChoices.includes(0) &&
+        <Source id="cache-selection-lines" type="geojson" data={lines}>
+          <Layer
+            id="cache-selection-lines"
             type="line"
             paint={{
               "line-color": ["get", "color"],
               "line-width": 1.5,
               "line-opacity": highlight(0.95, 0.08, 0.7),
-              "line-dasharray": CHOICES[choice].dasharray,
             }}
           />
         </Source>
-      ))}
+      }
     </>
   )
 }

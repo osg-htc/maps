@@ -51,7 +51,17 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
+      # Carry the director snapshot history from build to build, the build takes a new snapshot
+      # every 5 hours and keeps the last 10. Each run saves its own copy since cache entries can't be overwritten.
+      - name: Cache director responses
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: director-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: director-
       - name: Build with Next.js
+        env:
+          DIRECTOR_CACHE: "true"
         run: |
           pnpm run build
           find ./out | sed -e "s/[^-][^\/]*\//  |/g" -e "s/|\([^ ]\)/|-\1/"
