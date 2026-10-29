@@ -238,9 +238,17 @@ export async function getCacheSelectionData(pointCount: number, choiceCount = 3,
 
   // Work through the grid in small batches to be gentle on the director
   const hostLists: string[][] = []
+  let lastPercent = 0
   for (let i = 0; i < cells.length; i += concurrency) {
     const batch = cells.slice(i, i + concurrency)
     hostLists.push(...await Promise.all(batch.map(x => getSelectedCacheHosts(x.point))))
+
+    // Log progress every 5% since this takes a while during the build
+    const percent = Math.floor(hostLists.length / cells.length * 20) * 5
+    if (percent > lastPercent) {
+      lastPercent = percent
+      console.log(`Cache selection: queried director for ${hostLists.length}/${cells.length} locations (${percent}%)`)
+    }
   }
 
   const choices = hostLists.map(hosts => hosts.slice(0, choiceCount).map(host => cacheIndexByHost.get(host) ?? null))
