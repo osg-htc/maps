@@ -20,18 +20,19 @@ export type CacheStats = {
 }
 
 function getCacheStats(data: CacheSelectionData): CacheStats[] {
-  const stats: Record<number, CacheStats> = {}
+  // Start every cache at zero so the ones that are never chosen are still listed
+  const stats: CacheStats[] = data.caches.map(cache => ({ cache, points: CHOICES.map(() => 0), areas: CHOICES.map(() => 0) }))
   for (const cell of data.cells) {
     cell.choices.forEach((cacheIndex, choice) => {
       if (cacheIndex === null) return
-      stats[cacheIndex] ??= { cache: data.caches[cacheIndex], points: CHOICES.map(() => 0), areas: CHOICES.map(() => 0) }
       stats[cacheIndex].points[choice] += 1
       stats[cacheIndex].areas[choice] += cell.areaKm2
     })
   }
 
-  return Object.values(stats).sort((a, b) =>
-    b.points[0] - a.points[0] || b.points[1] - a.points[1] || b.points[2] - a.points[2]
+  return stats.sort((a, b) =>
+    b.points[0] - a.points[0] || b.points[1] - a.points[1] || b.points[2] - a.points[2] ||
+    a.cache.name.localeCompare(b.cache.name)
   )
 }
 
@@ -107,7 +108,7 @@ export default function CacheSelectionMap({ data, generatedAt }: CacheSelectionM
                   </ToggleButton>
                 ))}
               </ToggleButtonGroup>
-              {cacheStats.length ?
+              {data.cells.length ?
                 cacheStats.map(stats =>
                   <CacheListCard
                     key={stats.cache.name}

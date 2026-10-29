@@ -229,12 +229,10 @@ async function getSelectedCacheHosts(point: LatLong): Promise<string[]> {
 
 export async function getCacheSelectionData(pointCount: number, choiceCount = 3, concurrency = 10): Promise<CacheSelectionData> {
   const servers = await getDirectorServers()
-  const cachesByHost = servers
-    .filter(server => server.type === "Cache")
-    .reduce((acc, server) => {
-      acc[new URL(server.url).host] = server
-      return acc
-    }, {} as Record<string, DirectorServer>)
+
+  // List every cache, including ones the director never picks, and refer to them by index
+  const caches = servers.filter(server => server.type === "Cache")
+  const cacheIndexByHost = new Map(caches.map((cache, i) => [new URL(cache.url).host, i]))
 
   const { cells, neighbors } = getLandGrid(pointCount)
 
@@ -245,18 +243,7 @@ export async function getCacheSelectionData(pointCount: number, choiceCount = 3,
     hostLists.push(...await Promise.all(batch.map(x => getSelectedCacheHosts(x.point))))
   }
 
-  // List each chosen cache once and refer to it by index
-  const caches: DirectorServer[] = []
-  const cacheIndex = new Map<string, number>()
-  const choices = hostLists.map(hosts => hosts.slice(0, choiceCount).map(host => {
-    const cache = cachesByHost[host]
-    if (!cache) return null
-    if (!cacheIndex.has(cache.name)) {
-      cacheIndex.set(cache.name, caches.length)
-      caches.push(cache)
-    }
-    return cacheIndex.get(cache.name)!
-  }))
+  const choices = hostLists.map(hosts => hosts.slice(0, choiceCount).map(host => cacheIndexByHost.get(host) ?? null))
 
   // Drop cells the director gave no answer for
   const answered = cells.map((_, i) => i).filter(i => hostLists[i].length)
